@@ -1,4 +1,14 @@
 @font-face {
+  font-family: 'AvenirBook';
+  src: url(../font/AvenirLTStd-Book.otf);
+}
+
+@font-face {
+  font-family: 'AvenirHeavy';
+  src: url(../font/AvenirLTStd-Heavy.otf);
+}
+
+@font-face {
   font-family: 'SPProText';
   src: url(../font/SF-Pro-Text-Regular.otf);
 }
@@ -6,6 +16,9 @@
 @import './global/color';
 @import './global/mixin';
 @import './global/core';
+@import './icon';
+@import './button';
+@import './dialog';
 
 .landing-page{
   position: relative;
@@ -17,7 +30,6 @@
     height: 30px;
     box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.36);
     background-image: radial-gradient(circle at 9% 67%, #2a2e69, #181035);
-    font-family: SPProText;
     color: $whitePrimary;
     font-size: 10px;
     &-text{
@@ -84,13 +96,63 @@
     background-position: top;
     background-image: url(../img/main.jpg);
   }
+  &__logo{
+    display: block;
+    max-width: 80%;
+    height: auto;
+    position: relative;
+    left: 5px;
+    // animation: zoomIn duration timing-function delay iteration-count direction fill-mode;
+    animation-name: zoomIn;
+    animation-duration: 3.5s;
+    // animation-delay: 2s;
+    @include keyframes(zoomIn){
+      0%{
+        transform: scale(0)
+      }
+      // 50%{
+      //   transform: scale(0.5)
+      // }
+      100%{
+        transform: scale(1)
+      }
+    }
+  }
+  &__title{
+    margin: 0 0 24px;
+    font-size: 40px;
+    text-transform: uppercase;
+    // width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    // &::before{
+      // content: '';
+      // position: absolute;
+      // z-index: 1;
+      // display: block;
+      // width: 100%;
+      // height: 50px;
+      @include backgroundImg;
+      background-image: url(../icon/quiz-bg.png);
+    // }
+    
+  }
   &__action{
     position: absolute;
-    bottom: 0;
+    bottom: 20px;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
   }
+  &__desc{
+    font-size: 12px;
+    font-weight: 900;
+    color: $whitePrimary;
+    opacity: .7;
+    margin: 0 0 8px;
+  }
 }
+

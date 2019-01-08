@@ -3,7 +3,7 @@
 html,
 body {
   font-size: 14px;
-  // font-family: 'SPProText';
+  font-family: 'AvenirHeavy';
   &.lock {
     overflow: hidden;
   }
@@ -11,7 +11,7 @@ body {
 
 body {
   margin: 0;
-  color: #333;
+  color: $whitePrimary;
   background-color: $whitePrimary;
 }
 

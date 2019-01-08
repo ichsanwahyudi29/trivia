@@ -1,0 +1,19 @@
+.icon{
+  display: flex;
+  align-items: center;
+  &::before{
+    content: '';
+    display: block;
+    @include backgroundImg;
+  }
+  &--price{
+    &::before{
+      background-image: url(../icon/hadiah.svg);
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+      position: relative;
+      top: -1px;
+    }
+  }
+}

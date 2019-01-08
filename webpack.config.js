@@ -56,7 +56,7 @@ const webpackConfig = {
         ],
       },
       {
-        test: /\.(otf)$/,
+        test: /\.(ttf|otf)$/,
         use: [
           {
             loader: 'file-loader',
@@ -68,12 +68,24 @@ const webpackConfig = {
         ],
       },
       {
+        test: /\.(mp3)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].ext',
+              outputPath: 'assets/music',
+            },
+          },
+        ],
+      },
+      {
         test: /\.(html)$/,
         use: [
           {
             loader: 'html-loader',
             options: {
-              attrs: ['img:src'],
+              attrs: ['img:src', 'audio:src'],
             },
           },
         ],

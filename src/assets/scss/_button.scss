@@ -1,0 +1,87 @@
+.btn{
+  $btn:&;
+  border: none;
+  font-family: 'AvenirHeavy';
+  outline: none;
+  text-align: center;
+  display: inline-block;
+  padding: 2px;
+  box-sizing: border-box;
+  &:active,
+  &:focus{
+    outline: none;
+  }
+  &__inner{
+    border-radius: 20px;
+    line-height: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span{
+      text-transform: uppercase;
+      font-size: 14px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      font-weight: 900;
+      position: relative;
+      top: 1px;
+      text-align: center;
+      color: $whitePrimary;
+    }
+  }
+
+  &--small{
+    border-radius: 12px;
+    #{$btn}{
+      &__inner{
+        border-radius: 12px;
+        background-color: rgba(255, 255, 255, 0.25);
+        line-height: 22px;
+        height: 22px;
+        span{
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+  &--primary{ 
+    width: 200px;
+    border-radius: 20px;
+    background: linear-gradient(to right, #cc7f30,#eebb3f, #fcf2df, #cc7f30);
+    #{$btn}{
+      &__inner{
+        box-shadow: inset 0 2px 6px 0 rgba(0, 0, 0, 0.5);
+        background: linear-gradient(to right, #860408,#ae252b);
+      }
+    }
+  }
+  &--transparent{
+    color: $primaryColor;
+    width: 200px;
+    border-radius: 20px;
+    #{$btn}{
+      &__inner{
+        box-shadow: inset 0 2px 6px 0 rgba(0, 0, 0, 0.5);
+        background: linear-gradient(to right, #860408,#ae252b);
+      }
+    }
+  }
+
+  &--price{
+    background: transparent;
+    width: 117px;
+    margin-top: 24px;
+    @include backgroundImg;
+    background-size: contain;
+    background-image: url(../icon/btn-price.svg);
+    #{$btn}{
+      &__inner{
+        background: rgba(78,77,100,0.0);
+        span{
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+}
