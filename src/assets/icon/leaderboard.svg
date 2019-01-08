@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="29" height="29" viewBox="0 0 29 29">
+    <defs>
+        <radialGradient id="a" cy="11.611%" r="54.732%" fx="50%" fy="11.611%" gradientTransform="matrix(0 1 -1.06403 0 .624 -.384)">
+            <stop offset="0%" stop-color="#FFF" stop-opacity=".544"/>
+            <stop offset="100%" stop-color="#FFF" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="b" width="244.4%" height="250%" x="-72.2%" y="-75%" filterUnits="objectBoundingBox">
+            <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
+            <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+        <path id="c" d="M.175.326h9.936v13.817H.175z"/>
+        <linearGradient id="g" x1="50%" x2="50%" y1="120.545%" y2="0%">
+            <stop offset="0%" stop-color="#F7EBDA"/>
+            <stop offset="100%" stop-color="#E6C15E"/>
+        </linearGradient>
+        <path id="f" d="M3.857 12.73v-1.553A4.955 4.955 0 0 1 .175 6.396V.326h9.936v6.07a4.955 4.955 0 0 1-3.682 4.781v1.552h2.275c.709 0 1.286.575 1.286 1.286v.128H.297v-.128c0-.711.576-1.286 1.286-1.286h2.274z"/>
+        <filter id="e" width="240.9%" height="201.3%" x="-70.5%" y="-36.2%" filterUnits="objectBoundingBox">
+            <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <circle cx="14.5" cy="14.5" r="14" fill="#011B32" fill-rule="nonzero" stroke="url(#a)"/>
+        <g filter="url(#b)" transform="translate(6 7)">
+            <path stroke="#F2CA6B" d="M5.056 8.963V2.856h-3.77a.804.804 0 0 0-.804.804v2.25a3.054 3.054 0 0 0 3.053 3.053h1.521zM12.944 8.963V2.856h3.77c.443 0 .804.36.804.804v2.25a3.054 3.054 0 0 1-3.053 3.053h-1.521z"/>
+            <g transform="translate(3.857 .96)">
+                <mask id="d" fill="#fff">
+                    <use xlink:href="#c"/>
+                </mask>
+                <g mask="url(#d)">
+                    <use fill="#000" filter="url(#e)" xlink:href="#f"/>
+                    <use fill="url(#g)" xlink:href="#f"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
