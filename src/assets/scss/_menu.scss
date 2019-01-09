@@ -1,0 +1,24 @@
+.menu{
+  &::before{
+    content: '';
+    display: block;
+    width: 29px;
+    height: 29px;
+    @include backgroundImg;
+  }
+  &--back{
+    &::before{
+      background-image: url(../icon/back.svg);
+    }
+  }
+  &--leaderboard{
+    &::before{
+      background-image: url(../icon/leaderboard.svg);
+    }
+  }
+  &--share{
+    &::before{
+      background-image: url(../icon/share.svg);
+    }
+  }
+}

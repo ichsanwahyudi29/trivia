@@ -12,7 +12,7 @@
   transition: opacity ease .10s;
   &--show{
     opacity: 1;
-    z-index: 0;
+    z-index: 10;
     transition: opacity ease .4s;
   }
 }
@@ -33,32 +33,29 @@
   justify-content: center;
   &--show{
     opacity: 1;
-    z-index: 0;
+    z-index: 10;
     #{$dialog}{
-      &__content{
+      &__container{
         transition: transform ease .35s;
-        transform: scale(1);
       }
     }
   }
   &--close{
     #{$dialog}{
-      &__content{
+      &__container{
         transition: transform ease .3s;
-        transform: scale(0);
       }
     }
   }
   &__container{
     position: relative;
     max-width: 272px;
+    transition: transform ease .3s;
   }
   &__content{
-    transition: transform ease .3s;
-    transform: scale(0);
     padding: 2px;
-    box-shadow: 0 0 6px 0 rgba(255, 255, 255, 0.5);
-    background: linear-gradient(to right, #edb836,#fdf8ef,#cc7f30);
+    // box-shadow: 0 0 22px 0 rgba(255, 255, 255, 0.5);
+    background: linear-gradient(to right, #edb836,#fdf8ef,#F5E5D1);
     position: relative;
   }
   &__inner{
@@ -98,21 +95,20 @@
   }
   &__shield{
     &-top{
-      // max-width: 100%;
-      width: 104%;
+      width: 100%;
       display: block;
       position: absolute;
       z-index: 1;
-      top: -27px;
-      left: -6px;
+      top: -20px;
+      // left: -6px;
     }
     &-bottom{
-      width: 104%;
+      width: 100%;
       display: block;
       position: absolute;
       z-index: 2;
-      bottom: -58px;
-      left: -5px;
+      bottom: -62px;
+      // left: -5px;
     }
   }
   &__desc{
@@ -124,7 +120,7 @@
   }
   &__star{
     position: absolute;
-    top: -5px;
+    top: -35px;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -140,6 +136,11 @@
       margin: 0 auto;
       z-index: 2;
     }
+    // &-line{
+    //   width: 99px;
+    //   height: 15px;
+    //   background-image: linear-gradient(to right, #BF9332 ,#F8E2B0, #F8E2B0)
+    // }
     &::before,
     &::after{
       content: '';

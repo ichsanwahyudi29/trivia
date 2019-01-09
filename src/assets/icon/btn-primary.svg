@@ -1,31 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="202" height="42" viewBox="0 0 202 42">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="40px" viewBox="0 0 200 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>btn main</title>
+    <desc>Created with Sketch.</desc>
     <defs>
-        <linearGradient id="a" x1="50%" x2="50%" y1="0%" y2="100%">
-            <stop offset="0%" stop-color="#860408"/>
-            <stop offset="100%" stop-color="#AE252B"/>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#860408" offset="0%"></stop>
+            <stop stop-color="#AE252B" offset="98.2139632%"></stop>
         </linearGradient>
-        <radialGradient id="c" cy="15.194%" r="74.587%" fx="50%" fy="15.194%" gradientTransform="matrix(0 -1 .4452 0 .432 .652)">
-            <stop offset="0%" stop-color="#FFF" stop-opacity=".399"/>
-            <stop offset="100%" stop-color="#62070B" stop-opacity=".749"/>
+        <radialGradient cx="50%" cy="15.1941708%" fx="50%" fy="15.1941708%" r="74.5873579%" gradientTransform="translate(0.500000,0.151942),scale(0.200000,1.000000),rotate(-90.000000),scale(1.000000,2.226030),translate(-0.500000,-0.151942)" id="radialGradient-2">
+            <stop stop-color="#FFFFFF" stop-opacity="0.399314991" offset="0%"></stop>
+            <stop stop-color="#62070B" stop-opacity="0.749009284" offset="100%"></stop>
         </radialGradient>
-        <radialGradient id="e" cx="72.982%" r="284.232%" fx="72.982%" fy="50%" gradientTransform="matrix(-.18287 .40488 -.08098 -.91437 .904 .662)">
-            <stop offset="0%" stop-color="#CC7F30"/>
-            <stop offset="43.45%" stop-color="#EEBB3F"/>
-            <stop offset="65.433%" stop-color="#FCF2DF"/>
-            <stop offset="100%" stop-color="#CC7F30"/>
-        </radialGradient>
-        <rect id="b" width="200" height="40" rx="20"/>
-        <filter id="d" width="105%" height="125%" x="-2.5%" y="-12.5%" filterUnits="objectBoundingBox">
-            <feGaussianBlur in="SourceAlpha" result="shadowBlurInner1" stdDeviation="3"/>
-            <feOffset dy="2" in="shadowBlurInner1" result="shadowOffsetInner1"/>
-            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
-            <feColorMatrix in="shadowInnerInner1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
-        </filter>
+        <rect id="path-3" x="0" y="0" width="200" height="40" rx="20"></rect>
     </defs>
-    <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
-        <use fill="url(#a)" xlink:href="#b"/>
-        <use fill="url(#c)" style="mix-blend-mode:overlay" xlink:href="#b"/>
-        <use fill="#000" filter="url(#d)" xlink:href="#b"/>
-        <use stroke="url(#e)" stroke-width="2" xlink:href="#b"/>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="btn-main">
+            <g id="Rectangle-Copy-2">
+                <use fill="url(#linearGradient-1)" xlink:href="#path-3"></use>
+                <use fill="url(#radialGradient-2)" style="mix-blend-mode: overlay;" xlink:href="#path-3"></use>
+            </g>
+        </g>
     </g>
 </svg>

@@ -1,3 +1,9 @@
+$(document).ready(function () {
+  // $('body').addClass('lock');
+  // $('.overlay').addClass('overlay--show');
+  // $('.dialog').addClass('dialog--show');
+})
+
 $(function handleDialog() {
   $('#js_show-dialog').on({
     click: function() {
