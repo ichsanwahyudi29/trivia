@@ -1,0 +1,55 @@
+.game-over{
+  height: 100vh;
+  @include backgroundImg;
+  background-image: url(../img/bg-over.jpg);
+  position: relative;
+  &::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 72px;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0), #000000);
+  }
+  &__menu{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 16px 0;
+  }
+  &__container{
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    bottom: -1px;
+    padding-bottom: 40px;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), #000000);
+  }
+  &__content{
+    padding-bottom: 23.5px;
+    border-style: solid;
+    border-width: 1px;
+    border-image: linear-gradient(to top, #dbaa62,#ffffff,#dbaa62);
+  }
+  &__title{
+    text-shadow: 0 2px 8px #000000;
+    font-size: 50px;
+    font-weight: 900;
+    line-height: 0.9;
+    margin: 0;
+  }
+  &__score{
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 24px;
+    font-weight: 900;
+    margin: 8px 0;
+  }
+  &__desc{
+    font-size: 12px;
+    font-weight: 900;
+    color: $whitePrimary;
+    opacity: .7;
+    margin: 16px 0;
+  }
+}
