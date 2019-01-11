@@ -1,24 +1,32 @@
 .menu{
-  &::before{
-    content: '';
-    display: block;
-    width: 29px;
-    height: 29px;
-    @include backgroundImg;
+  padding: 16px 16px 0;
+  @include breakpoint(sm){
+    padding: 32px 32px 0;
   }
-  &--back{
+  &__action{
     &::before{
-      background-image: url(../icon/back.svg);
+      content: '';
+      display: block;
+      width: 29px;
+      height: 29px;
+      @include backgroundImg;
+    }
+
+    &--back{
+      &::before{
+        background-image: url(../img/back.svg);
+      }
+    }
+    &--leaderboard{
+      &::before{
+        background-image: url(../img/leaderboard.svg);
+      }
+    }
+    &--share{
+      &::before{
+        background-image: url(../img/share.svg);
+      }
     }
   }
-  &--leaderboard{
-    &::before{
-      background-image: url(../icon/leaderboard.svg);
-    }
-  }
-  &--share{
-    &::before{
-      background-image: url(../icon/share.svg);
-    }
-  }
+  
 }

@@ -9,7 +9,7 @@
     height: 20px;
     width: 20px;
     @include backgroundImg;
-    background-image: url(../icon/search.svg);
+    background-image: url(../img/search.svg);
   }
   &__input{
     display: block;
@@ -40,7 +40,7 @@
     right: 10px;
     @include backgroundImg;
     background-size: 16px;
-    background-image: url(../icon/closeInputSearch.svg);
+    background-image: url(../img/closeInputSearch.svg);
     transform: scale(0);
     transition: transform 0.32s ease 0s;
     &--show{

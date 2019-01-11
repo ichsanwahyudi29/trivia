@@ -127,7 +127,7 @@
     z-index: 3;
     &-icon{
       @include backgroundImg;
-      background-image: url(../icon/star.png);
+      background-image: url(../img/star.png);
       width: 64px;
       height: 64px;
       position: absolute;
@@ -151,7 +151,7 @@
       z-index: 1;
       top: 12px;
       @include backgroundImg;
-      background-image: url(../icon/star-line.svg);
+      background-image: url(../img/star-line.svg);
     }
 
     &::before{

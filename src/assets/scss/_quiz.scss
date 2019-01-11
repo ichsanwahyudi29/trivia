@@ -7,7 +7,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px;
   }
   &__time{
     width: 56px;
@@ -95,6 +94,9 @@
       height: 100%;
       padding: 4px;
       position: relative;
+      @include breakpoint(sm){
+        padding: 6px;
+      }
       &:nth-child(odd){
         padding-left: 0;
       }
@@ -138,9 +140,6 @@
               padding: 2px;
               background: linear-gradient(to bottom, #3176AD,#AAC3D5, #3176AD);
             }
-            &__img{
-              height: calc((100vw - 64px) / 2);
-            }
           }
         }
         
@@ -150,15 +149,23 @@
           background: linear-gradient(to bottom, #edb836,#fdf8ef, #cc7f30);
           position: relative;
           overflow: hidden;
-          width: calc((100vw - 56px) / 2);
+          width: 100%;
           height: calc((100vw - 56px) / 2);
+          @include breakpoint(sm){
+            height: calc((100vw - 263px) / 2);
+          }
         }
         &__img{
-          width: 100%;
-          height: calc((100vw - 60px) / 2);
+          height: 100%;
           border-radius: 6px;
           @include backgroundImg;
           position: relative;
+          overflow: hidden;
+          img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
           span{
             display: block;
             position: absolute;

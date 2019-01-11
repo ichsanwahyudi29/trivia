@@ -2,72 +2,205 @@ const dataRanking = [
   {
     ranking: '1',
     name: 'Ichsan Indra Wahyudi',
+    image: '../assets/img/avenger.jpg',
     phone: '08743xxx872',
     skor: '999999',
   },
   {
     ranking: '2',
     name: 'Irwanto',
+    image: '../assets/img/avenger.jpg',
     phone: '08743xxx872',
     skor: '41604',
   },
   {
     ranking: '3',
     name: 'Rendi Christian Rendi Christian',
+    image: '../assets/img/avenger.jpg',
     phone: '08743xxx872',
     skor: '19904',
   },
   {
     ranking: '4',
     name: 'Fajar',
+    image: '../assets/img/avenger.jpg',
     phone: '08743xxx872',
     skor: '999999',
   },
   {
     ranking: '5',
     name: 'Ryan aja',
+    image: '../assets/img/avenger.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
   {
     ranking: '6',
     name: 'Mbo Dharmi',
+    image: '../assets/img/avenger.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
   {
     ranking: '7',
     name: 'Leonardy oleoleo oleoleo',
+    image: '../assets/img/avenger.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
   {
     ranking: '8',
     name: 'Shinta Tamara',
+    image: '../assets/img/avenger.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
   {
     ranking: '9',
     name: 'Zarrah',
+    image: '../assets/img/avenger.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
   {
     ranking: '10',
     name: 'Adek Tresno',
+    image: '../assets/img/avenger.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
   {
-    ranking: '999+',
+    ranking: '10000',
     name: 'Erazzzz',
+    image: '../assets/img/avenger.jpg',
+    phone: '08743xxx872',
+    skor: '9904',
+  },
+  {
+    ranking: '10000',
+    name: 'Erazzzz',
+    image: '../assets/img/avenger.jpg',
+    phone: '08743xxx872',
+    skor: '9904',
+  },
+  {
+    ranking: '10000',
+    name: 'Erazzzz',
+    image: '../assets/img/avenger.jpg',
+    phone: '08743xxx872',
+    skor: '9904',
+  },
+  {
+    ranking: '10000',
+    name: 'Erazzzz',
+    image: '../assets/img/avenger.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
 ];
 
+$(document).ready(function() {
+  // renderHome();
+});
+
+window.renderLeaderboard = renderLeaderboard;
+window.renderHome = renderHome;
+window.onBack = onBack;
+
+function onBack(page) {
+  console.log(page);
+  renderHome();
+  // switch (page) {
+  //   case 'home':
+  //     renderHome()
+  //     break;
+  //   case 'leaderboard':
+  //     renderLeaderboard()
+  //     break;
+  // }
+}
+
+// Home
+
+function renderHome() {
+  // <audio src="./assets/music/bg.mp3" autoplay="true">
+  // <p class="landing-page__desc">Kuis akan dimulai pada 12.00 - 13.00</p>;
+
+  const html = `
+    <div class="landing-page">
+      <div class="landing-page__info">
+        <p class="landing-page__info-text">Ichsan Indra mendapatkan skor 999.999</p>
+        <span class="landing-page__info-num">999.999</span>
+      </div>
+      <div class="landing-page__container content">
+        <div class="landing-page__menu menu">
+          <a href="" class="menu__action menu__action--back"></a>
+          <div class="landing-page__menu-right">
+            <a class="menu__action menu__action--leaderboard" onclick="renderLeaderboard()"></a>
+            <a href="" class="menu__action menu__action--share"></a>
+          </div>
+        </div>
+        <div class="landing-page__action">
+          <img class="landing-page__logo" src="./assets/img/logo_marvel.png" alt="" srcset="">
+          <div class="landing-page__title">
+            <span>Quiz</span>
+            <div class="landing-page__title-spark"></div>
+          </div>
+          <p class="landing-page__desc">Kuis telah dimulai</p>
+          <button class="btn btn--primary">
+            <div class="btn__inner">
+              <span>Mulai Main</span>
+            </div>
+          </button>
+          <button id="js_show-dialog" class="btn btn--small btn--price">
+            <div class="btn__inner">
+              <span class="icon icon--price">Info Hadiah</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  renderPage(html);
+}
+
 // Leaderboard
+
+function renderPage(html) {
+  $('body').empty();
+  $('body').append(html);
+}
+
+function renderLeaderboard(page = 'home') {
+  const html = `
+    <div class="leaderboard">
+      <div class="leaderboard__menu menu">
+        <a onClick="renderHome()" class="menu__action menu__action--back"></a>
+        <h1 class="menu__title">Leaderboard</h1>
+      </div>
+
+      <div class="leaderboard__container container">
+        <div class="leaderboard__top">
+          <div id="js_top-ranking" class="row"></div>
+        </div>
+
+        <div class="leaderboard__content">
+          <div id="js_search" class="search">
+            <div class="unf-searchbar">
+              <input id="js_search-ranking" type="text" class="unf-searchbar__input" placeholder="Cari Namamu">
+              <button id="js_reset-search-ranking" class="unf-searchbar__close"></button>
+            </div>
+          </div> 
+          <div id="js_ranking" class="ranking"></div>
+        </div>
+
+      </div>
+    </div>
+  `;
+
+  renderPage(html);
+}
 
 $(document).ready(function() {
   handleLoaderResult();
@@ -111,7 +244,9 @@ function topRanking(obj) {
         <div class="top top--${key.ranking}">
           <div class="top__img">   
             <div class="top__img-border">
-              <div class="top__img-val" style="background-image: url(../assets/img/img.jpg)">
+              <div class="top__img-val" style="background-image: url(${
+                key.image
+              })">
                 <div class="top__star"></div>
               </div>
             </div>
@@ -128,6 +263,8 @@ function topRanking(obj) {
 
     if (key.ranking != 2) {
       $('#js_top-ranking').append(topRank);
+    } else {
+      $('#js_top-ranking').prepend(topRank);
     }
   }
 }
@@ -144,12 +281,18 @@ function resultsRanking(obj) {
   });
 
   for (const key of obj) {
+    var ranking = key.ranking;
+
+    if (ranking > 999) {
+      ranking = '999+';
+    }
+
     const listRank = `
       <div class="row">
         <div class="ranking__list-left">
           <div class="ranking__info">
             <div class="info-num">
-              <span>${key.ranking}</span>
+              <span>${ranking}</span>
             </div>
             <div class="info-profile">
               <div class="profile-text">
