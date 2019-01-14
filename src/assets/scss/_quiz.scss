@@ -9,7 +9,19 @@
   &__menu{
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    margin: 0 16px;
+    position: relative;
+    padding-left: 0;
+    padding-right: 0;
+    .menu{
+      &__action{
+        &--back{
+          position: absolute;
+          left: 0;
+        }
+      }
+    }
   }
   &__time{
     width: 56px;
@@ -57,6 +69,9 @@
     margin: 0 auto;
     padding: 0 24px;
     max-width: 560px;
+    @include breakpoint(sm){
+      bottom: 120px;
+    }
   }
   &__question{
     text-align: center;
@@ -91,20 +106,23 @@
       }
     }
   }
-  &__answer{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    &-btn{
-      height: 100%;
-    }
-
+  &__content{
     &--text{
       .quiz{
         &__answer{
           &-btn{
             width: 100%;
             margin-bottom: 10px;
+            @include breakpoint(sm){
+              margin-bottom: 0px;
+              margin-top: 16px
+            }
+            &:first-child{
+              @include breakpoint(sm){
+                margin-bottom: 0px;
+                margin-top: 32px
+              }
+            }
             &:last-child{
               margin-bottom: 0px;
             }
@@ -180,6 +198,9 @@
           background: linear-gradient(to left, #edb836,#fdf8ef, #cc7f30);
           position: relative;
           overflow: hidden;
+          @include breakpoint(sm){
+            box-shadow: 0 0 6px 0 rgba(255, 255, 255, 0.3);
+          }
         }
         &__text{
           border-radius: 20px;
@@ -191,6 +212,12 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
+          span{
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            max-width: 90%;
+          }
         }
       }
       
@@ -359,6 +386,14 @@
         }
       }
     }
+  }
+  &__answer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    &-btn{
+      height: 100%;
+    }
       
   }
   &__of{
@@ -367,5 +402,32 @@
     opacity: .8;
     margin: 16px 0;
     font-family: 'AvenirBook';
+  }
+
+  &__score{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 100px);
+    &-inner{
+      min-width: 20px;
+      padding: 7px 16px;
+      border-radius: 27.5px;
+      display: flex;
+      align-items: flex-end;
+      -webkit-backdrop-filter: blur(11px);
+      backdrop-filter: blur(11px);
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+      background-color: rgba(255, 255, 255, 0.25);
+      span{
+        position: relative;
+        top: 2px;
+        display: inline-block; 
+        font-size: 30px;
+        font-weight: 900;
+        letter-spacing: .8px;
+        line-height: 32px;
+        margin-right: 4px;
+      }
+    }
   }
 }

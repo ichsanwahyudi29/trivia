@@ -29,18 +29,22 @@
     }
   }
   &__score{
-    // min-width: 29px;
     border-radius: 14.5px;
-    height: 29px;
-    line-height: 29px;
-    padding: 0 8px;
     background-color: #011b32;
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
     span{
+      display: block;
+      padding: 0 8px;
+      min-width: 29px;
+      height: 29px;
+      line-height: 32px;
       font-size: 20px;
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      // background-image: radial-gradient(circle at 50% 29%, #eebb3f, #fcf2df);
       background-image: linear-gradient(to bottom, #eebb3f 10%, #fcf2df 90%);
       font-weight: 900;
       letter-spacing: 1px;

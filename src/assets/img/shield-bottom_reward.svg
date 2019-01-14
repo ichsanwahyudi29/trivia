@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="270px" height="63px" viewBox="0 0 270 63" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>Combined Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="0 7.9213025e-13 269.998225 5.68434189e-14 269.998225 63 0 63"></polygon>
+        <linearGradient x1="50%" y1="-44.3937912%" x2="50%" y2="122.38258%" id="linearGradient-3">
+            <stop stop-color="#1D1B1C" offset="0%"></stop>
+            <stop stop-color="#0F3B5F" offset="100%"></stop>
+        </linearGradient>
+        <radialGradient cx="50%" cy="2.06221538%" fx="50%" fy="2.06221538%" r="49.347776%" gradientTransform="translate(0.500000,0.020622),scale(1.000000,0.808405),rotate(-90.000000),scale(1.000000,6.702949),translate(-0.500000,-0.020622)" id="radialGradient-4">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#4B8AC4" offset="100%"></stop>
+        </radialGradient>
+        <linearGradient x1="-29.6899866%" y1="52.4954065%" x2="131.235494%" y2="52.4954065%" id="linearGradient-5">
+            <stop stop-color="#CD8131" offset="0%"></stop>
+            <stop stop-color="#EEBB3F" offset="28.1155597%"></stop>
+            <stop stop-color="#FCF2DF" offset="100%"></stop>
+        </linearGradient>
+        <path d="M135.005045,-250.05324 L270,-271 L270,2.45660002 C270,12.9052642 263.239925,22.1532897 253.284126,25.3245143 L135.005045,63 L16.7219657,25.3997771 C6.75912186,22.2327548 -0.00762628984,12.9810462 -0.00734554566,2.52694236 L-5.40739328e-14,-271 L135.005045,-250.05324 Z" id="path-6"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="tameng-reward-bawah" transform="translate(-25.000000, -389.000000)">
+            <g id="Combined-Shape" transform="translate(25.000000, 389.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Mask"></g>
+                <g mask="url(#mask-2)">
+                    <use fill="url(#linearGradient-3)" fill-rule="evenodd" xlink:href="#path-6"></use>
+                    <use fill="url(#radialGradient-4)" fill-rule="evenodd" style="mix-blend-mode: overlay;" xlink:href="#path-6"></use>
+                    <path stroke="url(#linearGradient-5)" stroke-width="2" d="M0.999968658,-269.832884 L0.992654454,2.52696921 C0.992385407,12.5454854 7.47718572,21.4117061 17.0249111,24.4467692 L135.004737,61.9505928 L252.980621,24.3716845 C262.521594,21.3325943 269,12.4699032 269,2.45660002 L269,-269.832866 L135.005051,-249.041274 L0.999968658,-269.832884 Z" stroke-linejoin="square"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

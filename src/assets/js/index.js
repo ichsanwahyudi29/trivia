@@ -430,3 +430,65 @@ $(function handleDialog() {
     },
   });
 });
+
+window.handleOpenDialog = handleOpenDialog;
+window.handleCloseDialog = handleCloseDialog;
+
+$(function globalCloseDialog() {
+  $('body').on({
+    click: function(e) {
+      if ($(event.target).hasClass('dialog--show')) {
+        handleCloseDialog();
+      }
+    },
+  });
+});
+
+function handleOpenDialog() {
+  $('body').addClass('lock');
+  $('.overlay').addClass('overlay--show');
+  $('.dialog').addClass('dialog--show');
+}
+
+function handleCloseDialog() {
+  $('body').removeClass('lock');
+  $('.overlay').removeClass('overlay--show');
+  $('.dialog').removeClass('dialog--show');
+}
+
+// Quiz
+
+window.handleBtnAnswerImg = handleBtnAnswerImg;
+window.handleBtnAnswerTxt = handleBtnAnswerTxt;
+
+function handleBtnAnswerTxt(e) {
+  focusAnswer('text');
+  $(e).addClass('answer-btn--active');
+  let audio = document.getElementById('js_sound-lock');
+  audio.play();
+  setTimeout(() => {
+    audio.pause();
+    audio.currentTime = 0;
+  }, 800);
+}
+
+function handleBtnAnswerImg(e) {
+  focusAnswer('img');
+  $(e).removeClass('answer-btn--disabled');
+  $(e).addClass('answer-btn--active');
+  let audio = document.getElementById('js_sound-lock');
+  audio.play();
+  setTimeout(() => {
+    audio.pause();
+    audio.currentTime = 0;
+  }, 800);
+}
+
+function focusAnswer(type) {
+  if (type == 'img') {
+    $('.answer-btn').removeClass('answer-btn--disabled');
+    $('.answer-btn').addClass('answer-btn--disabled');
+  }
+
+  $('.answer-btn').removeClass('answer-btn--active');
+}

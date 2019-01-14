@@ -11,9 +11,9 @@
 
 <body>
   <div class="game-over">
-    <div class="game-over__menu">
-      <a href="" class="menu menu--back"></a>
-      <a href="" class="menu menu--leaderboard"></a>
+    <div class="game-over__menu menu">
+      <span class="menu__action menu__action--back"></span>
+      <span class="menu__action menu__action--leaderboard"></span>
     </div>
 
     <div class="game-over__container">
@@ -25,6 +25,9 @@
             <span>Pamerkan Skor</span>
           </div>
         </button>
+        <div class="game-over__separator">
+          <div class="game-over__separator-inner"></div>
+        </div>
       </div>
       <p class="game-over__desc">Lihat konten berikut untuk dapatkan 2x skor</p>
       <button class="btn btn--primary">
@@ -32,6 +35,35 @@
           <span>Gandakan Skor</span>
         </div>
       </button>
+    </div>
+
+    <div class="overlay overlay--show"></div>
+    <div class="dialog dialog--reward dialog--show">
+      <div class="dialog__container">
+        <div id="js_close-dialog" class="dialog__close"></div>
+        <div class="dialog__star">
+          <div class="dialog__star-line dialog__star-line--left">
+            <div class="dialog__star-line__inner"></div>
+          </div>
+          <div class="dialog__star-icon"></div>
+          <div class="dialog__star-line dialog__star-line--right">
+            <div class="dialog__star-line__inner"></div>
+          </div>
+        </div>
+        <img class="dialog__shield-top" src="./assets/img/shield-top_reward.svg" alt="" srcset="">
+        <img class="dialog__shield-bottom" src="./assets/img/shield-bottom_reward.svg" alt="" srcset="">
+        <div class="dialog__content">
+          <div class="dialog__inner dialog__inner--star">
+            <p class="dialog__desc">Selamat!<br>
+            Anda mendapatkan kupon cashback hingga Rp 200.000</p>
+            <div class="coupon">
+              <div class="coupon__list">
+                <img src="./assets/img/coupon.png" alt="" srcset="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

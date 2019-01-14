@@ -1,7 +1,7 @@
 .game-over{
   height: 100vh;
   @include backgroundImg;
-  background-image: url(../img/bg-over.jpg);
+  background-image: url(../img/bg-over.png);
   position: relative;
   &::before{
     content: '';
@@ -23,14 +23,15 @@
     position: absolute;
     width: 100%;
     bottom: -1px;
-    padding-bottom: 40px;
+    padding: 0 25px 40px;
     background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), #000000);
   }
-  &__content{
-    padding-bottom: 23.5px;
-    border-style: solid;
-    border-width: 1px;
-    border-image: linear-gradient(to top, #dbaa62,#ffffff,#dbaa62);
+  &__separator{
+    width: 100%;
+    margin: 24px 0 24px;
+    height: 1px;
+    border-radius: 4px;
+    background-image: linear-gradient(to bottom, #dbaa62, #ffffff, #dbaa62);
   }
   &__title{
     text-shadow: 0 2px 8px #000000;

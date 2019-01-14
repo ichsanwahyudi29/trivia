@@ -9,8 +9,9 @@
 <body>
   <div class="quiz">
     <div class="quiz__wrapper">
+
       <div class="quiz__menu menu">
-        <a href="" class="menu__action menu__action--back"></a>
+        <span class="menu__action menu__action--back" onclick="handleOpenDialog()"></span>
         <div class="quiz__time">
           <!-- <svg id="times-up" width="56" height="56"> -->
             <!-- <linearGradient id="SVGID_1_" x1="224.92" y1="0" x2="224.92" y2="200" gradientUnits="userSpaceOnUse">
@@ -37,110 +38,136 @@
           </svg> -->
         </div>
         <div class="menu__score">
-          <span>14000</span>
+          <span>0</span>
         </div>
       </div>
 
-      <div class="quiz__content">
+      <div class="quiz__content quiz__content--img">
 
-          <div>
-            <div class="quiz__question">
-              <div class="quiz__question-inner">
-                <img src="./assets/img/avenger.jpg" alt="">
-                <span>Siapa pemeran utama pada film Kuch-Kuch Hota Hai?</span>
-              </div>
+          <div class="quiz__question">
+            <div class="quiz__question-inner">
+              <!-- <img src="./assets/img/avenger.jpg" alt=""> -->
+              <span>Siapa pemeran utama pada film Kuch-Kuch Hota Hai?</span>
             </div>
-
-            <div class="quiz__answer quiz__answer--text">
-
-              <div class="quiz__answer-btn">
-                <div class="answer-btn">
-                  <div class="answer-btn__inner">
-                    <div class="answer-btn__text">
-                      <span>Ichsan Wahyudi</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="quiz__answer-btn">
-                <div class="answer-btn answer-btn--wrong">
-                  <div class="answer-btn__inner">
-                    <div class="answer-btn__text">
-                      <span>Ichsan Wahyudi</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="quiz__answer-btn">
-                <div class="answer-btn">
-                  <div class="answer-btn__inner">
-                    <div class="answer-btn__text">
-                      <span>Ichsan Wahyudi</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="quiz__answer-btn">
-                <div class="answer-btn">
-                  <div class="answer-btn__inner">
-                    <div class="answer-btn__text">
-                      <span>Ichsan Wahyudi</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- <div class="quiz__answer quiz__answer--img">
-
-              <div class="quiz__answer-btn">
-                <div class="answer-btn answer-btn--wrong">
-                  <div class="answer-btn__inner">
-                    <div class="answer-btn__img">
-                      <img src="./assets/img/img.jpg" alt="">
-                      <span>Ichsan Wahyudi</span>
-                    </div>       
-                  </div>
-                </div>
-              </div>
-              <div class="quiz__answer-btn">
-                <div class="answer-btn answer-btn--disabled">
-                  <div class="answer-btn__inner">
-                    <div class="answer-btn__img">
-                      <img src="./assets/img/thor.jpg" alt="">
-                      <span>Ichsan Wahyudi</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="quiz__answer-btn">
-                <div class="answer-btn answer-btn--disabled">
-                  <div class="answer-btn__inner">
-                    <div class="answer-btn__img">
-                      <img src="./assets/img/thor.jpg" alt="">
-                      <span>Ichsan Wahyudi</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="quiz__answer-btn">
-                <div class="answer-btn answer-btn--disabled">
-                  <div class="answer-btn__inner">
-                    <div class="answer-btn__img">
-                      <img src="./assets/img/thor.jpg" alt="">
-                      <span>Ichsan Wahyudi</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div> -->
           </div>
-          
+
+          <!-- <div class="quiz__answer">
+
+            <div class="quiz__answer-btn">
+              <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
+                <div class="answer-btn__inner">
+                  <div class="answer-btn__text">
+                    <span>Ichsan Wahyudi</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="quiz__answer-btn">
+              <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
+                <div class="answer-btn__inner">
+                  <div class="answer-btn__text">
+                    <span>Ichsan Wahyudi</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="quiz__answer-btn">
+              <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
+                <div class="answer-btn__inner">
+                  <div class="answer-btn__text">
+                    <span>Ichsan Wahyudi</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="quiz__answer-btn">
+              <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
+                <div class="answer-btn__inner">
+                  <div class="answer-btn__text">
+                    <span>Ichsan Wahyudi</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div> -->
+
+          <div class="quiz__answer">
+
+            <div class="quiz__answer-btn">
+              <div class="answer-btn" onclick="handleBtnAnswerImg(this)">
+                <div class="answer-btn__inner">
+                  <div class="answer-btn__img">
+                    <img src="./assets/img/img.jpg" alt="">
+                    <span>Ichsan Wahyudi</span>
+                  </div>       
+                </div>
+              </div>
+            </div>
+            <div class="quiz__answer-btn">
+              <div class="answer-btn" onclick="handleBtnAnswerImg(this)">
+                <div class="answer-btn__inner">
+                  <div class="answer-btn__img">
+                    <img src="./assets/img/thor.jpg" alt="">
+                    <span>Ichsan Wahyudi</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="quiz__answer-btn">
+              <div class="answer-btn" onclick="handleBtnAnswerImg(this)">
+                <div class="answer-btn__inner">
+                  <div class="answer-btn__img">
+                    <img src="./assets/img/thor.jpg" alt="">
+                    <span>Ichsan Wahyudi</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="quiz__answer-btn">
+              <div class="answer-btn" onclick="handleBtnAnswerImg(this)">
+                <div class="answer-btn__inner">
+                  <div class="answer-btn__img">
+                    <img src="./assets/img/thor.jpg" alt="">
+                    <span>Ichsan Wahyudi</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        
           <h6 class="quiz__of">1 dari 5 pertanyaan</h6>
       </div>
+
+      <div class="quiz__score">
+        <div class="quiz__score-inner"><span>+14.230</span>Skor</div>
+      </div>
+
     </div>
+
+    <div class="overlay"></div>
+    <div class="dialog dialog--back">
+      <div class="dialog__container">
+        <div class="dialog__close" onclick="handleCloseDialog()"></div>
+        <img class="dialog__shield-top" src="./assets/img/shield-top_back.svg" alt="" srcset="">
+        <img class="dialog__shield-bottom" src="./assets/img/shield-bottom_back.svg" alt="" srcset="">
+        <div class="dialog__content">
+          <div class="dialog__inner">
+            <h3 class="dialog__title">Kembali ke Home Captain Marvel Quiz?</h3>
+            <p class="dialog__desc">Skor akan hangus dan Anda tidak dapat melanjutkan kuis hari ini apabila telah keluar.</p>
+            <button class="btn btn--exit">
+              <div class="btn__inner">
+                <span>Ya, Keluar</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <audio id="js_sound-lock" src="./assets/music/click.wav"></audio>
+    
   </div>
 </body>
 </html>
