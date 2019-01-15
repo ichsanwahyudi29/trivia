@@ -80,6 +80,9 @@
     #{$btn}{
       &__inner{
         background-image: url(../img/btn-exit.svg);
+        span{
+          text-transform: capitalize;
+        }
       }
     }
   }

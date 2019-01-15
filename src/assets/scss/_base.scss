@@ -1,0 +1,44 @@
+.countdown{
+  $countdown:&;
+  &__num{
+    font-size: 24px;
+    font-weight: 900;
+    display: block;
+    position: relative;
+    top: 3px;
+    transition: all ease .38s;
+    will-change: transform;
+    transform: scale(1);
+    z-index: 1;
+  }
+  &__progress{
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: rotate(90deg);
+    width: 56px;
+    height: 56px;
+    &-gradient{
+      cx: 28px;
+      cy: 28px;
+      r: 28px;
+    }
+    &-bar{
+      cx: 28px;
+      cy: 28px;
+      r: 26px;
+      fill: $secondaryColor;
+      stroke: $secondaryColor;
+      stroke-width: 4px;
+      stroke-dasharray: 500;
+      stroke-dashoffset: 500;
+    }
+  }
+  &--animate{
+    #{$countdown}{
+      &__num{
+        transform: scale(1.2)
+      }
+    }
+  }
+}

@@ -28,6 +28,10 @@
     height: 56px;
     background-color: $secondaryColor;
     border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     #times-up{
       width: 10rem;
       height: 10rem;
@@ -407,15 +411,18 @@
   &__score{
     position: absolute;
     left: 50%;
-    transform: translate(-50%, 100px);
+    transform: translate(-50%, 32px);
+    &-blur{
+      -webkit-backdrop-filter: blur(11px);
+      filter: blur(11px);
+    }
     &-inner{
       min-width: 20px;
       padding: 7px 16px;
       border-radius: 27.5px;
       display: flex;
       align-items: flex-end;
-      -webkit-backdrop-filter: blur(11px);
-      backdrop-filter: blur(11px);
+      
       box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
       background-color: rgba(255, 255, 255, 0.25);
       span{

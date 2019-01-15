@@ -101,7 +101,28 @@ const dataRanking = [
 
 $(document).ready(function() {
   // renderHome();
+  handleTimeQuiz(10);
 });
+
+function handleTimeQuiz(start) {
+  $('.countdown__num').text(start);
+  var bar = 500;
+  var timeOut = setInterval(() => {
+    $('.countdown__num').text(start--);
+    $('.countdown').addClass('countdown--animate');
+    bar = bar - 10;
+    $('.countdown__progress-bar');
+    $('.countdown__progress-bar').css({
+      'stroke-dashoffset': bar,
+    });
+    setTimeout(() => {
+      $('.countdown').removeClass('countdown--animate');
+    }, 500);
+    if (start < 0) {
+      clearInterval(timeOut);
+    }
+  }, 1000);
+}
 
 window.renderLeaderboard = renderLeaderboard;
 window.renderHome = renderHome;
@@ -434,6 +455,8 @@ $(function handleDialog() {
 window.handleOpenDialog = handleOpenDialog;
 window.handleCloseDialog = handleCloseDialog;
 
+let audioScore = document.getElementById('js_sound-score');
+
 $(function globalCloseDialog() {
   $('body').on({
     click: function(e) {
@@ -442,6 +465,11 @@ $(function globalCloseDialog() {
       }
     },
   });
+
+  // countUp(180);
+
+  // audioScore.play();
+  // audioScore.loop = true
 });
 
 function handleOpenDialog() {
@@ -491,4 +519,32 @@ function focusAnswer(type) {
   }
 
   $('.answer-btn').removeClass('answer-btn--active');
+}
+
+// Complete
+
+function countUp(count) {
+  // $display = $('#js_result-score');
+
+  // setInterval(function() {
+
+  // }, 24);
+  var div_by = 100,
+    speed = Math.round(count / div_by),
+    $display = $('#js_result-score'),
+    run_count = 1,
+    int_speed = 24;
+
+  var int = setInterval(function() {
+    if (run_count < div_by) {
+      $display.text(speed * run_count);
+      run_count++;
+    } else if (parseInt($display.text()) < count) {
+      var curr_count = parseInt($display.text()) + 1;
+      $display.text(curr_count);
+    } else {
+      audioScore.pause();
+      clearInterval(int);
+    }
+  }, int_speed);
 }

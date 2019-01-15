@@ -9,11 +9,10 @@
   left: 0;
   right: 0;
   background-color: rgba(6,6,6,.8);
-  transition: opacity ease .2s;
+  transition: all ease .3s;
   &--show{
     opacity: 1;
     z-index: 10;
-    transition: opacity ease .2s;
   }
 }
 
@@ -34,6 +33,7 @@
   &--show{
     opacity: 1;
     z-index: 10;
+    transition: opacity .1s ease-in;
     #{$dialog}{
       &__container{
         transition: transform ease .35s;
@@ -53,6 +53,9 @@
         text-align: center;
         background-image: linear-gradient(to bottom, #314962,#0B3F86,#0B3F86);
       }
+      &__desc{
+        margin: 0 0 24px;
+      }
     }
   }
   &--reward{
@@ -60,6 +63,9 @@
       &__inner{
         text-align: center;
         background-image: linear-gradient(to bottom, #2D455C,#0C2E5F,#0A367A);
+      }
+      &__desc{
+        margin: 0 0 16px;
       }
     }
   }
@@ -75,9 +81,10 @@
     position: relative;
   }
   &__inner{
-    padding: 24px;
+    padding: 24px 16px;
     &--star{
       padding-top: 36px;
+      padding-bottom: 16px;
       position: relative;
       background-image: linear-gradient(to bottom, #012747, #02162C);
     }
@@ -139,7 +146,6 @@
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     text-align: center;
     line-height: 1.43;
-    margin: 0 0 24px;
   }
   &__star{
     position: absolute;
@@ -184,6 +190,21 @@
     
     &::after{
       right: 40px;
+    }
+  }
+
+  .coupon{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: -20px;
+    &__list{
+      max-width: 50%;
+      img{
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
     }
   }
 }
