@@ -263,6 +263,7 @@
 
         &--disabled{
           box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.7);
+          pointer-events: none;
           &::before{
             content: '';
             position: absolute;
@@ -277,6 +278,7 @@
 
         &--active{
           box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.7);
+          pointer-events: none;
           .answer-btn{
             &__inner{
               padding: 2px;

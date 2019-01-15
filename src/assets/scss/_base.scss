@@ -15,7 +15,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    transform: rotate(90deg);
+    transform: rotate(-90deg);
     width: 56px;
     height: 56px;
     &-gradient{
@@ -26,12 +26,13 @@
     &-bar{
       cx: 28px;
       cy: 28px;
-      r: 26px;
+      r: 24px;
       fill: $secondaryColor;
       stroke: $secondaryColor;
-      stroke-width: 4px;
+      stroke-width: 9px;
       stroke-dasharray: 500;
       stroke-dashoffset: 500;
+      transition: stroke-dashoffset .4s;
     }
   }
   &--animate{

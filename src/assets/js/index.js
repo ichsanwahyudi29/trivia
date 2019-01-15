@@ -99,31 +99,6 @@ const dataRanking = [
   },
 ];
 
-$(document).ready(function() {
-  // renderHome();
-  handleTimeQuiz(10);
-});
-
-function handleTimeQuiz(start) {
-  $('.countdown__num').text(start);
-  var bar = 500;
-  var timeOut = setInterval(() => {
-    $('.countdown__num').text(start--);
-    $('.countdown').addClass('countdown--animate');
-    bar = bar - 10;
-    $('.countdown__progress-bar');
-    $('.countdown__progress-bar').css({
-      'stroke-dashoffset': bar,
-    });
-    setTimeout(() => {
-      $('.countdown').removeClass('countdown--animate');
-    }, 500);
-    if (start < 0) {
-      clearInterval(timeOut);
-    }
-  }, 1000);
-}
-
 window.renderLeaderboard = renderLeaderboard;
 window.renderHome = renderHome;
 window.onBack = onBack;
@@ -489,21 +464,54 @@ function handleCloseDialog() {
 window.handleBtnAnswerImg = handleBtnAnswerImg;
 window.handleBtnAnswerTxt = handleBtnAnswerTxt;
 
+$(document).ready(function() {
+  initQuiz();
+});
+
+function initQuiz() {
+  handleTimeQuiz(5);
+}
+
+function handleTimeQuiz(start) {
+  $('.countdown__num').text(start);
+  var bar = 500;
+  var timeOut = setInterval(() => {
+    $('.countdown__num').text(start--);
+    $('.countdown').addClass('countdown--animate');
+    bar = bar - 26;
+    $('.countdown__progress-bar');
+    $('.countdown__progress-bar').css({
+      'stroke-dashoffset': bar,
+    });
+    setTimeout(() => {
+      $('.countdown').removeClass('countdown--animate');
+    }, 500);
+    if (start < 0) {
+      clearInterval(timeOut);
+      handleCheckAnswer();
+    }
+  }, 1000);
+}
+
+function handleCheckAnswer() {
+  let $answer = $('.answer-btn--active');
+  console.log($answer)
+  $answer.removeClass('answer-btn--active').addClass('answer-btn--correct');
+  // soundsCorrectAnswer();
+}
+
 function handleBtnAnswerTxt(e) {
   focusAnswer('text');
   $(e).addClass('answer-btn--active');
-  let audio = document.getElementById('js_sound-lock');
-  audio.play();
-  setTimeout(() => {
-    audio.pause();
-    audio.currentTime = 0;
-  }, 800);
 }
 
 function handleBtnAnswerImg(e) {
   focusAnswer('img');
   $(e).removeClass('answer-btn--disabled');
   $(e).addClass('answer-btn--active');
+}
+
+function soundsCorrectAnswer() {
   let audio = document.getElementById('js_sound-lock');
   audio.play();
   setTimeout(() => {
@@ -514,7 +522,6 @@ function handleBtnAnswerImg(e) {
 
 function focusAnswer(type) {
   if (type == 'img') {
-    $('.answer-btn').removeClass('answer-btn--disabled');
     $('.answer-btn').addClass('answer-btn--disabled');
   }
 
