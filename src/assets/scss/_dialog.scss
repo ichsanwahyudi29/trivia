@@ -40,10 +40,51 @@
       }
     }
   }
-  &--close{
+  &--custom{
     #{$dialog}{
-      &__container{
-        transition: transform ease .3s;
+      &__content{
+        &::before,
+        &::after{
+          content: '';
+          @include backgroundImg;
+          width: 100%;
+          position: absolute;
+          left: 0;
+          right: 0;
+          margin: 0 auto;
+          z-index: 2;
+        }
+        &::before{
+          background-size: contain;
+          height: 45px;
+          top: -32px;
+        }
+        &:after{
+          height: 66px;
+          bottom: -58px;
+        }
+      }
+    }
+  }
+  &--home{
+    #{$dialog}{
+      &__inner{
+        padding-top: 32px;
+        position: relative;
+        background-image: linear-gradient(to bottom, #012747, #02162C);
+        text-align: center;
+      }
+      &__desc{
+        max-width: 200px;
+        margin: 0 auto 8px;
+      }
+      &__content{
+        &::before{
+          background-image: url(../img/shield-top.png);
+        }
+        &:after{
+          background-image: url(../img/shield-bottom.png);
+        }
       }
     }
   }
@@ -56,12 +97,19 @@
       &__desc{
         margin: 0 0 24px;
       }
+       &__content{
+        &::before{
+          background-image: url(../img/shield-top_back.svg);
+        }
+        &:after{
+          background-image: url(../img/shield-bottom_back.svg);
+        }
+      }
     }
   }
   &--reward{
     #{$dialog}{
       &__inner{
-        text-align: center;
         background-image: linear-gradient(to bottom, #2D455C,#0C2E5F,#0A367A);
       }
       &__desc{
@@ -82,12 +130,6 @@
   }
   &__inner{
     padding: 24px 16px;
-    &--star{
-      padding-top: 36px;
-      padding-bottom: 16px;
-      position: relative;
-      background-image: linear-gradient(to bottom, #012747, #02162C);
-    }
   }
   &__close{
     width: 16px;
@@ -144,8 +186,8 @@
     font-size: $f14;
     font-weight: 900;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    text-align: center;
     line-height: 1.43;
+    margin: 0;
   }
   &__star{
     position: absolute;
@@ -197,7 +239,9 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: -20px;
+    margin-bottom: -30px;
+    position: relative;
+    z-index: 3;;
     &__list{
       max-width: 50%;
       img{

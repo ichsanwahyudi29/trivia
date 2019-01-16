@@ -171,7 +171,7 @@ function renderHome() {
               <div class="landing-page__title-spark"></div>
             </div>
             <p class="landing-page__desc">Kuis akan segera dimulai.</p>
-            <button onclick="renderStartQuiz()" class="btn btn--primary">
+            <button onclick="startQuiz()" class="btn btn--primary">
               <div class="btn__inner">
                 <span>Mulai Main</span>
               </div>
@@ -186,7 +186,7 @@ function renderHome() {
       </div>
 
       <div class="overlay"></div>
-      <div class="dialog">
+      <div class="dialog dialog--custom dialog--home">
         <div class="dialog__container">
           <div onclick="handleCloseDialog()" class="dialog__close"></div>
           <div class="dialog__star">
@@ -198,22 +198,40 @@ function renderHome() {
               <div class="dialog__star-line__inner"></div>
             </div>
           </div>
-          <img class="dialog__shield-top" src="./assets/img/shield-top.png" alt="" srcset="">
-          <img class="dialog__shield-bottom" src="./assets/img/shield-bottom.png" alt="" srcset="">
           <div class="dialog__content">
-            <div class="dialog__inner dialog__inner--star">       
+            <div class="dialog__inner">       
               <p class="dialog__desc">Dapatkan kesempatan menangkan kupon cashback sampai 60%!</p>
+              <div class="coupon">
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <audio src="./assets/music/bg.mp3" autoplay="true"></audio>
+      <audio id="js_sound-home" src="../assets/music/bg.ext"></audio>
 
     </div>
   `;
 
   renderPage(html);
+  soundsHome();
+}
+
+function soundsHome() {
+  let audioHome = document.getElementById('js_sound-home');
+  audioHome.play();
 }
 
 // Leaderboard
@@ -446,21 +464,43 @@ $(function handleResetSearchRanking() {
   });
 });
 
-// General
-
-let audioScore = document.getElementById('js_sound-score');
-
 // Quiz
 
+window.startQuiz = startQuiz;
+function startQuiz() {
+  renderStartQuiz(
+    'Bantu misi Captain Marvel dengan jawab 5 pertanyaan berikut ini'
+  );
+}
+
 window.renderStartQuiz = renderStartQuiz;
-function renderStartQuiz() {
+function renderStartQuiz(text) {
   const html = `
   <div class="quiz">
     <div class="quiz__wrapper">
       <div class="quiz__start start">
-        <div class="start__txt">Bantu misi Captain Marvel dengan jawab 5 pertanyaan berikut ini</div>
+        <div class="start__txt">${text}</div>
         <div class="start__timer countdown">
-          <h1 class="start__timer-num countdown__num">3</h1>
+          <h1 class="start__timer-num countdown__num"></h1>
+        </div>
+      </div>
+    </div>
+    <div class="overlay"></div>
+    <div class="dialog dialog--custom dialog--back">
+      <div class="dialog__container">
+        <div class="dialog__close" onclick="handleCloseDialog()"></div>
+        <img class="dialog__shield-top" src="./assets/img/shield-top_back.svg" alt="" srcset="">
+        <img class="dialog__shield-bottom" src="./assets/img/shield-bottom_back.svg" alt="" srcset="">
+        <div class="dialog__content">
+          <div class="dialog__inner">
+            <h3 class="dialog__title">Kembali ke Home Captain Marvel Quiz?</h3>
+            <p class="dialog__desc">Skor akan hangus dan Anda tidak dapat melanjutkan kuis hari ini apabila telah keluar.</p>
+            <button class="btn btn--exit">
+              <div class="btn__inner">
+                <span>Ya, Keluar</span>
+              </div>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -472,6 +512,7 @@ function renderStartQuiz() {
 }
 
 function handleTimeStart(time) {
+  $('.countdown__num').text(time);
   let timeStart = setInterval(() => {
     $('.countdown__num').text(time--);
     $('.countdown').addClass('countdown--animate');
@@ -528,7 +569,7 @@ function initQuiz() {
         <div class="quiz__answer-btn">
           <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
             <div class="answer-btn__inner">
-              <div class="answer-btn__text">
+              <div class="answer-btn__val">
                 <span>Ichsan Wahyudi</span>
               </div>
             </div>
@@ -537,7 +578,7 @@ function initQuiz() {
         <div class="quiz__answer-btn">
           <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
             <div class="answer-btn__inner">
-              <div class="answer-btn__text">
+              <div class="answer-btn__val">
                 <span>Ichsan Wahyudi</span>
               </div>
             </div>
@@ -546,7 +587,7 @@ function initQuiz() {
         <div class="quiz__answer-btn">
           <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
             <div class="answer-btn__inner">
-              <div class="answer-btn__text">
+              <div class="answer-btn__val">
                 <span>Ichsan Wahyudi</span>
               </div>
             </div>
@@ -555,7 +596,7 @@ function initQuiz() {
         <div class="quiz__answer-btn">
           <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
             <div class="answer-btn__inner">
-              <div class="answer-btn__text">
+              <div class="answer-btn__val">
                 <span>Ichsan Wahyudi</span>
               </div>
             </div>
@@ -603,6 +644,7 @@ function handleCheckAnswer() {
   // soundsCorrectAnswer();
   setTimeout(() => {
     renderComplete();
+    // renderStartQuiz('Siap jawab pertanyaan kedua');
   }, 1000);
 }
 
@@ -684,8 +726,6 @@ function renderComplete() {
             <div class="dialog__star-line__inner"></div>
           </div>
         </div>
-        <img class="dialog__shield-top" src="./assets/img/shield-top_reward.svg" alt="" srcset="">
-        <img class="dialog__shield-bottom" src="./assets/img/shield-bottom_reward.svg" alt="" srcset="">
         <div class="dialog__content">
           <div class="dialog__inner dialog__inner--star">
             <p class="dialog__desc">Selamat!<br>
@@ -715,7 +755,7 @@ function renderComplete() {
   `;
 
   renderPage(html);
-  countUp(2000)
+  countUp(2000);
 }
 
 function countUp(count) {
