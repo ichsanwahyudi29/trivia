@@ -12,7 +12,17 @@
   {
     "id": "2",
     "type": "text",
-    "quiz": "Siapakah pemeran utama pada film Kuch Kuch Hota Hai?",
+    "quiz": "Siapakah pemeran utama pada film Kuch Kuch Hota Hai part 2?",
+    "correct": "",
+    "answer1": "Ichsan Wahyudi",
+    "answer2": "Fajar M",
+    "answer3": "Leonardy",
+    "answer4": "Irwanto"
+  },
+  {
+    "id": "3",
+    "type": "text",
+    "quiz": "Siapakah pemeran utama pada film Kuch Kuch Hota Hai part 3?",
     "answer1": "Ichsan Wahyudi",
     "answer2": "Fajar M",
     "answer3": "Leonardy",
