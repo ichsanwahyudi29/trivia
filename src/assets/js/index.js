@@ -136,16 +136,29 @@ function handleCloseDialog() {
 }
 
 function renderPage(html) {
-  $('#body').empty();
-  $('#body').append(html);
+  $('body').empty();
+  $('body').append(html);
+}
+
+function renderWrapper(html) {
+  $('#wrapper').empty();
+  $('#wrapper').append(html);
 }
 
 // Home
+function initHome() {
+  $('body').prepend(sound);
+  $('body').prepend(wrapper);
+}
 
 window.renderHome = renderHome;
 function renderHome() {
-  // <p class="landing-page__desc">Kuis akan dimulai pada 12.00 - 13.00</p>;
-
+  const wrapper = `
+    <div id="wrapper"></div>
+  `;
+  const sound = `
+    <audio id="js_sound-home" src="./assets/music/opening.mp3"></audio>
+  `;
   const html = `
     <div class="landing-page">
       <div class="landing-page__wrapper">
@@ -170,7 +183,7 @@ function renderHome() {
               <div class="landing-page__title-spark"></div>
             </div>
             <p class="landing-page__desc">Kuis akan segera dimulai.</p>
-            <button onclick="startQuiz()" class="btn btn--primary">
+            <button onclick="renderStartQuiz()" class="btn btn--primary">
               <div class="btn__inner">
                 <span>Mulai Main</span>
               </div>
@@ -222,11 +235,14 @@ function renderHome() {
     </div>
   `;
 
-  renderPage(html);
-  soundsHome();
+  // renderPage(html);
+  $('body').prepend(sound);
+  $('body').prepend(wrapper);
+  renderWrapper(html);
+  soundHome();
 }
 
-function soundsHome() {
+function soundHome() {
   let audioHome = document.getElementById('js_sound-home');
   audioHome.play();
   audioHome.loop = true;
@@ -262,7 +278,7 @@ function renderLeaderboard(page = 'home') {
     </div>
   `;
 
-  renderPage(html);
+  renderWrapper(html);
 
   handleLoaderResult();
   topRanking(dataRanking);
@@ -464,26 +480,11 @@ $(function handleResetSearchRanking() {
 
 // Quiz
 
-window.startQuiz = startQuiz;
-function startQuiz() {
-  renderStartQuiz(
-    'Bantu misi Captain Marvel dengan jawab 5 pertanyaan berikut ini'
-  );
-}
-
 window.renderStartQuiz = renderStartQuiz;
-function renderStartQuiz(text) {
+function renderStartQuiz() {
   const html = `
   <div class="quiz">
     <div class="quiz__wrapper">
-      <div class="quiz__start start">
-        <div class="start__txt">${text}</div>
-        <div class="start__timer countdown">
-          <div class="start__timer-moon countdown__illus"></div>
-          <div class="start__timer-spark"></div>
-          <h1 class="start__timer-num countdown__num"></h1>
-        </div>
-      </div>
     </div>
     <div class="overlay"></div>
     <div class="dialog dialog--custom dialog--back">
@@ -502,14 +503,35 @@ function renderStartQuiz(text) {
         </div>
       </div>
     </div>
+    <audio id="js_sound-quiz" src="./assets/music/quiz.mp3"></audio>
+    <audio id="js_sound-start-quiz" src="./assets/music/start-quiz.mp3"></audio>
   </div>
   `;
 
   renderPage(html);
-  handleTimeStart(3);
+  soundStartQuiz();
+  getReady('Bantu misi Captain Marvel dengan jawab 5 pertanyaan berikut ini');
 }
 
-function handleTimeStart(time) {
+function getReady(text) {
+  const countDown = `
+    <div class="quiz__start start">
+      <div class="start__txt">${text}</div>
+      <div class="start__timer countdown">
+        <div class="start__timer-moon countdown__illus"></div>
+        <div class="start__timer-spark"></div>
+        <h1 class="start__timer-num countdown__num"></h1>
+      </div>
+      <audio id="js_sound-countdown" src="./assets/music/countdown.mp3"></audio>
+    </div>
+  `;
+
+  $('.quiz__wrapper').prepend(countDown);
+  soundCountdown();
+  handleTimeStart(true, 3);
+}
+
+function handleTimeStart(first, time) {
   $('.countdown__num').text(time);
   let timeStart = setInterval(() => {
     $('.countdown__num').text(time--);
@@ -521,15 +543,35 @@ function handleTimeStart(time) {
       clearInterval(timeStart);
       renderQuiz();
     }
-  }, 1000);
+  }, 2000);
+}
+
+function soundStartQuiz() {
+  let audioStartQuiz = document.getElementById('js_sound-start-quiz');
+  audioStartQuiz.play();
+}
+
+function soundCountdown() {
+  let audioCountdown = document.getElementById('js_sound-countdown');
+  audioCountdown.loop = true;
+  setTimeout(() => {
+    audioCountdown.play();
+  }, 1500);
 }
 
 window.renderQuiz = renderQuiz;
-function renderQuiz() {
+function renderQuiz(first) {
+  // if (!first) {
+    renderMenuQuiz();
+    initQuiz()
+  // }
+}
+
+function renderMenuQuiz() {
   const menu = `
     <div class="quiz__menu menu">
       <span class="menu__action menu__action--back" onclick="handleOpenDialog()"></span>
-      <div id="js_quiz-time" class="countdown quiz__time">
+      <div class="countdown quiz__time" style="opacity: 0">
         <span class="countdown__num"></span>
         <svg class="countdown__progress">
           <defs>
@@ -548,9 +590,11 @@ function renderQuiz() {
     </div>
   `;
 
-  $('.quiz__wrapper').empty();
+  $('.quiz__start').remove();
   $('.quiz__wrapper').append(menu);
-  initQuiz();
+  soundQuiz();
+  handleTimeQuiz(7);
+  // initQuiz();
 }
 
 function initQuiz() {
@@ -602,6 +646,10 @@ function initQuiz() {
         </div>
       </div>
 
+      <audio id="js_sound-choose" src="./assets/music/choose-answer.mp3"></audio>
+      <audio id="js_sound-correct" src="./assets/music/correct-answer.mp3"></audio>
+      <audio id="js_sound-wrong" src="./assets/music/wrong-answer.mp3"></audio>
+
     </div>
   `;
 
@@ -611,7 +659,6 @@ function initQuiz() {
 
   $('.quiz__wrapper').append(questions);
   $('.quiz__content').append(numberQuiz);
-  handleTimeQuiz(7);
 }
 
 function handleTimeQuiz(start) {
@@ -626,6 +673,9 @@ function handleTimeQuiz(start) {
     if (start < 0) {
       clearInterval(timeOut);
       handleCheckAnswer();
+      // setTimeout(() => {
+      //   nextQuestions();
+      // }, 1000);
     }
   }, 1000);
 
@@ -643,15 +693,23 @@ function handleTimeQuiz(start) {
 function handleCheckAnswer() {
   let $answer = $('.answer-btn--active');
   // console.log($answer);
-  $answer.removeClass('answer-btn--active').addClass('answer-btn--correct');
-  // soundsCorrectAnswer();
+  $answer.removeClass('answer-btn--active').addClass('answer-btn--wrong');
+  // soundCorrectAnswer();
+  soundWrongAnswer();
+
   setTimeout(() => {
-    $('.quiz__menu').addClass('quiz__menu--hide');
+    nextQuestions();
+  }, 1000);
+}
+
+function nextQuestions() {
+  setTimeout(() => {
+    // $('.quiz__menu').addClass('quiz__menu--hide');
     $('.quiz__content').addClass('quiz__content--hide');
   }, 1000);
   setTimeout(() => {
     // renderComplete();
-    renderStartQuiz('Siap jawab pertanyaan kedua');
+    getReady('Siap jawab pertanyaan kedua');
   }, 1500);
 }
 
@@ -659,6 +717,7 @@ window.handleBtnAnswerTxt = handleBtnAnswerTxt;
 function handleBtnAnswerTxt(e) {
   focusAnswer('text');
   $(e).addClass('answer-btn--active');
+  soundChooseAnswer();
 }
 
 window.handleBtnAnswerImg = handleBtnAnswerImg;
@@ -668,13 +727,25 @@ function handleBtnAnswerImg(e) {
   $(e).addClass('answer-btn--active');
 }
 
-function soundsCorrectAnswer() {
-  let audio = document.getElementById('js_sound-lock');
-  audio.play();
-  setTimeout(() => {
-    audio.pause();
-    audio.currentTime = 0;
-  }, 800);
+function soundQuiz() {
+  let audioQuiz = document.getElementById('js_sound-quiz');
+  audioQuiz.play();
+  audioQuiz.loop = true;
+}
+
+function soundChooseAnswer() {
+  let audioChooseAnswer = document.getElementById('js_sound-choose');
+  audioChooseAnswer.play();
+}
+
+function soundCorrectAnswer() {
+  let audioCorrectAnswer = document.getElementById('js_sound-correct');
+  audioCorrectAnswer.play();
+}
+
+function soundWrongAnswer() {
+  let audioWrongAnswer = document.getElementById('js_sound-wrong');
+  audioWrongAnswer.play();
 }
 
 function focusAnswer(type) {
@@ -759,14 +830,14 @@ function renderComplete() {
     <audio id="js_sound-score" src="./assets/music/score.mp3"></audio>
 
     <div class="ads">
-      <img class="ads__image" src="./assets/img/thor.jpg" alt=""/>
+      <img class="ads__image" src="./assets/img/ads1.jpg" alt=""/>
     </div>
 
   </div>
   `;
 
   renderPage(html);
-  soundsScore(true);
+  soundScore(true);
   countUp(1500);
 }
 
@@ -775,7 +846,7 @@ function renderAds() {
   $('.ads').addClass('ads--show');
 }
 
-function soundsScore(play) {
+function soundScore(play) {
   let audioScore = document.getElementById('js_sound-score');
   if (play) {
     audioScore.play();
@@ -801,7 +872,7 @@ function countUp(count) {
       $display.text(curr_count);
     } else {
       clearInterval(int);
-      soundsScore(false);
+      soundScore(false);
     }
   }, int_speed);
 }

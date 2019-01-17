@@ -44,15 +44,7 @@
     right: 0;
     margin: 0 auto;
     padding: 0 15px 44px;
-    animation: showMenu .2s ease;
-    @include keyframes(showMenu){
-      0%{
-        opacity: 0;
-      }
-      100%{
-        opacity: 1;
-      }
-    }
+    animation: fadeIn .2s ease;
     .start{
       &__txt{
         text-shadow: 0 0 8px #000000;
@@ -64,15 +56,15 @@
       }
       &__timer{
         position: relative;
-        top: 20px;
         text-align: center;
+        margin-top: 40px;
         &-moon{
           @include backgroundImg;
           background-image: url(../img/oval.svg);
           position: absolute;
-          width: 120px;
-          height: 60px;
-          top: -12px;
+          width: 150px;
+          height: 75px;
+          top: -18px;
           left: 0;
           right: 0;
           margin: 0 auto;
@@ -88,21 +80,21 @@
           display: block;
           width: 100%;
           height: 60px;
-          transform: scale(.7);
+          transform: scale(.9);
           @include backgroundImg;
           background-image: url(../img/spark-countdown.png); 
-          animation: zoomIn .95s linear 1s infinite normal forwards;
+          animation: zoomIn 2.1s ease 1.9s infinite normal forwards;
           @include keyframes(zoomIn){
             0%{
-              transform: scale(.7);
+              transform: scale(.9);
               opacity: 1;
             }
             50%{
               transform: scale(1);
-              opacity: .78;
+              opacity: .9;
             }
             100%{
-              transform: scale(.7);
+              transform: scale(.9);
               opacity: 1;
             }
           }
@@ -134,6 +126,7 @@
     animation: fadeInSlide .4s ease forwards;
     &--hide{
       animation: fadeOutSlide .4s ease forwards;
+      z-index: -1;
     }
     @include breakpoint(sm){
       bottom: 120px;
