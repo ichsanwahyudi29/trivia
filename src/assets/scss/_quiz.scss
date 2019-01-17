@@ -14,14 +14,9 @@
     position: relative;
     padding-left: 0;
     padding-right: 0;
-    animation: showMenu .4s ease;
-    @include keyframes(showMenu){
-      0%{
-        opacity: 0;
-      }
-      100%{
-        opacity: 1;
-      }
+    animation: fadeIn .4s ease forwards;
+    &--hide{
+      animation: fadeOut .4s ease forwards;
     }
     .menu{
       &__action{
@@ -49,7 +44,7 @@
     right: 0;
     margin: 0 auto;
     padding: 0 15px 44px;
-    animation: showMenu .4s ease;
+    animation: showMenu .2s ease;
     @include keyframes(showMenu){
       0%{
         opacity: 0;
@@ -68,7 +63,53 @@
         text-align: center;
       }
       &__timer{
+        position: relative;
+        top: 20px;
+        text-align: center;
+        &-moon{
+          @include backgroundImg;
+          background-image: url(../img/oval.svg);
+          position: absolute;
+          width: 120px;
+          height: 60px;
+          top: -12px;
+          left: 0;
+          right: 0;
+          margin: 0 auto;
+          transition: all ease .38s;
+        }
+        &-spark{
+          position: absolute;
+          top: 35px;
+          left: 0;
+          right: 0;
+          margin: 0 auto;
+          z-index: 1;
+          display: block;
+          width: 100%;
+          height: 60px;
+          transform: scale(.7);
+          @include backgroundImg;
+          background-image: url(../img/spark-countdown.png); 
+          animation: zoomIn .95s linear 1s infinite normal forwards;
+          @include keyframes(zoomIn){
+            0%{
+              transform: scale(.7);
+              opacity: 1;
+            }
+            50%{
+              transform: scale(1);
+              opacity: .78;
+            }
+            100%{
+              transform: scale(.7);
+              opacity: 1;
+            }
+          }
+        }
         &-num{
+          display: inline-block;
+          position: relative;
           text-align: center;
           background-image: radial-gradient(circle at 50% 0, #edb836, #fdf8ef 79%, #cc7f30);
           -webkit-background-clip: text;
@@ -76,7 +117,7 @@
           -webkit-text-fill-color: transparent;
           font-size: 116px;
           font-weight: 900;
-          margin: 20px 0 0;
+          margin: 0;
         }
       }
     }
@@ -90,19 +131,12 @@
     margin: 0 auto;
     padding: 0 24px;
     max-width: 560px;
-    animation: showContent .4s ease;
+    animation: fadeInSlide .4s ease forwards;
+    &--hide{
+      animation: fadeOutSlide .4s ease forwards;
+    }
     @include breakpoint(sm){
       bottom: 120px;
-    }
-    @include keyframes(showContent){
-      0%{
-        opacity: 0;
-        transform: translateY(10px)
-      }
-      100%{
-        opacity: 1;
-        transform: translateY(0px)
-      }
     }
   }
   &__question{

@@ -136,8 +136,8 @@ function handleCloseDialog() {
 }
 
 function renderPage(html) {
-  $('body').empty();
-  $('body').append(html);
+  $('#body').empty();
+  $('#body').append(html);
 }
 
 // Home
@@ -219,8 +219,6 @@ function renderHome() {
         </div>
       </div>
 
-      <audio id="js_sound-home" src="../assets/music/bg.mp3"></audio>
-
     </div>
   `;
 
@@ -231,6 +229,7 @@ function renderHome() {
 function soundsHome() {
   let audioHome = document.getElementById('js_sound-home');
   audioHome.play();
+  audioHome.loop = true;
 }
 
 // Leaderboard
@@ -480,6 +479,8 @@ function renderStartQuiz(text) {
       <div class="quiz__start start">
         <div class="start__txt">${text}</div>
         <div class="start__timer countdown">
+          <div class="start__timer-moon countdown__illus"></div>
+          <div class="start__timer-spark"></div>
           <h1 class="start__timer-num countdown__num"></h1>
         </div>
       </div>
@@ -492,7 +493,7 @@ function renderStartQuiz(text) {
           <div class="dialog__inner">
             <h3 class="dialog__title">Kembali ke Home Captain Marvel Quiz?</h3>
             <p class="dialog__desc">Skor akan hangus dan Anda tidak dapat melanjutkan kuis hari ini apabila telah keluar.</p>
-            <button class="btn btn--exit">
+            <button class="btn btn--exit" onclick="renderHome()">
               <div class="btn__inner">
                 <span>Ya, Keluar</span>
               </div>
@@ -610,7 +611,7 @@ function initQuiz() {
 
   $('.quiz__wrapper').append(questions);
   $('.quiz__content').append(numberQuiz);
-  handleTimeQuiz(5);
+  handleTimeQuiz(7);
 }
 
 function handleTimeQuiz(start) {
@@ -619,11 +620,6 @@ function handleTimeQuiz(start) {
   var timeOut = setInterval(() => {
     $('.countdown__num').text(start--);
     $('.countdown').addClass('countdown--animate');
-    bar = bar - 26;
-    $('.countdown__progress-bar');
-    $('.countdown__progress-bar').css({
-      'stroke-dashoffset': bar,
-    });
     setTimeout(() => {
       $('.countdown').removeClass('countdown--animate');
     }, 500);
@@ -632,6 +628,16 @@ function handleTimeQuiz(start) {
       handleCheckAnswer();
     }
   }, 1000);
+
+  var barCount = setInterval(() => {
+    $('.countdown__progress-bar');
+    $('.countdown__progress-bar').css({
+      'stroke-dashoffset': bar--,
+    });
+    if (start < 0) {
+      clearInterval(barCount);
+    }
+  }, 50);
 }
 
 function handleCheckAnswer() {
@@ -640,9 +646,13 @@ function handleCheckAnswer() {
   $answer.removeClass('answer-btn--active').addClass('answer-btn--correct');
   // soundsCorrectAnswer();
   setTimeout(() => {
-    renderComplete();
-    // renderStartQuiz('Siap jawab pertanyaan kedua');
+    $('.quiz__menu').addClass('quiz__menu--hide');
+    $('.quiz__content').addClass('quiz__content--hide');
   }, 1000);
+  setTimeout(() => {
+    // renderComplete();
+    renderStartQuiz('Siap jawab pertanyaan kedua');
+  }, 1500);
 }
 
 window.handleBtnAnswerTxt = handleBtnAnswerTxt;
@@ -703,7 +713,7 @@ function renderComplete() {
         </div>
       </div>
       <p class="game-over__desc">Lihat konten berikut untuk dapatkan 2x skor</p>
-      <button class="btn btn--primary">
+      <button class="btn btn--primary" onclick="renderAds()">
         <div class="btn__inner">
           <span>Gandakan Skor</span>
         </div>
@@ -748,28 +758,28 @@ function renderComplete() {
 
     <audio id="js_sound-score" src="./assets/music/score.mp3"></audio>
 
+    <div class="ads">
+      <img class="ads__image" src="./assets/img/thor.jpg" alt=""/>
+    </div>
+
   </div>
   `;
 
   renderPage(html);
   soundsScore(true);
-  countUp(2000);
+  countUp(1500);
 }
 
+window.renderAds = renderAds;
 function renderAds() {
-  const html = `
-    <div class="ads">
-      
-    </div>
-  `;
-
-  $('.game-over').append(html)
+  $('.ads').addClass('ads--show');
 }
 
 function soundsScore(play) {
   let audioScore = document.getElementById('js_sound-score');
   if (play) {
     audioScore.play();
+    audioScore.loop = true;
   } else {
     audioScore.pause();
   }
