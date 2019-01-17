@@ -144,7 +144,6 @@ function renderPage(html) {
 
 window.renderHome = renderHome;
 function renderHome() {
-  // <audio src="./assets/music/bg.mp3" autoplay="true">
   // <p class="landing-page__desc">Kuis akan dimulai pada 12.00 - 13.00</p>;
 
   const html = `
@@ -157,7 +156,7 @@ function renderHome() {
         
         <div class="landing-page__container content">
           <div class="landing-page__menu menu">
-            <span class="menu__action menu__action--back"></span>
+            <a href="" class="menu__action menu__action--back"></a>
             <div class="landing-page__menu-right">
               <span class="menu__action menu__action--leaderboard" onclick="renderLeaderboard()"></span>
               <span class="menu__action menu__action--share"></span>
@@ -220,7 +219,7 @@ function renderHome() {
         </div>
       </div>
 
-      <audio id="js_sound-home" src="../assets/music/bg.ext"></audio>
+      <audio id="js_sound-home" src="../assets/music/bg.mp3"></audio>
 
     </div>
   `;
@@ -489,8 +488,6 @@ function renderStartQuiz(text) {
     <div class="dialog dialog--custom dialog--back">
       <div class="dialog__container">
         <div class="dialog__close" onclick="handleCloseDialog()"></div>
-        <img class="dialog__shield-top" src="./assets/img/shield-top_back.svg" alt="" srcset="">
-        <img class="dialog__shield-bottom" src="./assets/img/shield-bottom_back.svg" alt="" srcset="">
         <div class="dialog__content">
           <div class="dialog__inner">
             <h3 class="dialog__title">Kembali ke Home Captain Marvel Quiz?</h3>
@@ -749,13 +746,33 @@ function renderComplete() {
       </div>
     </div>
 
-    <audio id="js_sound-score" src="./assets/music/score.wav"></audio>
+    <audio id="js_sound-score" src="./assets/music/score.mp3"></audio>
 
   </div>
   `;
 
   renderPage(html);
+  soundsScore(true);
   countUp(2000);
+}
+
+function renderAds() {
+  const html = `
+    <div class="ads">
+      
+    </div>
+  `;
+
+  $('.game-over').append(html)
+}
+
+function soundsScore(play) {
+  let audioScore = document.getElementById('js_sound-score');
+  if (play) {
+    audioScore.play();
+  } else {
+    audioScore.pause();
+  }
 }
 
 function countUp(count) {
@@ -773,8 +790,8 @@ function countUp(count) {
       var curr_count = parseInt($display.text()) + 1;
       $display.text(curr_count);
     } else {
-      // audioScore.pause();
       clearInterval(int);
+      soundsScore(false);
     }
   }, int_speed);
 }

@@ -21,7 +21,6 @@ const webpackConfig = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: isProduction ? '[name].[contenthash].min.js' : '[name].js',
-    publicPath: './'
   },
   module: {
     rules: [
@@ -74,7 +73,7 @@ const webpackConfig = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].ext',
+              name: '[name].mp3',
               outputPath: 'assets/music',
             },
           },
@@ -93,11 +92,6 @@ const webpackConfig = {
       },
     ],
   },
-  // htmlLoader: {
-    // ignoreCustomFragments: [/\{\{.*?}}/],
-  //   root: path.resolve(__dirname, 'assets'),
-  //   attrs: ['img:src', 'audio:src']
-  // }
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
