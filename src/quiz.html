@@ -12,30 +12,18 @@
 
       <div class="quiz__menu menu">
         <span class="menu__action menu__action--back" onclick="handleOpenDialog()"></span>
-        <div class="quiz__time">
-          <!-- <svg id="times-up" width="56" height="56"> -->
-            <!-- <linearGradient id="SVGID_1_" x1="224.92" y1="0" x2="224.92" y2="200" gradientUnits="userSpaceOnUse">
-              <stop offset="0.15" style="stop-color:#E93E3A" />
-              <stop offset="0.25" style="stop-color:#EC008C" />
-              <stop offset="0.40" style="stop-color:#9E1F63" />
-              <stop offset="0.50" style="stop-color:#662D91" />
-              <stop offset="0.60" style="stop-color:#2B3990" />
-              <stop offset="0.80" style="stop-color:#1B75BC" />
-              <stop offset="1" style="stop-color:#00A79D" />
-            </linearGradient>
-            <circle cx="28" cy="28" r="25.5"></circle> -->
-            <!-- <circle id="times-up__bar" cx="28" cy="28" r="25.5" stroke-dasharray="500"></circle> -->
-          <!-- </svg> -->
-          <!-- <svg id="times-up" viewBox="-10 -10 220 220">
-            <g fill="none" stroke-width="9" transform="translate(100,100)">
-              <path d="M 0,-100 A 100,100 0 0,1 86.6,-50" stroke="url(#cl1)" />
-              <path d="M 86.6,-50 A 100,100 0 0,1 86.6,50" stroke="url(#cl2)" />
-              <path d="M 86.6,50 A 100,100 0 0,1 0,100" stroke="url(#cl3)" />
-              <path d="M 0,100 A 100,100 0 0,1 -86.6,50" stroke="url(#cl4)" />
-              <path d="M -86.6,50 A 100,100 0 0,1 -86.6,-50" stroke="url(#cl5)" />
-              <path d="M -86.6,-50 A 100,100 0 0,1 0,-100" stroke="url(#cl6)" />
-            </g>
-          </svg> -->
+        <div id="js_quiz-time" class="countdown quiz__time">
+          <span class="countdown__num"></span>
+          <svg class="countdown__progress">
+            <defs>
+              <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#b21c26" />
+                <stop offset="100%" style="stop-color:#ffdb84" />
+              </linearGradient>
+            </defs>
+            <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
+            <circle class="countdown__progress-bar" />
+          </svg>
         </div>
         <div class="menu__score">
           <span>0</span>
@@ -140,9 +128,12 @@
           <h6 class="quiz__of">1 dari 5 pertanyaan</h6>
       </div>
 
-      <div class="quiz__score">
-        <div class="quiz__score-inner"><span>+14.230</span>Skor</div>
-      </div>
+      <!-- <div class="quiz__score">
+        <div class="quiz__score-inner">
+          <div class="quiz__score-blur"></div>
+          <span>+14.230</span>Skor
+        </div>
+      </div> -->
 
     </div>
 
@@ -165,9 +156,9 @@
         </div>
       </div>
     </div>
-    
+    <audio id="js_sound-countdown" src="./assets/music/countdown.wav"></audio>
     <audio id="js_sound-lock" src="./assets/music/click.wav"></audio>
-    
+
   </div>
 </body>
 </html>

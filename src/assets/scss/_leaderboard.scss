@@ -3,7 +3,6 @@
   @include backgroundImg;
   background-position: top;
   background-image: url(../img/bg-quiz.jpg);
-  // background-image: linear-gradient(to bottom, #022b4f, #011327);
   position: relative;
   &::before{
     content: '';

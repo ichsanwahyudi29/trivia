@@ -73,13 +73,16 @@
   &--exit{
     background: linear-gradient(to right, #cc7f30,#eebb3f, #fcf2df, #cc7f30);
     position: absolute;
-    z-index: 2;
+    z-index: 3;
     left: 0;
     right: 0;
     margin: 0 auto;
     #{$btn}{
       &__inner{
         background-image: url(../img/btn-exit.svg);
+        span{
+          text-transform: capitalize;
+        }
       }
     }
   }

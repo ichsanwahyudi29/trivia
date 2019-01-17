@@ -73,7 +73,7 @@ const webpackConfig = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].ext',
+              name: '[name].mp3',
               outputPath: 'assets/music',
             },
           },

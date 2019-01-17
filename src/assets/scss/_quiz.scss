@@ -14,6 +14,15 @@
     position: relative;
     padding-left: 0;
     padding-right: 0;
+    animation: showMenu .4s ease;
+    @include keyframes(showMenu){
+      0%{
+        opacity: 0;
+      }
+      100%{
+        opacity: 1;
+      }
+    }
     .menu{
       &__action{
         &--back{
@@ -28,36 +37,48 @@
     height: 56px;
     background-color: $secondaryColor;
     border-radius: 50%;
-    #times-up{
-      width: 10rem;
-      height: 10rem;
-        &:nth-child(2) {
-            position: absolute;
-            left: 0;
-            top: 0;
-            transform: rotate(-90deg);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__start{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    padding: 0 15px 44px;
+    animation: showMenu .4s ease;
+    @include keyframes(showMenu){
+      0%{
+        opacity: 0;
+      }
+      100%{
+        opacity: 1;
+      }
+    }
+    .start{
+      &__txt{
+        text-shadow: 0 0 8px #000000;
+        font-size: 16px;
+        font-weight: 900;
+        max-width: 225px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      &__timer{
+        &-num{
+          text-align: center;
+          background-image: radial-gradient(circle at 50% 0, #edb836, #fdf8ef 79%, #cc7f30);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          font-size: 116px;
+          font-weight: 900;
+          margin: 20px 0 0;
         }
-        &:nth-child(2) path {
-            fill: none;
-            stroke-width: 25;
-            stroke-dasharray: 629;
-            stroke: #fff;
-            opacity:.9;
-            animation: load 10s;
-        }
-      // circle{
-      //   stroke-dashoffset: 0;
-      //   transition: stroke-dashoffset 1s linear;
-      //   fill: transparent;
-      //   stroke: $secondaryColor;
-      //   stroke-width: 5px;
-      //   &#times-up{
-      //     &__bar{
-      //       stroke: #FF9F1E;
-      //       stroke-dashoffset: 200px;
-      //     }
-      //   }
-      // }
+      }
     }
   }
   &__content{
@@ -69,8 +90,19 @@
     margin: 0 auto;
     padding: 0 24px;
     max-width: 560px;
+    animation: showContent .4s ease;
     @include breakpoint(sm){
       bottom: 120px;
+    }
+    @include keyframes(showContent){
+      0%{
+        opacity: 0;
+        transform: translateY(10px)
+      }
+      100%{
+        opacity: 1;
+        transform: translateY(0px)
+      }
     }
   }
   &__question{
@@ -131,12 +163,16 @@
       }
 
       .answer-btn{
+        &--off{
+          pointer-events: none;
+        }
+
         &--active{
           .answer-btn{
             &__inner{
               background: linear-gradient(to left, #3176ae,#fdf8ef, #1e82d3);
             }
-            &__text{   
+            &__val{   
               background-color: #093c65;
               color: $whitePrimary;
             }
@@ -146,7 +182,7 @@
         &--correct,
         &--wrong{
           .answer-btn{
-            &__text{   
+            &__val{   
               color: $whitePrimary;
               &::after{
                 content: '';
@@ -167,7 +203,7 @@
             &__inner{
               background: linear-gradient(to left, #caae89,#fdf8ef, #cea165);
             }
-            &__text{   
+            &__val{   
               background-color: #8a7150;
               &::after{
                 background-image: url(../img/answer-correct-txt.svg);
@@ -181,7 +217,7 @@
             &__inner{
               background: linear-gradient(to left, #cd6669,#fdf8ef, #cd6669);
             }
-            &__text{   
+            &__val{   
               background-color: #860408;
               &::after{
                 background-image: url(../img/answer-wrong-txt.svg);
@@ -202,7 +238,7 @@
             box-shadow: 0 0 6px 0 rgba(255, 255, 255, 0.3);
           }
         }
-        &__text{
+        &__val{
           border-radius: 20px;
           height: 100%;
           padding: 0 16px;  
@@ -217,6 +253,8 @@
             white-space: nowrap;
             overflow: hidden;
             max-width: 90%;
+            position: relative;
+            top: 1px;
           }
         }
       }
@@ -259,6 +297,7 @@
 
         &--disabled{
           box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.7);
+          pointer-events: none;
           &::before{
             content: '';
             position: absolute;
@@ -273,6 +312,7 @@
 
         &--active{
           box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.7);
+          pointer-events: none;
           .answer-btn{
             &__inner{
               padding: 2px;
@@ -288,7 +328,7 @@
             &__inner{
               padding: 2px;
             }
-            &__img{
+            &__val{
               display: flex;
               align-items: center;
               justify-content: center;
@@ -319,7 +359,7 @@
             &__inner{
               background: linear-gradient(to bottom, #edb836,#fdf8ef, #cc7f30);
             }
-            &__img{
+            &__val{
               &::before{
                 background-color: rgba(145, 121, 90, 0.5);
               }
@@ -335,7 +375,7 @@
             &__inner{
               background: linear-gradient(to bottom, #cd6669,#fdf8ef, #cd6669);
             }
-            &__img{
+            &__val{
               &::before{
                 background-color: rgba(84, 1, 3, 0.5);
               }
@@ -358,7 +398,7 @@
             height: calc((100vw - 263px) / 2);
           }
         }
-        &__img{
+        &__val{
           height: 100%;
           border-radius: 6px;
           @include backgroundImg;
@@ -407,15 +447,18 @@
   &__score{
     position: absolute;
     left: 50%;
-    transform: translate(-50%, 100px);
+    transform: translate(-50%, 32px);
+    &-blur{
+      -webkit-backdrop-filter: blur(11px);
+      filter: blur(11px);
+    }
     &-inner{
       min-width: 20px;
       padding: 7px 16px;
       border-radius: 27.5px;
       display: flex;
       align-items: flex-end;
-      -webkit-backdrop-filter: blur(11px);
-      backdrop-filter: blur(11px);
+      
       box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
       background-color: rgba(255, 255, 255, 0.25);
       span{

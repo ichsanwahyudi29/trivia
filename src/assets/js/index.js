@@ -2,181 +2,245 @@ const dataRanking = [
   {
     ranking: '1',
     name: 'Ichsan Indra Wahyudi',
-    image: '../assets/img/avenger.jpg',
+    image: '../assets/img/thor.jpg',
     phone: '08743xxx872',
     skor: '999999',
   },
   {
     ranking: '2',
     name: 'Irwanto',
-    image: '../assets/img/avenger.jpg',
+    image: '../assets/img/thor.jpg',
     phone: '08743xxx872',
     skor: '41604',
   },
   {
     ranking: '3',
     name: 'Rendi Christian Rendi Christian',
-    image: '../assets/img/avenger.jpg',
+    image: '../assets/img/thor.jpg',
     phone: '08743xxx872',
     skor: '19904',
   },
   {
     ranking: '4',
     name: 'Fajar',
-    image: '../assets/img/avenger.jpg',
+    image: '../assets/img/thor.jpg',
     phone: '08743xxx872',
     skor: '999999',
   },
   {
     ranking: '5',
     name: 'Ryan aja',
-    image: '../assets/img/avenger.jpg',
+    image: '../assets/img/thor.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
   {
     ranking: '6',
     name: 'Mbo Dharmi',
-    image: '../assets/img/avenger.jpg',
+    image: '../assets/img/thor.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
   {
     ranking: '7',
     name: 'Leonardy oleoleo oleoleo',
-    image: '../assets/img/avenger.jpg',
+    image: '../assets/img/thor.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
   {
     ranking: '8',
     name: 'Shinta Tamara',
-    image: '../assets/img/avenger.jpg',
+    image: '../assets/img/thor.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
   {
     ranking: '9',
     name: 'Zarrah',
-    image: '../assets/img/avenger.jpg',
+    image: '../assets/img/thor.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
   {
     ranking: '10',
     name: 'Adek Tresno',
-    image: '../assets/img/avenger.jpg',
+    image: '../assets/img/thor.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
   {
     ranking: '10000',
     name: 'Erazzzz',
-    image: '../assets/img/avenger.jpg',
+    image: '../assets/img/thor.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
   {
     ranking: '10000',
     name: 'Erazzzz',
-    image: '../assets/img/avenger.jpg',
+    image: '../assets/img/thor.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
   {
     ranking: '10000',
     name: 'Erazzzz',
-    image: '../assets/img/avenger.jpg',
+    image: '../assets/img/thor.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
   {
     ranking: '10000',
     name: 'Erazzzz',
-    image: '../assets/img/avenger.jpg',
+    image: '../assets/img/thor.jpg',
     phone: '08743xxx872',
     skor: '9904',
   },
 ];
 
-$(document).ready(function() {
-  // renderHome();
-});
-
-window.renderLeaderboard = renderLeaderboard;
-window.renderHome = renderHome;
 window.onBack = onBack;
 
 function onBack(page) {
-  console.log(page);
   renderHome();
-  // switch (page) {
-  //   case 'home':
-  //     renderHome()
-  //     break;
-  //   case 'leaderboard':
-  //     renderLeaderboard()
-  //     break;
-  // }
 }
 
-// Home
+$(document).ready(function() {
+  renderHome();
+});
 
-function renderHome() {
-  // <audio src="./assets/music/bg.mp3" autoplay="true">
-  // <p class="landing-page__desc">Kuis akan dimulai pada 12.00 - 13.00</p>;
+// General
 
-  const html = `
-    <div class="landing-page">
-      <div class="landing-page__info">
-        <p class="landing-page__info-text">Ichsan Indra mendapatkan skor 999.999</p>
-        <span class="landing-page__info-num">999.999</span>
-      </div>
-      <div class="landing-page__container content">
-        <div class="landing-page__menu menu">
-          <a href="" class="menu__action menu__action--back"></a>
-          <div class="landing-page__menu-right">
-            <a class="menu__action menu__action--leaderboard" onclick="renderLeaderboard()"></a>
-            <a href="" class="menu__action menu__action--share"></a>
-          </div>
-        </div>
-        <div class="landing-page__action">
-          <img class="landing-page__logo" src="./assets/img/logo_marvel.png" alt="" srcset="">
-          <div class="landing-page__title">
-            <span>Quiz</span>
-            <div class="landing-page__title-spark"></div>
-          </div>
-          <p class="landing-page__desc">Kuis telah dimulai</p>
-          <button class="btn btn--primary">
-            <div class="btn__inner">
-              <span>Mulai Main</span>
-            </div>
-          </button>
-          <button id="js_show-dialog" class="btn btn--small btn--price">
-            <div class="btn__inner">
-              <span class="icon icon--price">Info Hadiah</span>
-            </div>
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
+$(function globalCloseDialog() {
+  $('body').on({
+    click: function(e) {
+      if ($(event.target).hasClass('dialog--show')) {
+        handleCloseDialog();
+      }
+    },
+  });
+});
 
-  renderPage(html);
+window.handleOpenDialog = handleOpenDialog;
+function handleOpenDialog() {
+  $('body').addClass('lock');
+  $('.overlay').addClass('overlay--show');
+  $('.dialog').addClass('dialog--show');
 }
 
-// Leaderboard
+window.handleCloseDialog = handleCloseDialog;
+function handleCloseDialog() {
+  $('body').removeClass('lock');
+  $('.overlay').removeClass('overlay--show');
+  $('.dialog').removeClass('dialog--show');
+}
 
 function renderPage(html) {
   $('body').empty();
   $('body').append(html);
 }
 
+// Home
+
+window.renderHome = renderHome;
+function renderHome() {
+  // <p class="landing-page__desc">Kuis akan dimulai pada 12.00 - 13.00</p>;
+
+  const html = `
+    <div class="landing-page">
+      <div class="landing-page__wrapper">
+        <div class="landing-page__info">
+          <p class="landing-page__info-text">Ichsan Indra mendapatkan skor 999.999</p>
+          <span class="landing-page__info-num">999.999</span>
+        </div>
+        
+        <div class="landing-page__container content">
+          <div class="landing-page__menu menu">
+            <a href="" class="menu__action menu__action--back"></a>
+            <div class="landing-page__menu-right">
+              <span class="menu__action menu__action--leaderboard" onclick="renderLeaderboard()"></span>
+              <span class="menu__action menu__action--share"></span>
+            </div>
+          </div>
+          
+          <div class="landing-page__action">
+            <img class="landing-page__logo" src="./assets/img/logo_marvel.png" alt="" srcset="">
+            <div class="landing-page__title">
+              <span>Quiz</span>
+              <div class="landing-page__title-spark"></div>
+            </div>
+            <p class="landing-page__desc">Kuis akan segera dimulai.</p>
+            <button onclick="startQuiz()" class="btn btn--primary">
+              <div class="btn__inner">
+                <span>Mulai Main</span>
+              </div>
+            </button>
+            <button onclick="handleOpenDialog()" class="btn btn--small btn--price">
+              <div class="btn__inner">
+                <span class="icon icon--price">Info Hadiah</span>
+              </div>
+            </button>
+          </div>
+        </div> 
+      </div>
+
+      <div class="overlay"></div>
+      <div class="dialog dialog--custom dialog--home">
+        <div class="dialog__container">
+          <div onclick="handleCloseDialog()" class="dialog__close"></div>
+          <div class="dialog__star">
+            <div class="dialog__star-line dialog__star-line--left">
+              <div class="dialog__star-line__inner"></div>
+            </div>
+            <div class="dialog__star-icon"></div>
+            <div class="dialog__star-line dialog__star-line--right">
+              <div class="dialog__star-line__inner"></div>
+            </div>
+          </div>
+          <div class="dialog__content">
+            <div class="dialog__inner">       
+              <p class="dialog__desc">Dapatkan kesempatan menangkan kupon cashback sampai 60%!</p>
+              <div class="coupon">
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <audio id="js_sound-home" src="../assets/music/bg.mp3"></audio>
+
+    </div>
+  `;
+
+  renderPage(html);
+  soundsHome();
+}
+
+function soundsHome() {
+  let audioHome = document.getElementById('js_sound-home');
+  audioHome.play();
+}
+
+// Leaderboard
+
+window.renderLeaderboard = renderLeaderboard;
 function renderLeaderboard(page = 'home') {
   const html = `
     <div class="leaderboard">
       <div class="leaderboard__menu menu">
-        <a onClick="renderHome()" class="menu__action menu__action--back"></a>
+        <span onClick="renderHome()" class="menu__action menu__action--back"></span>
         <h1 class="menu__title">Leaderboard</h1>
       </div>
 
@@ -200,15 +264,13 @@ function renderLeaderboard(page = 'home') {
   `;
 
   renderPage(html);
-}
 
-$(document).ready(function() {
   handleLoaderResult();
   topRanking(dataRanking);
   setTimeout(() => {
     initDataRanking();
   }, 2000);
-});
+}
 
 function appendRankingElem(el) {
   $('#js_ranking').empty();
@@ -401,81 +463,202 @@ $(function handleResetSearchRanking() {
   });
 });
 
-// General
-
-// $(document).ready(function() {
-// $('body').addClass('lock');
-// $('.overlay').addClass('overlay--show');
-// $('.dialog').addClass('dialog--show');
-// });
-
-$(function handleDialog() {
-  $('#js_show-dialog').on({
-    click: function() {
-      $('body').addClass('lock');
-      $('.overlay').addClass('overlay--show');
-      $('.dialog').addClass('dialog--show');
-    },
-  });
-
-  $('#js_close-dialog').on({
-    click: function() {
-      $('.dialog').addClass('dialog--close');
-      setTimeout(() => {
-        $('body').removeClass('lock');
-        $('.overlay').removeClass('overlay--show');
-        $('.dialog').removeClass('dialog--show');
-        $('.dialog').removeClass('dialog--close');
-      }, 300);
-    },
-  });
-});
-
-window.handleOpenDialog = handleOpenDialog;
-window.handleCloseDialog = handleCloseDialog;
-
-$(function globalCloseDialog() {
-  $('body').on({
-    click: function(e) {
-      if ($(event.target).hasClass('dialog--show')) {
-        handleCloseDialog();
-      }
-    },
-  });
-});
-
-function handleOpenDialog() {
-  $('body').addClass('lock');
-  $('.overlay').addClass('overlay--show');
-  $('.dialog').addClass('dialog--show');
-}
-
-function handleCloseDialog() {
-  $('body').removeClass('lock');
-  $('.overlay').removeClass('overlay--show');
-  $('.dialog').removeClass('dialog--show');
-}
-
 // Quiz
 
-window.handleBtnAnswerImg = handleBtnAnswerImg;
-window.handleBtnAnswerTxt = handleBtnAnswerTxt;
+window.startQuiz = startQuiz;
+function startQuiz() {
+  renderStartQuiz(
+    'Bantu misi Captain Marvel dengan jawab 5 pertanyaan berikut ini'
+  );
+}
 
+window.renderStartQuiz = renderStartQuiz;
+function renderStartQuiz(text) {
+  const html = `
+  <div class="quiz">
+    <div class="quiz__wrapper">
+      <div class="quiz__start start">
+        <div class="start__txt">${text}</div>
+        <div class="start__timer countdown">
+          <h1 class="start__timer-num countdown__num"></h1>
+        </div>
+      </div>
+    </div>
+    <div class="overlay"></div>
+    <div class="dialog dialog--custom dialog--back">
+      <div class="dialog__container">
+        <div class="dialog__close" onclick="handleCloseDialog()"></div>
+        <div class="dialog__content">
+          <div class="dialog__inner">
+            <h3 class="dialog__title">Kembali ke Home Captain Marvel Quiz?</h3>
+            <p class="dialog__desc">Skor akan hangus dan Anda tidak dapat melanjutkan kuis hari ini apabila telah keluar.</p>
+            <button class="btn btn--exit">
+              <div class="btn__inner">
+                <span>Ya, Keluar</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  `;
+
+  renderPage(html);
+  handleTimeStart(3);
+}
+
+function handleTimeStart(time) {
+  $('.countdown__num').text(time);
+  let timeStart = setInterval(() => {
+    $('.countdown__num').text(time--);
+    $('.countdown').addClass('countdown--animate');
+    setTimeout(() => {
+      $('.countdown').removeClass('countdown--animate');
+    }, 500);
+    if (time < 0) {
+      clearInterval(timeStart);
+      renderQuiz();
+    }
+  }, 1000);
+}
+
+window.renderQuiz = renderQuiz;
+function renderQuiz() {
+  const menu = `
+    <div class="quiz__menu menu">
+      <span class="menu__action menu__action--back" onclick="handleOpenDialog()"></span>
+      <div id="js_quiz-time" class="countdown quiz__time">
+        <span class="countdown__num"></span>
+        <svg class="countdown__progress">
+          <defs>
+            <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:#b21c26" />
+              <stop offset="100%" style="stop-color:#ffdb84" />
+            </linearGradient>
+          </defs>
+          <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
+          <circle class="countdown__progress-bar" />
+        </svg>
+      </div>
+      <div class="menu__score">
+        <span>0</span>
+      </div>
+    </div>
+  `;
+
+  $('.quiz__wrapper').empty();
+  $('.quiz__wrapper').append(menu);
+  initQuiz();
+}
+
+function initQuiz() {
+  const questions = `
+    <div class="quiz__content quiz__content--text">
+
+      <div class="quiz__question">
+        <div class="quiz__question-inner">
+          <span>Siapa pemeran utama pada film Kuch-Kuch Hota Hai?</span>
+        </div>
+      </div>
+      
+      <div class="quiz__answer">
+        <div class="quiz__answer-btn">
+          <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
+            <div class="answer-btn__inner">
+              <div class="answer-btn__val">
+                <span>Ichsan Wahyudi</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="quiz__answer-btn">
+          <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
+            <div class="answer-btn__inner">
+              <div class="answer-btn__val">
+                <span>Ichsan Wahyudi</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="quiz__answer-btn">
+          <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
+            <div class="answer-btn__inner">
+              <div class="answer-btn__val">
+                <span>Ichsan Wahyudi</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="quiz__answer-btn">
+          <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
+            <div class="answer-btn__inner">
+              <div class="answer-btn__val">
+                <span>Ichsan Wahyudi</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  `;
+
+  const numberQuiz = `
+    <h6 class="quiz__of">1 dari 5 pertanyaan</h6>
+  `;
+
+  $('.quiz__wrapper').append(questions);
+  $('.quiz__content').append(numberQuiz);
+  handleTimeQuiz(5);
+}
+
+function handleTimeQuiz(start) {
+  $('.countdown__num').text(start);
+  var bar = 500;
+  var timeOut = setInterval(() => {
+    $('.countdown__num').text(start--);
+    $('.countdown').addClass('countdown--animate');
+    bar = bar - 26;
+    $('.countdown__progress-bar');
+    $('.countdown__progress-bar').css({
+      'stroke-dashoffset': bar,
+    });
+    setTimeout(() => {
+      $('.countdown').removeClass('countdown--animate');
+    }, 500);
+    if (start < 0) {
+      clearInterval(timeOut);
+      handleCheckAnswer();
+    }
+  }, 1000);
+}
+
+function handleCheckAnswer() {
+  let $answer = $('.answer-btn--active');
+  // console.log($answer);
+  $answer.removeClass('answer-btn--active').addClass('answer-btn--correct');
+  // soundsCorrectAnswer();
+  setTimeout(() => {
+    renderComplete();
+    // renderStartQuiz('Siap jawab pertanyaan kedua');
+  }, 1000);
+}
+
+window.handleBtnAnswerTxt = handleBtnAnswerTxt;
 function handleBtnAnswerTxt(e) {
   focusAnswer('text');
   $(e).addClass('answer-btn--active');
-  let audio = document.getElementById('js_sound-lock');
-  audio.play();
-  setTimeout(() => {
-    audio.pause();
-    audio.currentTime = 0;
-  }, 800);
 }
 
+window.handleBtnAnswerImg = handleBtnAnswerImg;
 function handleBtnAnswerImg(e) {
   focusAnswer('img');
   $(e).removeClass('answer-btn--disabled');
   $(e).addClass('answer-btn--active');
+}
+
+function soundsCorrectAnswer() {
   let audio = document.getElementById('js_sound-lock');
   audio.play();
   setTimeout(() => {
@@ -486,9 +669,129 @@ function handleBtnAnswerImg(e) {
 
 function focusAnswer(type) {
   if (type == 'img') {
-    $('.answer-btn').removeClass('answer-btn--disabled');
     $('.answer-btn').addClass('answer-btn--disabled');
   }
 
+  if (type == 'text') {
+    $('.answer-btn').addClass('answer-btn--off');
+  }
+
   $('.answer-btn').removeClass('answer-btn--active');
+}
+
+// Complete
+
+function renderComplete() {
+  const html = `
+    <div class="game-over">
+    <div class="game-over__menu menu">
+      <span class="menu__action menu__action--back"></span>
+      <span onclick="renderLeaderboard()" class="menu__action menu__action--leaderboard"></span>
+    </div>
+
+    <div class="game-over__container">
+      <div class="game-over__content">
+        <h1 class="game-over__title">MISSION COMPLETE</h1>
+        <h3 class="game-over__score">Total Skor : <span id="js_result-score">0</span></h3>
+        <button class="btn btn--score">
+          <div class="btn__inner">
+            <span>Pamerkan Skor</span>
+          </div>
+        </button>
+        <div class="game-over__separator">
+          <div class="game-over__separator-inner"></div>
+        </div>
+      </div>
+      <p class="game-over__desc">Lihat konten berikut untuk dapatkan 2x skor</p>
+      <button class="btn btn--primary">
+        <div class="btn__inner">
+          <span>Gandakan Skor</span>
+        </div>
+      </button>
+    </div>
+
+    <div class="overlay"></div>
+    <div class="dialog dialog--reward">
+      <div class="dialog__container">
+        <div id="js_close-dialog" class="dialog__close"></div>
+        <div class="dialog__star">
+          <div class="dialog__star-line dialog__star-line--left">
+            <div class="dialog__star-line__inner"></div>
+          </div>
+          <div class="dialog__star-icon"></div>
+          <div class="dialog__star-line dialog__star-line--right">
+            <div class="dialog__star-line__inner"></div>
+          </div>
+        </div>
+        <div class="dialog__content">
+          <div class="dialog__inner dialog__inner--star">
+            <p class="dialog__desc">Selamat!<br>
+            Anda mendapatkan kupon cashback hingga Rp 200.000</p>
+            <div class="coupon">
+              <div class="coupon__list">
+                <img src="./assets/img/coupon.png" alt="" srcset="">
+              </div>
+              <div class="coupon__list">
+                <img src="./assets/img/coupon.png" alt="" srcset="">
+              </div>
+              <div class="coupon__list">
+                <img src="./assets/img/coupon.png" alt="" srcset="">
+              </div>
+              <div class="coupon__list">
+                <img src="./assets/img/coupon.png" alt="" srcset="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <audio id="js_sound-score" src="./assets/music/score.mp3"></audio>
+
+  </div>
+  `;
+
+  renderPage(html);
+  soundsScore(true);
+  countUp(2000);
+}
+
+function renderAds() {
+  const html = `
+    <div class="ads">
+      
+    </div>
+  `;
+
+  $('.game-over').append(html)
+}
+
+function soundsScore(play) {
+  let audioScore = document.getElementById('js_sound-score');
+  if (play) {
+    audioScore.play();
+  } else {
+    audioScore.pause();
+  }
+}
+
+function countUp(count) {
+  var div_by = 100,
+    speed = Math.round(count / div_by),
+    $display = $('#js_result-score'),
+    run_count = 1,
+    int_speed = 24;
+
+  var int = setInterval(function() {
+    if (run_count < div_by) {
+      $display.text(speed * run_count);
+      run_count++;
+    } else if (parseInt($display.text()) < count) {
+      var curr_count = parseInt($display.text()) + 1;
+      $display.text(curr_count);
+    } else {
+      clearInterval(int);
+      soundsScore(false);
+    }
+  }, int_speed);
 }
