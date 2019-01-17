@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Marvel Trivia</title>
+</head>
+
+<body class="general-trivia">
+
+    <!-- <audio src="./assets/music/bg.mp3" autoplay="true"></audio> -->
+
+    <div class="landing-page">
+        <div class="landing-page__info">
+            <p class="landing-page__info-text">Shinta Tamara mendapat skor 14.503</p>
+            <span class="landing-page__info-num">999.999</span>
+        </div>
+
+        <div class="landing-page__container content">
+            <div class="landing-page__menu">
+                <a href="" class="menu menu__action menu__action--back"></a>
+                <div class="landing-page__menu-right">
+                    <a class="menu menu__action menu__action--leaderboard" onclick="renderLeaderboard()"></a>
+                    <a href="" class="menu menu__action menu__action--share"></a>
+                </div>
+            </div>
+
+            <div class="landing-page__action">
+                <img class="landing-page__logo" src="./assets/img/tokopedia/main.png" alt="" srcset="">
+                <p class="landing-page__desc">Kuis akan dimulai pada 12.00 - 13.00</p>
+                <button class="unf-btn unf-btn--primary unf-btn--medium unf-btn--animate">
+                    <div class="unf-btn__inner">
+                        <span>Ingatkan Saya</span>
+                    </div>
+                </button>
+                <button id="js_show-dialog" class="unf-btn unf-btn--small unf-btn--price">
+                    <div class="unf-btn__inner">
+                        <span class="icon icon--price">Info Hadiah</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="overlay"></div>
+    <div class="unf-dialog unf-dialog--info">
+        <div class="unf-dialog__content">
+            <div class="unf-dialog__head">
+                Dapatkan kesempatan memenangkan kupon cashback sampai 60%
+            </div>
+            <div class="unf-dialog__body">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

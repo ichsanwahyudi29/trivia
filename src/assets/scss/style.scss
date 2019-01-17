@@ -28,4 +28,14 @@
 @import './over';
 @import './leaderboard';
 
+@import './unf-button';
+@import './unf-dialog';
+
+.general-trivia{
+  @import './general/home';
+  @import './general/menu';
+  @import './general/quiz';
+  @import './general/over';
+}
+
 
