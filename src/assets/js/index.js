@@ -98,22 +98,22 @@ const dataRanking = [
     skor: '9904',
   },
 ];
+if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+  window.onBack = onBack;
 
-window.onBack = onBack;
+  function onBack(page) {
+    renderHome();
+  }
 
-function onBack(page) {
-  renderHome();
+  $(document).ready(function () {
+    renderHome();
+  });
 }
-
-$(document).ready(function() {
-  renderHome();
-});
-
 // General
 
 $(function globalCloseDialog() {
   $('body').on({
-    click: function(e) {
+    click: function (e) {
       if ($(event.target).hasClass('dialog--show')) {
         handleCloseDialog();
       }
@@ -147,85 +147,87 @@ function renderHome() {
   // <p class="landing-page__desc">Kuis akan dimulai pada 12.00 - 13.00</p>;
 
   const html = `
-    <div class="landing-page">
-      <div class="landing-page__wrapper">
-        <div class="landing-page__info">
-          <p class="landing-page__info-text">Ichsan Indra mendapatkan skor 999.999</p>
-          <span class="landing-page__info-num">999.999</span>
-        </div>
-        
-        <div class="landing-page__container content">
-          <div class="landing-page__menu menu">
-            <a href="" class="menu__action menu__action--back"></a>
-            <div class="landing-page__menu-right">
-              <span class="menu__action menu__action--leaderboard" onclick="renderLeaderboard()"></span>
-              <span class="menu__action menu__action--share"></span>
-            </div>
+      <div class="landing-page">
+        <div class="landing-page__wrapper">
+          <div class="landing-page__info">
+            <p class="landing-page__info-text"></p>
+            <span class="landing-page__info-num"></span>
           </div>
           
-          <div class="landing-page__action">
-            <img class="landing-page__logo" src="./assets/img/logo_marvel.png" alt="" srcset="">
-            <div class="landing-page__title">
-              <span>Quiz</span>
-              <div class="landing-page__title-spark"></div>
-            </div>
-            <p class="landing-page__desc">Kuis akan segera dimulai.</p>
-            <button onclick="startQuiz()" class="btn btn--primary">
-              <div class="btn__inner">
-                <span>Mulai Main</span>
+          <div class="landing-page__container content">
+            <div class="landing-page__menu menu">
+              <a href="" class="menu__action menu__action--back"></a>
+              <div class="landing-page__menu-right">
+                <span class="menu__action menu__action--leaderboard" onclick="renderLeaderboard()"></span>
+                <span class="menu__action menu__action--share"></span>
               </div>
-            </button>
-            <button onclick="handleOpenDialog()" class="btn btn--small btn--price">
-              <div class="btn__inner">
-                <span class="icon icon--price">Info Hadiah</span>
+            </div>
+            
+            <div class="landing-page__action">
+              <img class="landing-page__logo" src="./assets/img/logo_marvel.png" alt="" srcset="">
+              <div class="landing-page__title">
+                <span>Quiz</span>
+                <div class="landing-page__title-spark"></div>
               </div>
-            </button>
-          </div>
-        </div> 
-      </div>
-
-      <div class="overlay"></div>
-      <div class="dialog dialog--custom dialog--home">
-        <div class="dialog__container">
-          <div onclick="handleCloseDialog()" class="dialog__close"></div>
-          <div class="dialog__star">
-            <div class="dialog__star-line dialog__star-line--left">
-              <div class="dialog__star-line__inner"></div>
+              <p class="landing-page__desc">Kuis akan segera dimulai.</p>
+              <button onclick="startQuiz()" class="btn btn--primary">
+                <div class="btn__inner">
+                  <span>Mulai Main</span>
+                </div>
+              </button>
+              <button onclick="handleOpenDialog()" class="btn btn--small btn--price">
+                <div class="btn__inner">
+                  <span class="icon icon--price">Info Hadiah</span>
+                </div>
+              </button>
             </div>
-            <div class="dialog__star-icon"></div>
-            <div class="dialog__star-line dialog__star-line--right">
-              <div class="dialog__star-line__inner"></div>
+          </div> 
+        </div>
+  
+        <div class="overlay"></div>
+        <div class="dialog dialog--custom dialog--home">
+          <div class="dialog__container">
+            <div onclick="handleCloseDialog()" class="dialog__close"></div>
+            <div class="dialog__star">
+              <div class="dialog__star-line dialog__star-line--left">
+                <div class="dialog__star-line__inner"></div>
+              </div>
+              <div class="dialog__star-icon"></div>
+              <div class="dialog__star-line dialog__star-line--right">
+                <div class="dialog__star-line__inner"></div>
+              </div>
             </div>
-          </div>
-          <div class="dialog__content">
-            <div class="dialog__inner">       
-              <p class="dialog__desc">Dapatkan kesempatan menangkan kupon cashback sampai 60%!</p>
-              <div class="coupon">
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
+            <div class="dialog__content">
+              <div class="dialog__inner">       
+                <p class="dialog__desc">Dapatkan kesempatan menangkan kupon cashback sampai 60%!</p>
+                <div class="coupon">
+                  <div class="coupon__list">
+                    <img src="./assets/img/coupon.png" alt="" srcset="">
+                  </div>
+                  <div class="coupon__list">
+                    <img src="./assets/img/coupon.png" alt="" srcset="">
+                  </div>
+                  <div class="coupon__list">
+                    <img src="./assets/img/coupon.png" alt="" srcset="">
+                  </div>
+                  <div class="coupon__list">
+                    <img src="./assets/img/coupon.png" alt="" srcset="">
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+  
+        <audio id="js_sound-home" src="../assets/music/bg.mp3"></audio>
+  
       </div>
-
-      <audio id="js_sound-home" src="../assets/music/bg.mp3"></audio>
-
-    </div>
-  `;
+    `;
 
   renderPage(html);
   soundsHome();
+  
+  dummyInfo()
 }
 
 function soundsHome() {
@@ -233,42 +235,68 @@ function soundsHome() {
   audioHome.play();
 }
 
-// Leaderboard
+var dummyInfoInterval
+function dummyInfo(){
+  dummyInfoInterval = setInterval(function(){
+    randomDummy()
+  }, 1000)
+}
+function randomDummy(){
+  var numb = Math.ceil(Math.random() * 10)
+  if(numb >= 7){
+    otherPlayerInfo()
+    clearInterval(dummyInfoInterval)
+  }
+}
+function otherPlayerInfo(){
+  var data = dataRanking[Math.floor(Math.random()*dataRanking.length)]
+  $('.landing-page__info')
+    .find('p').text(`${data.name} mendapatkan skor ${data.skor}`).end()
+    .find('span').text(data.skor).end()
+    .addClass('landing-page__info--show')
+  setTimeout(() => {
+    $('.landing-page__info').removeClass('landing-page__info--show')
+    dummyInfoInterval = setInterval(function(){
+      randomDummy()
+    }, 1000)
+  }, 5000);
+}
 
+// Leaderboard
 window.renderLeaderboard = renderLeaderboard;
 function renderLeaderboard(page = 'home') {
   const html = `
-    <div class="leaderboard">
-      <div class="leaderboard__menu menu">
-        <span onClick="renderHome()" class="menu__action menu__action--back"></span>
-        <h1 class="menu__title">Leaderboard</h1>
-      </div>
-
-      <div class="leaderboard__container container">
-        <div class="leaderboard__top">
-          <div id="js_top-ranking" class="row"></div>
+      <div class="leaderboard">
+        <div class="leaderboard__menu menu">
+          <span onClick="renderHome()" class="menu__action menu__action--back"></span>
+          <h1 class="menu__title">Leaderboard</h1>
         </div>
-
-        <div class="leaderboard__content">
-          <div id="js_search" class="search">
-            <div class="unf-searchbar">
-              <input id="js_search-ranking" type="text" class="unf-searchbar__input" placeholder="Cari Namamu">
-              <button id="js_reset-search-ranking" class="unf-searchbar__close"></button>
-            </div>
-          </div> 
-          <div id="js_ranking" class="ranking"></div>
+  
+        <div class="leaderboard__container container">
+          <div class="leaderboard__top">
+            <div id="js_top-ranking" class="row"></div>
+          </div>
+  
+          <div class="leaderboard__content">
+            <div id="js_search" class="search">
+              <div class="unf-searchbar">
+                <input id="js_search-ranking" type="text" class="unf-searchbar__input" placeholder="Cari Namamu">
+                <button id="js_reset-search-ranking" class="unf-searchbar__close"></button>
+              </div>
+            </div> 
+            <div id="js_ranking" class="ranking"></div>
+          </div>
+  
         </div>
-
       </div>
-    </div>
-  `;
+    `;
 
   renderPage(html);
 
   handleLoaderResult();
-  topRanking(dataRanking);
   setTimeout(() => {
     initDataRanking();
+    topRanking(dataRanking);
   }, 2000);
 }
 
@@ -283,7 +311,7 @@ function initDataRanking() {
 
 $(function handleScrollRanking() {
   $('#js_ranking').on({
-    scroll: function() {
+    scroll: function () {
       let scroll = $(this).scrollTop();
 
       if (scroll > 0) {
@@ -296,32 +324,30 @@ $(function handleScrollRanking() {
 });
 
 function topRanking(obj) {
-  obj = obj.filter(function(value, index, arr) {
+  $('#js_top-ranking').empty()
+  obj = obj.filter(function (value, index, arr) {
     return value.ranking <= 3;
   });
 
   for (const key of obj) {
     const topRank = `
-      <div class="col-4">
-        <div class="top top--${key.ranking}">
-          <div class="top__img">   
-            <div class="top__img-border">
-              <div class="top__img-val" style="background-image: url(${
-                key.image
-              })">
-                <div class="top__star"></div>
+        <div class="col-4">
+          <div class="top top--${key.ranking}">
+            <div class="top__img">   
+              <div class="top__img-border">
+                <div class="top__img-val" style="background-image: url(${key.image})">
+                  <div class="top__star"></div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="top__info">
-            <h4 class="top__info-name">${key.name}</h4>
-            <h6 class="top__info-phone">${key.phone}</h6>
-            <h5 class="top__info-score">${key.skor}</h5>
+            <h4 class="top__info top__info-name">${key.name}</h4>
+            <h6 class="top__info top__info-phone">${key.phone}</h6>
+            <h5 class="top__info top__info-score">${key.skor}</h5>
+            </div>
           </div>
         </div>
-      </div>
-    `;
+      `;
 
     if (key.ranking != 2) {
       $('#js_top-ranking').append(topRank);
@@ -333,12 +359,12 @@ function topRanking(obj) {
 
 function resultsRanking(obj) {
   const listContainer = `
-    <div id="js_ranking-list" class="ranking__list"></div> 
-  `;
+      <div id="js_ranking-list" class="ranking__list"></div> 
+    `;
 
   appendRankingElem(listContainer);
 
-  obj = obj.filter(function(value, index, arr) {
+  obj = obj.filter(function (value, index, arr) {
     return value.ranking > 3;
   });
 
@@ -350,25 +376,25 @@ function resultsRanking(obj) {
     }
 
     const listRank = `
-      <div class="row">
-        <div class="ranking__list-left">
-          <div class="ranking__info">
-            <div class="info-num">
-              <span>${ranking}</span>
-            </div>
-            <div class="info-profile">
-              <div class="profile-text">
-                <span class="profile-name">${key.name}</span>
-                <span class="profile-phone">${key.phone}</span>
+        <div class="row">
+          <div class="ranking__list-left">
+            <div class="ranking__info">
+              <div class="info-num">
+                <span>${ranking}</span>
+              </div>
+              <div class="info-profile">
+                <div class="profile-text">
+                  <span class="profile-name">${key.name}</span>
+                  <span class="profile-phone">${key.phone}</span>
+                </div>
               </div>
             </div>
           </div>
+          <div class="ranking__list-right">
+            <span class="ranking__score">${key.skor}</span>
+          </div>
         </div>
-        <div class="ranking__list-right">
-          <span class="ranking__score">${key.skor}</span>
-        </div>
-      </div>
-    `;
+      `;
 
     $('#js_ranking-list').append(listRank);
   }
@@ -379,24 +405,48 @@ function handleLoaderResult() {
 
   appendRankingElem(loader);
 
-  const listLoader = `
-    <div class="row">
-      <div class="col-1">
-        <span class="unf-loader-line"></span>
+  for(var i = 1;i <= 3;i++){
+    const loadRank = `
+      <div class="col-4">
+        <div class="top top--${i}">
+          <div class="top__img top__img--loader"> 
+            <span class="unf-loader-circle"></span>
+          </div>
+
+          <div class="top__info--loader-name"><span class="unf-loader-line"></span></div>
+          <div class="top__info--loader-phone"><span class="unf-loader-line"></span></div>
+          <div class="top__info--loader-score"><span class="unf-loader-line"></span></div>
+
+          </div>
+        </div>
       </div>
-      <div class="col-9">
-        <div class="loader__name">
+    `;
+
+    if (i != 2) {
+      $('#js_top-ranking').append(loadRank);
+    } else {
+      $('#js_top-ranking').prepend(loadRank);
+    }
+  }
+
+  const listLoader = `
+      <div class="row">
+        <div class="col-1">
           <span class="unf-loader-line"></span>
         </div>
-        <div class="loader__phone">
+        <div class="col-9">
+          <div class="loader__name">
+            <span class="unf-loader-line"></span>
+          </div>
+          <div class="loader__phone">
+            <span class="unf-loader-line"></span>
+          </div> 
+        </div>
+        <div class="col-2">
           <span class="unf-loader-line"></span>
-        </div> 
+        </div>
       </div>
-      <div class="col-2">
-        <span class="unf-loader-line"></span>
-      </div>
-    </div>
-  `;
+    `;
 
   for (let i = 0; i < 5; i++) {
     $('#js_ranking-loader').append(listLoader);
@@ -405,7 +455,7 @@ function handleLoaderResult() {
 
 $(function handleSearchRanking() {
   $('#js_search-ranking').on({
-    input: function(e) {
+    input: function (e) {
       let _self = $(this);
 
       if (_self.val()) {
@@ -414,7 +464,7 @@ $(function handleSearchRanking() {
         _self.siblings().removeClass('unf-searchbar__close--show');
       }
     },
-    keypress: function(e) {
+    keypress: function (e) {
       const results = [];
       let val = $(this).val();
       if (val) {
@@ -454,7 +504,7 @@ $(function handleSearchRanking() {
 
 $(function handleResetSearchRanking() {
   $('#js_reset-search-ranking').on({
-    click: function() {
+    click: function () {
       let input = $('#js_search-ranking');
       input.val('');
       input.siblings().removeClass('unf-searchbar__close--show');
@@ -475,34 +525,34 @@ function startQuiz() {
 window.renderStartQuiz = renderStartQuiz;
 function renderStartQuiz(text) {
   const html = `
-  <div class="quiz">
-    <div class="quiz__wrapper">
-      <div class="quiz__start start">
-        <div class="start__txt">${text}</div>
-        <div class="start__timer countdown">
-          <h1 class="start__timer-num countdown__num"></h1>
+    <div class="quiz">
+      <div class="quiz__wrapper">
+        <div class="quiz__start start">
+          <div class="start__txt">${text}</div>
+          <div class="start__timer countdown">
+            <h1 class="start__timer-num countdown__num"></h1>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="overlay"></div>
-    <div class="dialog dialog--custom dialog--back">
-      <div class="dialog__container">
-        <div class="dialog__close" onclick="handleCloseDialog()"></div>
-        <div class="dialog__content">
-          <div class="dialog__inner">
-            <h3 class="dialog__title">Kembali ke Home Captain Marvel Quiz?</h3>
-            <p class="dialog__desc">Skor akan hangus dan Anda tidak dapat melanjutkan kuis hari ini apabila telah keluar.</p>
-            <button class="btn btn--exit">
-              <div class="btn__inner">
-                <span>Ya, Keluar</span>
-              </div>
-            </button>
+      <div class="overlay"></div>
+      <div class="dialog dialog--custom dialog--back">
+        <div class="dialog__container">
+          <div class="dialog__close" onclick="handleCloseDialog()"></div>
+          <div class="dialog__content">
+            <div class="dialog__inner">
+              <h3 class="dialog__title">Kembali ke Home Captain Marvel Quiz?</h3>
+              <p class="dialog__desc">Skor akan hangus dan Anda tidak dapat melanjutkan kuis hari ini apabila telah keluar.</p>
+              <button class="btn btn--exit">
+                <div class="btn__inner">
+                  <span>Ya, Keluar</span>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  `;
+    `;
 
   renderPage(html);
   handleTimeStart(3);
@@ -526,26 +576,26 @@ function handleTimeStart(time) {
 window.renderQuiz = renderQuiz;
 function renderQuiz() {
   const menu = `
-    <div class="quiz__menu menu">
-      <span class="menu__action menu__action--back" onclick="handleOpenDialog()"></span>
-      <div id="js_quiz-time" class="countdown quiz__time">
-        <span class="countdown__num"></span>
-        <svg class="countdown__progress">
-          <defs>
-            <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" style="stop-color:#b21c26" />
-              <stop offset="100%" style="stop-color:#ffdb84" />
-            </linearGradient>
-          </defs>
-          <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
-          <circle class="countdown__progress-bar" />
-        </svg>
+      <div class="quiz__menu menu">
+        <span class="menu__action menu__action--back" onclick="handleOpenDialog()"></span>
+        <div id="js_quiz-time" class="countdown quiz__time">
+          <span class="countdown__num"></span>
+          <svg class="countdown__progress">
+            <defs>
+              <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#b21c26" />
+                <stop offset="100%" style="stop-color:#ffdb84" />
+              </linearGradient>
+            </defs>
+            <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
+            <circle class="countdown__progress-bar" />
+          </svg>
+        </div>
+        <div class="menu__score">
+          <span>0</span>
+        </div>
       </div>
-      <div class="menu__score">
-        <span>0</span>
-      </div>
-    </div>
-  `;
+    `;
 
   $('.quiz__wrapper').empty();
   $('.quiz__wrapper').append(menu);
@@ -554,59 +604,59 @@ function renderQuiz() {
 
 function initQuiz() {
   const questions = `
-    <div class="quiz__content quiz__content--text">
-
-      <div class="quiz__question">
-        <div class="quiz__question-inner">
-          <span>Siapa pemeran utama pada film Kuch-Kuch Hota Hai?</span>
+      <div class="quiz__content quiz__content--text">
+  
+        <div class="quiz__question">
+          <div class="quiz__question-inner">
+            <span>Siapa pemeran utama pada film Kuch-Kuch Hota Hai?</span>
+          </div>
         </div>
+        
+        <div class="quiz__answer">
+          <div class="quiz__answer-btn">
+            <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
+              <div class="answer-btn__inner">
+                <div class="answer-btn__val">
+                  <span>Ichsan Wahyudi</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="quiz__answer-btn">
+            <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
+              <div class="answer-btn__inner">
+                <div class="answer-btn__val">
+                  <span>Ichsan Wahyudi</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="quiz__answer-btn">
+            <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
+              <div class="answer-btn__inner">
+                <div class="answer-btn__val">
+                  <span>Ichsan Wahyudi</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="quiz__answer-btn">
+            <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
+              <div class="answer-btn__inner">
+                <div class="answer-btn__val">
+                  <span>Ichsan Wahyudi</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
       </div>
-      
-      <div class="quiz__answer">
-        <div class="quiz__answer-btn">
-          <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
-            <div class="answer-btn__inner">
-              <div class="answer-btn__val">
-                <span>Ichsan Wahyudi</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="quiz__answer-btn">
-          <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
-            <div class="answer-btn__inner">
-              <div class="answer-btn__val">
-                <span>Ichsan Wahyudi</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="quiz__answer-btn">
-          <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
-            <div class="answer-btn__inner">
-              <div class="answer-btn__val">
-                <span>Ichsan Wahyudi</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="quiz__answer-btn">
-          <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
-            <div class="answer-btn__inner">
-              <div class="answer-btn__val">
-                <span>Ichsan Wahyudi</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  `;
+    `;
 
   const numberQuiz = `
-    <h6 class="quiz__of">1 dari 5 pertanyaan</h6>
-  `;
+      <h6 class="quiz__of">1 dari 5 pertanyaan</h6>
+    `;
 
   $('.quiz__wrapper').append(questions);
   $('.quiz__content').append(numberQuiz);
@@ -683,73 +733,73 @@ function focusAnswer(type) {
 
 function renderComplete() {
   const html = `
-    <div class="game-over">
-    <div class="game-over__menu menu">
-      <span class="menu__action menu__action--back"></span>
-      <span onclick="renderLeaderboard()" class="menu__action menu__action--leaderboard"></span>
-    </div>
-
-    <div class="game-over__container">
-      <div class="game-over__content">
-        <h1 class="game-over__title">MISSION COMPLETE</h1>
-        <h3 class="game-over__score">Total Skor : <span id="js_result-score">0</span></h3>
-        <button class="btn btn--score">
+      <div class="game-over">
+      <div class="game-over__menu menu">
+        <span class="menu__action menu__action--back"></span>
+        <span onclick="renderLeaderboard()" class="menu__action menu__action--leaderboard"></span>
+      </div>
+  
+      <div class="game-over__container">
+        <div class="game-over__content">
+          <h1 class="game-over__title">MISSION COMPLETE</h1>
+          <h3 class="game-over__score">Total Skor : <span id="js_result-score">0</span></h3>
+          <button class="btn btn--score">
+            <div class="btn__inner">
+              <span>Pamerkan Skor</span>
+            </div>
+          </button>
+          <div class="game-over__separator">
+            <div class="game-over__separator-inner"></div>
+          </div>
+        </div>
+        <p class="game-over__desc">Lihat konten berikut untuk dapatkan 2x skor</p>
+        <button class="btn btn--primary">
           <div class="btn__inner">
-            <span>Pamerkan Skor</span>
+            <span>Gandakan Skor</span>
           </div>
         </button>
-        <div class="game-over__separator">
-          <div class="game-over__separator-inner"></div>
-        </div>
       </div>
-      <p class="game-over__desc">Lihat konten berikut untuk dapatkan 2x skor</p>
-      <button class="btn btn--primary">
-        <div class="btn__inner">
-          <span>Gandakan Skor</span>
-        </div>
-      </button>
-    </div>
-
-    <div class="overlay"></div>
-    <div class="dialog dialog--reward">
-      <div class="dialog__container">
-        <div id="js_close-dialog" class="dialog__close"></div>
-        <div class="dialog__star">
-          <div class="dialog__star-line dialog__star-line--left">
-            <div class="dialog__star-line__inner"></div>
+  
+      <div class="overlay"></div>
+      <div class="dialog dialog--reward">
+        <div class="dialog__container">
+          <div id="js_close-dialog" class="dialog__close"></div>
+          <div class="dialog__star">
+            <div class="dialog__star-line dialog__star-line--left">
+              <div class="dialog__star-line__inner"></div>
+            </div>
+            <div class="dialog__star-icon"></div>
+            <div class="dialog__star-line dialog__star-line--right">
+              <div class="dialog__star-line__inner"></div>
+            </div>
           </div>
-          <div class="dialog__star-icon"></div>
-          <div class="dialog__star-line dialog__star-line--right">
-            <div class="dialog__star-line__inner"></div>
-          </div>
-        </div>
-        <div class="dialog__content">
-          <div class="dialog__inner dialog__inner--star">
-            <p class="dialog__desc">Selamat!<br>
-            Anda mendapatkan kupon cashback hingga Rp 200.000</p>
-            <div class="coupon">
-              <div class="coupon__list">
-                <img src="./assets/img/coupon.png" alt="" srcset="">
-              </div>
-              <div class="coupon__list">
-                <img src="./assets/img/coupon.png" alt="" srcset="">
-              </div>
-              <div class="coupon__list">
-                <img src="./assets/img/coupon.png" alt="" srcset="">
-              </div>
-              <div class="coupon__list">
-                <img src="./assets/img/coupon.png" alt="" srcset="">
+          <div class="dialog__content">
+            <div class="dialog__inner dialog__inner--star">
+              <p class="dialog__desc">Selamat!<br>
+              Anda mendapatkan kupon cashback hingga Rp 200.000</p>
+              <div class="coupon">
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+  
+      <audio id="js_sound-score" src="./assets/music/score.mp3"></audio>
+  
     </div>
-
-    <audio id="js_sound-score" src="./assets/music/score.mp3"></audio>
-
-  </div>
-  `;
+    `;
 
   renderPage(html);
   soundsScore(true);
@@ -758,10 +808,10 @@ function renderComplete() {
 
 function renderAds() {
   const html = `
-    <div class="ads">
-      
-    </div>
-  `;
+      <div class="ads">
+        
+      </div>
+    `;
 
   $('.game-over').append(html)
 }
@@ -782,7 +832,7 @@ function countUp(count) {
     run_count = 1,
     int_speed = 24;
 
-  var int = setInterval(function() {
+  var int = setInterval(function () {
     if (run_count < div_by) {
       $display.text(speed * run_count);
       run_count++;

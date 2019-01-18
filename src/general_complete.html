@@ -20,8 +20,8 @@
             <div class="game-over__content">
                 <h1 class="game-over__title">Total Skor :</h1>
                 <h3 class="game-over__score">14.230</h3>
-                <button class="unf-btn unf-btn--score">
-                    <div class="unf-btn__inner">
+                <button class="btn btn--score">
+                    <div class="btn__inner">
                         <span>Pamerkan Skor</span>
                     </div>
                 </button>
@@ -30,15 +30,38 @@
                 </div>
             </div>
             <p class="game-over__desc">Lihat iklan berikut untuk dapatkan 2x skor</p>
-            <button class="unf-btn unf-btn--primary unf-btn--medium unf-btn--animate">
-                <div class="unf-btn__inner">
+            <button class="btn btn--primary btn--medium btn--animate">
+                <div class="btn__inner">
                     <span>Gandakan Skor</span>
                 </div>
             </button>
         </div>
 
-        <div class="overlay"></div>
-        <div class="dialog dialog--reward">
+        <div class="overlay overlay--show"></div>
+        <div class="dialog dialog--reward dialog--show">
+            <div class="dialog__container">
+                <div id="js_close-dialog" class="dialog__close"></div>
+                <div class="dialog__star">
+                    <div class="dialog__star-line dialog__star-line--left">
+                        <div class="dialog__star-line__inner"></div>
+                    </div>
+                    <div class="dialog__star-icon"></div>
+                    <div class="dialog__star-line dialog__star-line--right">
+                        <div class="dialog__star-line__inner"></div>
+                    </div>
+                </div>
+                <div class="dialog__content">
+                    <div class="dialog__inner dialog__inner--star">
+                        <div class="coupon">
+                            <div class="coupon__list">
+                                <img src="./assets/img/coupon.png" alt="" srcset="">
+                            </div>
+                        </div>
+                        <h3 class="dialog__title">Selamat!</h3>
+                        <p class="dialog__desc">Anda mendapatkan kupon cashback hingga Rp 200.000</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

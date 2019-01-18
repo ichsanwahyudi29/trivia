@@ -29,15 +29,15 @@
             </div>
 
             <div class="landing-page__action">
-                <img class="landing-page__logo" src="./assets/img/tokopedia/main.png" alt="" srcset="">
+                <img class="landing-page__logo" src="./assets/img/tokopedia/general_main.png" alt="" srcset="">
                 <p class="landing-page__desc">Kuis akan dimulai pada 12.00 - 13.00</p>
-                <button class="unf-btn unf-btn--primary unf-btn--medium unf-btn--animate">
-                    <div class="unf-btn__inner">
+                <button class="btn btn--primary btn--medium btn--animate">
+                    <div class="btn__inner">
                         <span>Ingatkan Saya</span>
                     </div>
                 </button>
-                <button id="js_show-dialog" class="unf-btn unf-btn--small unf-btn--price">
-                    <div class="unf-btn__inner">
+                <button id="js_show-dialog" class="btn btn--small btn--price">
+                    <div class="btn__inner">
                         <span class="icon icon--price">Info Hadiah</span>
                     </div>
                 </button>
@@ -46,13 +46,37 @@
 
     </div>
 
-    <div class="overlay"></div>
-    <div class="unf-dialog unf-dialog--info">
-        <div class="unf-dialog__content">
-            <div class="unf-dialog__head">
-                Dapatkan kesempatan memenangkan kupon cashback sampai 60%
+    <div class="overlay overlay--show"></div>
+    <div class="dialog dialog--home dialog--show">
+        <div class="dialog__container">
+            <div onclick="handleCloseDialog()" class="dialog__close"></div>
+            <div class="dialog__star">
+                <div class="dialog__star-line dialog__star-line--left">
+                    <div class="dialog__star-line__inner"></div>
+                </div>
+                <div class="dialog__star-icon"></div>
+                <div class="dialog__star-line dialog__star-line--right">
+                    <div class="dialog__star-line__inner"></div>
+                </div>
             </div>
-            <div class="unf-dialog__body">
+            <div class="dialog__content">
+                <div class="dialog__inner">
+                    <p class="dialog__desc">Dapatkan kesempatan memenangkan kupon cashback sampai 60%</p>
+                    <div class="coupon">
+                        <div class="coupon__list">
+                            <img src="./assets/img/coupon.png" alt="" srcset="">
+                        </div>
+                        <div class="coupon__list">
+                            <img src="./assets/img/coupon.png" alt="" srcset="">
+                        </div>
+                        <div class="coupon__list">
+                            <img src="./assets/img/coupon.png" alt="" srcset="">
+                        </div>
+                        <div class="coupon__list">
+                            <img src="./assets/img/coupon.png" alt="" srcset="">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
