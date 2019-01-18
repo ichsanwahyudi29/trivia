@@ -1,22 +1,132 @@
- [
-  {
-    "id": "1",
-    "type": "text",
-    "quiz": "Siapakah pemeran utama pada film Kuch Kuch Hota Hai?",
-    "answer1": "Ichsan Wahyudi",
-    "answer2": "Fajar M",
-    "answer3": "Leonardy",
-    "answer4": "Irwanto",
-    "image": "../assets/img/thor.jpg"
+{
+  "segment_id": 0,
+  "config": {
+      "img_url": "",
+      "img_bg_url": "",
+      "bgm_url": "",
+      "onboarding_message": "",
+      "class_name": ""
   },
-  {
-    "id": "2",
-    "type": "text",
-    "quiz": "Siapakah pemeran utama pada film Kuch Kuch Hota Hai part 2?",
-    "correct": "",
-    "answer1": "Ichsan Wahyudi",
-    "answer2": "Fajar M",
-    "answer3": "Leonardy",
-    "answer4": "Irwanto"
-  }
-]
+  "questions": [
+    {
+      "question_id": 0,
+      "question_text": "Siapakah pemeran utama pada film Captain Marvel?",
+      "type_question": 1,
+      "config": {
+          "img_url": "",
+          "img_bg_url": "",
+          "bgm_url": ""
+      },
+      "answers": [
+        {
+          "answer_id": 0,
+          "answer_title": "Ichsan",
+          "config": {
+            "img_url": ""
+          }
+        },
+        {
+          "answer_id": 1,
+          "answer_title": "Indra",
+          "config": {
+            "img_url": ""
+          }
+        },
+        {
+          "answer_id": 2,
+          "answer_title": "Wahyudi",
+          "config": {
+            "img_url": ""
+          }
+        },
+        {
+          "answer_id": 3,
+          "answer_title": "Ichsan Wahyudi",
+          "config": {
+            "img_url": ""
+          }
+        }
+      ]
+    },
+    {
+      "question_id": 1,
+      "question_text": "Ada berapa anggota Avenger hayo?",
+      "type_question": 1,
+      "config": {
+        "img_url": "https://lh3.googleusercontent.com/N3N8ZSmjJpOVhQ0y9GIY5wJqcRd95FsC_jp5J05Dy3MguKpTwrX00WcFp00P5DZeXmzb5H7zHL5qHDthe4aoJbtdn651q5nXtJRZu4CLo_eDcKeTN_7lwqKeqNV-IEz5TcDSHudGkPZz-DQjPB3pFpOQXkZNvp3FNBWW5NKzrzen4Uw4q3m_dJ_oWKbu43wTdrOIhoWlPf03w9cB4CbNKyYg8lfmXgviL0AO-SRVB6QKe102-lNxsCTvZKhtDYMmQwTDJ_P9a6fSxERp_lukXbaQTh9OqEGrD_dAE1GftqNYIug-za1viWDwu0lhsLjQl-ND2JmLuoSlRCSAhqnZv8ZErTSFwHVt8Lh0S_8ELM9nUfMrGedZH1l3gChpnSd4yW6HfXB-ObB96l1fV3Rd6xsUsge0Roqek-7kpgr1jmkF9GMO3fjrQlFypAFCxSMZ3BxnifWC6kjY0mHf0_ljjOPWsVJOgKiIyc2SmWyLb_klviBzRYcLgFqgDKST2o7rLQejY5uHZWHVyasL2EnJq_diTqCFQm0ztarfFSGsFa2Ji5gF8ygrAtKnv4vaPkXzx86k5MQDcHrDipP_UkbZJ8IGRG-WV7Vq=w2880-h1424",
+        "img_bg_url": "",
+        "bgm_url": ""
+      },
+      "answers": [
+        {
+          "answer_id": 0,
+          "answer_title": "kayaknya 6 deh",
+          "config": {
+            "img_url": ""
+          }
+        },
+        {
+          "answer_id": 1,
+          "answer_title": "kayaknya 7 deh",
+          "config": {
+            "img_url": ""
+          }
+        },
+        {
+          "answer_id": 2,
+          "answer_title": "kayaknya 8 deh",
+          "config": {
+            "img_url": ""
+          }
+        },
+        {
+          "answer_id": 3,
+          "answer_title": "kayaknya 9 deh",
+          "config": {
+            "img_url": ""
+          }
+        }
+      ]
+    },
+    {
+      "question_id": 2,
+      "question_text": "Siapakah pemeran utama pada film Kuch Kuch Hota Hai?",
+      "type_question": 1,
+      "config": {
+        "img_url": "",
+        "img_bg_url": "",
+        "bgm_url": ""
+      },
+      "answers": [
+        {
+          "answer_id": 0,
+          "answer_title": "Ichsan Wahyudi",
+          "config": {
+            "img_url": "https://lh3.googleusercontent.com/W4tRiCBWiUPD9uV9QZn7trLRK2MrJCW1ZNheQkus1aY04NnHgj7WSX1kG9wepYMLNvIsCX5kts8ansOsuxOvYA1fZaRQB4PWHU5bwhmFO0UPKsn1091XhmPvbp6hAHzNlTh89CBbVD4RLnqiL90XXCBgAKhU76W96Yk9f4y3A9p4J2ESLNkLWsaqS4QvjU9SEGv4SsBkP03FClAdwtGzSOToRfYyI0R8lklEp9jYSfgOvuZ7wBfl5T8i9fj8IyP5dB3-wwd-Ivd5QObrC77uMTsnaP67dXUvWKt663VWCtHigx1Vvy6o0yx1ETXlYrdNlTLOBBwCFKNXsiSsdh3id24_T7Cl9KcBRFT9PGq7ODNB_oHokx0m08XevS-z7Q4gRaeazuN0P2RRcU2tTp8KP-cvJvjSPuO7OzvaDxANTdYEo06LQowAXC2jcX5S1wHTD1T4NGv5mDQlAVoNntbgIcptV9yli8Jn5wI_u9bnniPrdPGg2aw0-9Qj2nVlcwZxlOYD_vlYO3gOHTcjxVSKoHTAcJnUyvT5rGMC0sEiGJ6G7Luzr2BrlAzwwuyGUZHj1SU3CqcWy3QgPZCNWTYhFnJRlW7s4NN5=w2880-h1424"
+          }
+        },
+        {
+          "answer_id": 1,
+          "answer_title": "Indra Wahyudi",
+          "config": {
+            "img_url": "https://lh3.googleusercontent.com/W4tRiCBWiUPD9uV9QZn7trLRK2MrJCW1ZNheQkus1aY04NnHgj7WSX1kG9wepYMLNvIsCX5kts8ansOsuxOvYA1fZaRQB4PWHU5bwhmFO0UPKsn1091XhmPvbp6hAHzNlTh89CBbVD4RLnqiL90XXCBgAKhU76W96Yk9f4y3A9p4J2ESLNkLWsaqS4QvjU9SEGv4SsBkP03FClAdwtGzSOToRfYyI0R8lklEp9jYSfgOvuZ7wBfl5T8i9fj8IyP5dB3-wwd-Ivd5QObrC77uMTsnaP67dXUvWKt663VWCtHigx1Vvy6o0yx1ETXlYrdNlTLOBBwCFKNXsiSsdh3id24_T7Cl9KcBRFT9PGq7ODNB_oHokx0m08XevS-z7Q4gRaeazuN0P2RRcU2tTp8KP-cvJvjSPuO7OzvaDxANTdYEo06LQowAXC2jcX5S1wHTD1T4NGv5mDQlAVoNntbgIcptV9yli8Jn5wI_u9bnniPrdPGg2aw0-9Qj2nVlcwZxlOYD_vlYO3gOHTcjxVSKoHTAcJnUyvT5rGMC0sEiGJ6G7Luzr2BrlAzwwuyGUZHj1SU3CqcWy3QgPZCNWTYhFnJRlW7s4NN5=w2880-h1424"
+          }
+        },
+        {
+          "answer_id": 2,
+          "answer_title": "Ichsan Indra",
+          "config": {
+            "img_url": "https://lh3.googleusercontent.com/W4tRiCBWiUPD9uV9QZn7trLRK2MrJCW1ZNheQkus1aY04NnHgj7WSX1kG9wepYMLNvIsCX5kts8ansOsuxOvYA1fZaRQB4PWHU5bwhmFO0UPKsn1091XhmPvbp6hAHzNlTh89CBbVD4RLnqiL90XXCBgAKhU76W96Yk9f4y3A9p4J2ESLNkLWsaqS4QvjU9SEGv4SsBkP03FClAdwtGzSOToRfYyI0R8lklEp9jYSfgOvuZ7wBfl5T8i9fj8IyP5dB3-wwd-Ivd5QObrC77uMTsnaP67dXUvWKt663VWCtHigx1Vvy6o0yx1ETXlYrdNlTLOBBwCFKNXsiSsdh3id24_T7Cl9KcBRFT9PGq7ODNB_oHokx0m08XevS-z7Q4gRaeazuN0P2RRcU2tTp8KP-cvJvjSPuO7OzvaDxANTdYEo06LQowAXC2jcX5S1wHTD1T4NGv5mDQlAVoNntbgIcptV9yli8Jn5wI_u9bnniPrdPGg2aw0-9Qj2nVlcwZxlOYD_vlYO3gOHTcjxVSKoHTAcJnUyvT5rGMC0sEiGJ6G7Luzr2BrlAzwwuyGUZHj1SU3CqcWy3QgPZCNWTYhFnJRlW7s4NN5=w2880-h1424"
+          }
+        },
+        {
+          "answer_id": 3,
+          "answer_title": "Salah Semua",
+          "config": {
+            "img_url": "https://lh3.googleusercontent.com/W4tRiCBWiUPD9uV9QZn7trLRK2MrJCW1ZNheQkus1aY04NnHgj7WSX1kG9wepYMLNvIsCX5kts8ansOsuxOvYA1fZaRQB4PWHU5bwhmFO0UPKsn1091XhmPvbp6hAHzNlTh89CBbVD4RLnqiL90XXCBgAKhU76W96Yk9f4y3A9p4J2ESLNkLWsaqS4QvjU9SEGv4SsBkP03FClAdwtGzSOToRfYyI0R8lklEp9jYSfgOvuZ7wBfl5T8i9fj8IyP5dB3-wwd-Ivd5QObrC77uMTsnaP67dXUvWKt663VWCtHigx1Vvy6o0yx1ETXlYrdNlTLOBBwCFKNXsiSsdh3id24_T7Cl9KcBRFT9PGq7ODNB_oHokx0m08XevS-z7Q4gRaeazuN0P2RRcU2tTp8KP-cvJvjSPuO7OzvaDxANTdYEo06LQowAXC2jcX5S1wHTD1T4NGv5mDQlAVoNntbgIcptV9yli8Jn5wI_u9bnniPrdPGg2aw0-9Qj2nVlcwZxlOYD_vlYO3gOHTcjxVSKoHTAcJnUyvT5rGMC0sEiGJ6G7Luzr2BrlAzwwuyGUZHj1SU3CqcWy3QgPZCNWTYhFnJRlW7s4NN5=w2880-h1424"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+import dataQuiz from './quiz.json';
+
 const dataRanking = [
   {
     ranking: '1',
@@ -99,14 +101,14 @@ const dataRanking = [
   },
 ];
 
-window.onBack = onBack;
+// window.onBack = onBack;
 
-function onBack(page) {
-  renderHome();
-}
+// function onBack(page) {
+//   renderHome();
+// }
 
 $(document).ready(function() {
-  renderHome();
+  initHome();
 });
 
 // General
@@ -146,19 +148,25 @@ function renderWrapper(html) {
 }
 
 // Home
+
+window.initHome = initHome;
 function initHome() {
-  $('body').prepend(sound);
+  const wrapper = `
+    <div id="wrapper"></div>
+  `;
+
+  const sound = `
+    <audio id="js_sound-opening" src="./assets/music/opening.mp3"></audio>
+  `;
+  $('body').empty();
   $('body').prepend(wrapper);
+  $('body').prepend(sound);
+  soundOpening();
+  renderHome();
 }
 
 window.renderHome = renderHome;
 function renderHome() {
-  const wrapper = `
-    <div id="wrapper"></div>
-  `;
-  const sound = `
-    <audio id="js_sound-home" src="./assets/music/opening.mp3"></audio>
-  `;
   const html = `
     <div class="landing-page">
       <div class="landing-page__wrapper">
@@ -235,17 +243,7 @@ function renderHome() {
     </div>
   `;
 
-  // renderPage(html);
-  $('body').prepend(sound);
-  $('body').prepend(wrapper);
   renderWrapper(html);
-  soundHome();
-}
-
-function soundHome() {
-  let audioHome = document.getElementById('js_sound-home');
-  audioHome.play();
-  audioHome.loop = true;
 }
 
 // Leaderboard
@@ -483,37 +481,46 @@ $(function handleResetSearchRanking() {
 window.renderStartQuiz = renderStartQuiz;
 function renderStartQuiz() {
   const html = `
-  <div class="quiz">
-    <div class="quiz__wrapper">
-    </div>
-    <div class="overlay"></div>
-    <div class="dialog dialog--custom dialog--back">
-      <div class="dialog__container">
-        <div class="dialog__close" onclick="handleCloseDialog()"></div>
-        <div class="dialog__content">
-          <div class="dialog__inner">
-            <h3 class="dialog__title">Kembali ke Home Captain Marvel Quiz?</h3>
-            <p class="dialog__desc">Skor akan hangus dan Anda tidak dapat melanjutkan kuis hari ini apabila telah keluar.</p>
-            <button class="btn btn--exit" onclick="renderHome()">
-              <div class="btn__inner">
-                <span>Ya, Keluar</span>
-              </div>
-            </button>
+    <div class="quiz">
+      <div class="quiz__wrapper">
+        <div class="quiz__wrapper-start"></div>
+        <div class="quiz__wrapper-menu"></div>
+        <div class="quiz__wrapper-content"></div>
+      </div>
+      <div class="overlay"></div>
+      <div class="dialog dialog--custom dialog--back">
+        <div class="dialog__container">
+          <div class="dialog__close" onclick="handleCloseDialog()"></div>
+          <div class="dialog__content">
+            <div class="dialog__inner">
+              <h3 class="dialog__title">Kembali ke Home Captain Marvel Quiz?</h3>
+              <p class="dialog__desc">Skor akan hangus dan Anda tidak dapat melanjutkan kuis hari ini apabila telah keluar.</p>
+              <button class="btn btn--exit" onclick="initHome()">
+                <div class="btn__inner">
+                  <span>Ya, Keluar</span>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </div>
+      <audio id="js_sound-quiz" src="./assets/music/quiz.mp3"></audio>
+      <audio id="js_sound-onboarding-quiz" src="./assets/music/start-quiz.mp3"></audio>
+      <audio id="js_sound-choose" src="./assets/music/choose-answer.mp3"></audio>
+      <audio id="js_sound-correct" src="./assets/music/right-answer.mp3"></audio>
+      <audio id="js_sound-wrong" src="./assets/music/wrong-answer.mp3"></audio>
     </div>
-    <audio id="js_sound-quiz" src="./assets/music/quiz.mp3"></audio>
-    <audio id="js_sound-start-quiz" src="./assets/music/start-quiz.mp3"></audio>
-  </div>
   `;
 
   renderPage(html);
-  soundStartQuiz();
-  getReady('Bantu misi Captain Marvel dengan jawab 5 pertanyaan berikut ini');
+  soundOnboardingQuiz();
+  getReady(
+    false,
+    'Bantu misi Captain Marvel dengan jawab 5 pertanyaan berikut ini'
+  );
 }
 
-function getReady(text) {
+function getReady(next, text) {
   const countDown = `
     <div class="quiz__start start">
       <div class="start__txt">${text}</div>
@@ -522,16 +529,19 @@ function getReady(text) {
         <div class="start__timer-spark"></div>
         <h1 class="start__timer-num countdown__num"></h1>
       </div>
-      <audio id="js_sound-countdown" src="./assets/music/countdown.mp3"></audio>
+      <audio id="js_sound-countdown" src="./assets/music/countdowns.mp3"></audio>
     </div>
   `;
 
-  $('.quiz__wrapper').prepend(countDown);
+  $('.quiz__wrapper-start').prepend(countDown);
   soundCountdown();
-  handleTimeStart(true, 3);
+  handleTimeStart(next, 3);
+  if (next) {
+    $('.quiz__time').remove();
+  }
 }
 
-function handleTimeStart(first, time) {
+function handleTimeStart(next, time) {
   $('.countdown__num').text(time);
   let timeStart = setInterval(() => {
     $('.countdown__num').text(time--);
@@ -541,124 +551,122 @@ function handleTimeStart(first, time) {
     }, 500);
     if (time < 0) {
       clearInterval(timeStart);
-      renderQuiz();
+      $('.quiz__wrapper-start').empty();
+      if (!next) {
+        console.log('bukan next');
+        renderMenuQuiz();
+        initQuiz();
+      } else {
+        console.log('next');
+        initQuiz();
+      }
     }
-  }, 2000);
-}
-
-function soundStartQuiz() {
-  let audioStartQuiz = document.getElementById('js_sound-start-quiz');
-  audioStartQuiz.play();
-}
-
-function soundCountdown() {
-  let audioCountdown = document.getElementById('js_sound-countdown');
-  audioCountdown.loop = true;
-  setTimeout(() => {
-    audioCountdown.play();
   }, 1500);
-}
-
-window.renderQuiz = renderQuiz;
-function renderQuiz(first) {
-  // if (!first) {
-    renderMenuQuiz();
-    initQuiz()
-  // }
 }
 
 function renderMenuQuiz() {
   const menu = `
     <div class="quiz__menu menu">
       <span class="menu__action menu__action--back" onclick="handleOpenDialog()"></span>
-      <div class="countdown quiz__time" style="opacity: 0">
-        <span class="countdown__num"></span>
-        <svg class="countdown__progress">
-          <defs>
-            <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" style="stop-color:#b21c26" />
-              <stop offset="100%" style="stop-color:#ffdb84" />
-            </linearGradient>
-          </defs>
-          <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
-          <circle class="countdown__progress-bar" />
-        </svg>
-      </div>
       <div class="menu__score">
         <span>0</span>
       </div>
     </div>
   `;
 
-  $('.quiz__start').remove();
-  $('.quiz__wrapper').append(menu);
-  soundQuiz();
-  handleTimeQuiz(7);
-  // initQuiz();
+  $('.quiz__wrapper-menu').append(menu);
 }
 
-function initQuiz() {
-  const questions = `
-    <div class="quiz__content quiz__content--text">
-
-      <div class="quiz__question">
-        <div class="quiz__question-inner">
-          <span>Siapa pemeran utama pada film Kuch-Kuch Hota Hai?</span>
-        </div>
-      </div>
-      
-      <div class="quiz__answer">
-        <div class="quiz__answer-btn">
-          <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
-            <div class="answer-btn__inner">
-              <div class="answer-btn__val">
-                <span>Ichsan Wahyudi</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="quiz__answer-btn">
-          <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
-            <div class="answer-btn__inner">
-              <div class="answer-btn__val">
-                <span>Ichsan Wahyudi</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="quiz__answer-btn">
-          <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
-            <div class="answer-btn__inner">
-              <div class="answer-btn__val">
-                <span>Ichsan Wahyudi</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="quiz__answer-btn">
-          <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
-            <div class="answer-btn__inner">
-              <div class="answer-btn__val">
-                <span>Ichsan Wahyudi</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <audio id="js_sound-choose" src="./assets/music/choose-answer.mp3"></audio>
-      <audio id="js_sound-correct" src="./assets/music/correct-answer.mp3"></audio>
-      <audio id="js_sound-wrong" src="./assets/music/wrong-answer.mp3"></audio>
-
+function renderTimeQuiz() {
+  const time = `
+    <div class="countdown quiz__time">
+      <span class="countdown__num"></span>
+      <svg class="countdown__progress">
+        <defs>
+          <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#b21c26" />
+            <stop offset="100%" style="stop-color:#ffdb84" />
+          </linearGradient>
+        </defs>
+        <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
+        <circle class="countdown__progress-bar" />
+      </svg>
     </div>
   `;
 
-  const numberQuiz = `
-    <h6 class="quiz__of">1 dari 5 pertanyaan</h6>
+  $('.quiz__menu').append(time);
+  handleTimeQuiz(7);
+}
+
+let quizCount = dataQuiz.questions.length;
+
+function initQuiz() {
+  console.log('init awal', quizCount);
+  quizCount = quizCount - (quizCount - 1);
+
+  console.log(quizCount);
+  questionsAnswer(quizCount);
+  // for (const key of dataQuiz.questions) {
+  // }
+}
+
+function questionsAnswer(idx) {
+  soundQuiz();
+  renderTimeQuiz();
+
+  $('.quiz__wrapper-content').empty();
+
+  const data = dataQuiz.questions[idx];
+
+  const questionsContainer = `
+    <div class="quiz__content quiz__content--text">
+      <div class="quiz__question"></div>
+      <div class="quiz__answer"></div>
+    </div>
   `;
 
-  $('.quiz__wrapper').append(questions);
+  $('.quiz__wrapper-content').append(questionsContainer);
+
+  console.log(data.config.img_url != '');
+
+  let questions = `
+    <div class="quiz__question-inner">
+      <span>${data.question_text}</span>
+    </div>
+  `;
+
+  $('.quiz__question').append(questions);
+
+  if (data.config.img_url != '') {
+    console.log('mausk');
+    let questionsImg = `
+      <img src="${data.config.img_url}" alt="">
+    `;
+    $('.quiz__question-inner').prepend(questionsImg);
+  }
+
+  let numberQuiz = `
+    <h6 class="quiz__of">${quizCount} dari ${
+    dataQuiz.questions.length
+  } pertanyaan</h6>
+  `;
+
   $('.quiz__content').append(numberQuiz);
+
+  for (const key of data.answers) {
+    let answer = `
+      <div class="quiz__answer-btn">
+        <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
+          <div class="answer-btn__inner">
+            <div class="answer-btn__val">
+              <span>${key.answer_title}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    $('.quiz__answer').append(answer);
+  }
 }
 
 function handleTimeQuiz(start) {
@@ -693,9 +701,9 @@ function handleTimeQuiz(start) {
 function handleCheckAnswer() {
   let $answer = $('.answer-btn--active');
   // console.log($answer);
-  $answer.removeClass('answer-btn--active').addClass('answer-btn--wrong');
-  // soundCorrectAnswer();
-  soundWrongAnswer();
+  $answer.removeClass('answer-btn--active').addClass('answer-btn--correct');
+  soundCorrectAnswer();
+  // soundWrongAnswer();
 
   setTimeout(() => {
     nextQuestions();
@@ -709,7 +717,7 @@ function nextQuestions() {
   }, 1000);
   setTimeout(() => {
     // renderComplete();
-    getReady('Siap jawab pertanyaan kedua');
+    getReady(true, 'Siap jawab pertanyaan kedua');
   }, 1500);
 }
 
@@ -875,4 +883,25 @@ function countUp(count) {
       soundScore(false);
     }
   }, int_speed);
+}
+
+// Audio
+
+function soundOpening() {
+  let audioHome = document.getElementById('js_sound-opening');
+  audioHome.play();
+  audioHome.loop = true;
+}
+
+function soundOnboardingQuiz() {
+  let audioStartQuiz = document.getElementById('js_sound-onboarding-quiz');
+  audioStartQuiz.play();
+}
+
+function soundCountdown() {
+  let audioCountdown = document.getElementById('js_sound-countdown');
+  audioCountdown.loop = true;
+  setTimeout(() => {
+    audioCountdown.play();
+  }, 1500);
 }
