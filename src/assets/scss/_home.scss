@@ -94,7 +94,6 @@
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     }
     &-spark{
-      content: '';
       position: absolute;
       top: 0;
       left: 0;
@@ -157,5 +156,11 @@
     color: $whitePrimary;
     opacity: .7;
     margin: 0 0 8px;
+  }
+}
+
+.trivia{
+  &--marvel{
+    
   }
 }

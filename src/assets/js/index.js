@@ -140,12 +140,25 @@ function renderPage(html) {
   $('body').append(html);
 }
 
+function renderWrapper(html) {
+  $('#wrapper').empty();
+  $('#wrapper').append(html);
+}
+
 // Home
+function initHome() {
+  $('body').prepend(sound);
+  $('body').prepend(wrapper);
+}
 
 window.renderHome = renderHome;
 function renderHome() {
-  // <p class="landing-page__desc">Kuis akan dimulai pada 12.00 - 13.00</p>;
-
+  const wrapper = `
+    <div id="wrapper"></div>
+  `;
+  const sound = `
+    <audio id="js_sound-home" src="./assets/music/opening.mp3"></audio>
+  `;
   const html = `
       <div class="landing-page">
         <div class="landing-page__wrapper">
@@ -224,39 +237,42 @@ function renderHome() {
       </div>
     `;
 
-  renderPage(html);
+  $('body').prepend(sound);
+  $('body').prepend(wrapper);
+  renderWrapper(html);
   soundsHome();
-  
+
   dummyInfo()
 }
 
-function soundsHome() {
+function soundHome() {
   let audioHome = document.getElementById('js_sound-home');
   audioHome.play();
+  audioHome.loop = true;
 }
 
 var dummyInfoInterval
-function dummyInfo(){
-  dummyInfoInterval = setInterval(function(){
+function dummyInfo() {
+  dummyInfoInterval = setInterval(function () {
     randomDummy()
   }, 1000)
 }
-function randomDummy(){
+function randomDummy() {
   var numb = Math.ceil(Math.random() * 10)
-  if(numb >= 7){
+  if (numb >= 7) {
     otherPlayerInfo()
     clearInterval(dummyInfoInterval)
   }
 }
-function otherPlayerInfo(){
-  var data = dataRanking[Math.floor(Math.random()*dataRanking.length)]
+function otherPlayerInfo() {
+  var data = dataRanking[Math.floor(Math.random() * dataRanking.length)]
   $('.landing-page__info')
     .find('p').text(`${data.name} mendapatkan skor ${data.skor}`).end()
     .find('span').text(data.skor).end()
     .addClass('landing-page__info--show')
   setTimeout(() => {
     $('.landing-page__info').removeClass('landing-page__info--show')
-    dummyInfoInterval = setInterval(function(){
+    dummyInfoInterval = setInterval(function () {
       randomDummy()
     }, 1000)
   }, 5000);
@@ -291,7 +307,7 @@ function renderLeaderboard(page = 'home') {
       </div>
     `;
 
-  renderPage(html);
+  renderWrapper(html);
 
   handleLoaderResult();
   setTimeout(() => {
@@ -405,7 +421,7 @@ function handleLoaderResult() {
 
   appendRankingElem(loader);
 
-  for(var i = 1;i <= 3;i++){
+  for (var i = 1; i <= 3; i++) {
     const loadRank = `
       <div class="col-4">
         <div class="top top--${i}">
@@ -515,50 +531,58 @@ $(function handleResetSearchRanking() {
 
 // Quiz
 
-window.startQuiz = startQuiz;
-function startQuiz() {
-  renderStartQuiz(
-    'Bantu misi Captain Marvel dengan jawab 5 pertanyaan berikut ini'
-  );
-}
-
 window.renderStartQuiz = renderStartQuiz;
-function renderStartQuiz(text) {
+function renderStartQuiz() {
   const html = `
-    <div class="quiz">
-      <div class="quiz__wrapper">
-        <div class="quiz__start start">
-          <div class="start__txt">${text}</div>
-          <div class="start__timer countdown">
-            <h1 class="start__timer-num countdown__num"></h1>
-          </div>
-        </div>
-      </div>
-      <div class="overlay"></div>
-      <div class="dialog dialog--custom dialog--back">
-        <div class="dialog__container">
-          <div class="dialog__close" onclick="handleCloseDialog()"></div>
-          <div class="dialog__content">
-            <div class="dialog__inner">
-              <h3 class="dialog__title">Kembali ke Home Captain Marvel Quiz?</h3>
-              <p class="dialog__desc">Skor akan hangus dan Anda tidak dapat melanjutkan kuis hari ini apabila telah keluar.</p>
-              <button class="btn btn--exit">
-                <div class="btn__inner">
-                  <span>Ya, Keluar</span>
-                </div>
-              </button>
-            </div>
+  <div class="quiz">
+    <div class="quiz__wrapper">
+    </div>
+    <div class="overlay"></div>
+    <div class="dialog dialog--custom dialog--back">
+      <div class="dialog__container">
+        <div class="dialog__close" onclick="handleCloseDialog()"></div>
+        <div class="dialog__content">
+          <div class="dialog__inner">
+            <h3 class="dialog__title">Kembali ke Home Captain Marvel Quiz?</h3>
+            <p class="dialog__desc">Skor akan hangus dan Anda tidak dapat melanjutkan kuis hari ini apabila telah keluar.</p>
+            <button class="btn btn--exit" onclick="renderHome()">
+              <div class="btn__inner">
+                <span>Ya, Keluar</span>
+              </div>
+            </button>
           </div>
         </div>
       </div>
     </div>
-    `;
+    <audio id="js_sound-quiz" src="./assets/music/quiz.mp3"></audio>
+    <audio id="js_sound-start-quiz" src="./assets/music/start-quiz.mp3"></audio>
+  </div>
+  `;
 
   renderPage(html);
-  handleTimeStart(3);
+  soundStartQuiz();
+  getReady('Bantu misi Captain Marvel dengan jawab 5 pertanyaan berikut ini');
 }
 
-function handleTimeStart(time) {
+function getReady(text) {
+  const countDown = `
+    <div class="quiz__start start">
+      <div class="start__txt">${text}</div>
+      <div class="start__timer countdown">
+        <div class="start__timer-moon countdown__illus"></div>
+        <div class="start__timer-spark"></div>
+        <h1 class="start__timer-num countdown__num"></h1>
+      </div>
+      <audio id="js_sound-countdown" src="./assets/music/countdown.mp3"></audio>
+    </div>
+  `;
+
+  $('.quiz__wrapper').prepend(countDown);
+  soundCountdown();
+  handleTimeStart(true, 3);
+}
+
+function handleTimeStart(first, time) {
   $('.countdown__num').text(time);
   let timeStart = setInterval(() => {
     $('.countdown__num').text(time--);
@@ -570,36 +594,58 @@ function handleTimeStart(time) {
       clearInterval(timeStart);
       renderQuiz();
     }
-  }, 1000);
+  }, 2000);
+}
+
+function soundStartQuiz() {
+  let audioStartQuiz = document.getElementById('js_sound-start-quiz');
+  audioStartQuiz.play();
+}
+
+function soundCountdown() {
+  let audioCountdown = document.getElementById('js_sound-countdown');
+  audioCountdown.loop = true;
+  setTimeout(() => {
+    audioCountdown.play();
+  }, 1500);
 }
 
 window.renderQuiz = renderQuiz;
-function renderQuiz() {
+function renderQuiz(first) {
+  // if (!first) {
+  renderMenuQuiz();
+  initQuiz()
+  // }
+}
+
+function renderMenuQuiz() {
   const menu = `
-      <div class="quiz__menu menu">
-        <span class="menu__action menu__action--back" onclick="handleOpenDialog()"></span>
-        <div id="js_quiz-time" class="countdown quiz__time">
-          <span class="countdown__num"></span>
-          <svg class="countdown__progress">
-            <defs>
-              <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:#b21c26" />
-                <stop offset="100%" style="stop-color:#ffdb84" />
-              </linearGradient>
-            </defs>
-            <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
-            <circle class="countdown__progress-bar" />
-          </svg>
-        </div>
-        <div class="menu__score">
-          <span>0</span>
-        </div>
+    <div class="quiz__menu menu">
+      <span class="menu__action menu__action--back" onclick="handleOpenDialog()"></span>
+      <div class="countdown quiz__time" style="opacity: 0">
+        <span class="countdown__num"></span>
+        <svg class="countdown__progress">
+          <defs>
+            <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:#b21c26" />
+              <stop offset="100%" style="stop-color:#ffdb84" />
+            </linearGradient>
+          </defs>
+          <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
+          <circle class="countdown__progress-bar" />
+        </svg>
       </div>
+      <div class="menu__score">
+        <span>0</span>
+      </div>
+    </div>
     `;
 
-  $('.quiz__wrapper').empty();
+  $('.quiz__start').remove();
   $('.quiz__wrapper').append(menu);
-  initQuiz();
+  soundQuiz();
+  handleTimeQuiz(7);
+  // initQuiz();
 }
 
 function initQuiz() {
@@ -652,7 +698,13 @@ function initQuiz() {
         </div>
   
       </div>
-    `;
+
+      <audio id="js_sound-choose" src="./assets/music/choose-answer.mp3"></audio>
+      <audio id="js_sound-correct" src="./assets/music/correct-answer.mp3"></audio>
+      <audio id="js_sound-wrong" src="./assets/music/wrong-answer.mp3"></audio>
+
+    </div>
+  `;
 
   const numberQuiz = `
       <h6 class="quiz__of">1 dari 5 pertanyaan</h6>
@@ -660,7 +712,6 @@ function initQuiz() {
 
   $('.quiz__wrapper').append(questions);
   $('.quiz__content').append(numberQuiz);
-  handleTimeQuiz(5);
 }
 
 function handleTimeQuiz(start) {
@@ -669,36 +720,57 @@ function handleTimeQuiz(start) {
   var timeOut = setInterval(() => {
     $('.countdown__num').text(start--);
     $('.countdown').addClass('countdown--animate');
-    bar = bar - 26;
-    $('.countdown__progress-bar');
-    $('.countdown__progress-bar').css({
-      'stroke-dashoffset': bar,
-    });
     setTimeout(() => {
       $('.countdown').removeClass('countdown--animate');
     }, 500);
     if (start < 0) {
       clearInterval(timeOut);
       handleCheckAnswer();
+      // setTimeout(() => {
+      //   nextQuestions();
+      // }, 1000);
     }
   }, 1000);
+
+  var barCount = setInterval(() => {
+    $('.countdown__progress-bar');
+    $('.countdown__progress-bar').css({
+      'stroke-dashoffset': bar--,
+    });
+    if (start < 0) {
+      clearInterval(barCount);
+    }
+  }, 50);
 }
 
 function handleCheckAnswer() {
   let $answer = $('.answer-btn--active');
   // console.log($answer);
-  $answer.removeClass('answer-btn--active').addClass('answer-btn--correct');
-  // soundsCorrectAnswer();
+  $answer.removeClass('answer-btn--active').addClass('answer-btn--wrong');
+  // soundCorrectAnswer();
+  soundWrongAnswer();
+
   setTimeout(() => {
-    renderComplete();
-    // renderStartQuiz('Siap jawab pertanyaan kedua');
+    nextQuestions();
   }, 1000);
+}
+
+function nextQuestions() {
+  setTimeout(() => {
+    // $('.quiz__menu').addClass('quiz__menu--hide');
+    $('.quiz__content').addClass('quiz__content--hide');
+  }, 1000);
+  setTimeout(() => {
+    // renderComplete();
+    getReady('Siap jawab pertanyaan kedua');
+  }, 1500);
 }
 
 window.handleBtnAnswerTxt = handleBtnAnswerTxt;
 function handleBtnAnswerTxt(e) {
   focusAnswer('text');
   $(e).addClass('answer-btn--active');
+  soundChooseAnswer();
 }
 
 window.handleBtnAnswerImg = handleBtnAnswerImg;
@@ -708,13 +780,25 @@ function handleBtnAnswerImg(e) {
   $(e).addClass('answer-btn--active');
 }
 
-function soundsCorrectAnswer() {
-  let audio = document.getElementById('js_sound-lock');
-  audio.play();
-  setTimeout(() => {
-    audio.pause();
-    audio.currentTime = 0;
-  }, 800);
+function soundQuiz() {
+  let audioQuiz = document.getElementById('js_sound-quiz');
+  audioQuiz.play();
+  audioQuiz.loop = true;
+}
+
+function soundChooseAnswer() {
+  let audioChooseAnswer = document.getElementById('js_sound-choose');
+  audioChooseAnswer.play();
+}
+
+function soundCorrectAnswer() {
+  let audioCorrectAnswer = document.getElementById('js_sound-correct');
+  audioCorrectAnswer.play();
+}
+
+function soundWrongAnswer() {
+  let audioWrongAnswer = document.getElementById('js_sound-wrong');
+  audioWrongAnswer.play();
 }
 
 function focusAnswer(type) {
@@ -759,19 +843,25 @@ function renderComplete() {
           </div>
         </button>
       </div>
-  
-      <div class="overlay"></div>
-      <div class="dialog dialog--reward">
-        <div class="dialog__container">
-          <div id="js_close-dialog" class="dialog__close"></div>
-          <div class="dialog__star">
-            <div class="dialog__star-line dialog__star-line--left">
-              <div class="dialog__star-line__inner"></div>
-            </div>
-            <div class="dialog__star-icon"></div>
-            <div class="dialog__star-line dialog__star-line--right">
-              <div class="dialog__star-line__inner"></div>
-            </div>
+      <p class="game-over__desc">Lihat konten berikut untuk dapatkan 2x skor</p>
+      <button class="btn btn--primary" onclick="renderAds()">
+        <div class="btn__inner">
+          <span>Gandakan Skor</span>
+        </div>
+      </button>
+    </div>
+
+    <div class="overlay"></div>
+    <div class="dialog dialog--reward">
+      <div class="dialog__container">
+        <div id="js_close-dialog" class="dialog__close"></div>
+        <div class="dialog__star">
+          <div class="dialog__star-line dialog__star-line--left">
+            <div class="dialog__star-line__inner"></div>
+          </div>
+          <div class="dialog__star-icon"></div>
+          <div class="dialog__star-line dialog__star-line--right">
+            <div class="dialog__star-line__inner"></div>
           </div>
           <div class="dialog__content">
             <div class="dialog__inner dialog__inner--star">
@@ -799,27 +889,31 @@ function renderComplete() {
       <audio id="js_sound-score" src="./assets/music/score.mp3"></audio>
   
     </div>
-    `;
+
+    <audio id="js_sound-score" src="./assets/music/score.mp3"></audio>
+
+    <div class="ads">
+      <img class="ads__image" src="./assets/img/ads1.jpg" alt=""/>
+    </div>
+
+  </div>
+  `;
 
   renderPage(html);
-  soundsScore(true);
-  countUp(2000);
+  soundScore(true);
+  countUp(1500);
 }
 
+window.renderAds = renderAds;
 function renderAds() {
-  const html = `
-      <div class="ads">
-        
-      </div>
-    `;
-
-  $('.game-over').append(html)
+  $('.ads').addClass('ads--show');
 }
 
-function soundsScore(play) {
+function soundScore(play) {
   let audioScore = document.getElementById('js_sound-score');
   if (play) {
     audioScore.play();
+    audioScore.loop = true;
   } else {
     audioScore.pause();
   }
@@ -841,7 +935,7 @@ function countUp(count) {
       $display.text(curr_count);
     } else {
       clearInterval(int);
-      soundsScore(false);
+      soundScore(false);
     }
   }, int_speed);
 }

@@ -54,3 +54,22 @@
     margin: 16px 0;
   }
 }
+
+.ads{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: $whitePrimary;
+  transition: all ease .4s;
+  transform: translateY(100%);
+  &--show{
+    transform: translateY(0px)
+  }
+  &__image{
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+}
