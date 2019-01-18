@@ -74,6 +74,17 @@
                 height: 120px;
               }
             }
+            &--loader{
+              .unf-loader-circle{
+                  width: 75px;
+                  height: 75px;
+                  opacity: .7;
+                  @include breakpoint(sm){
+                    width: 112px;
+                    height: 112px;
+                  }
+              }
+            }
           }
           &__star{
             bottom: -25px;
@@ -100,6 +111,17 @@
               background-image: linear-gradient(to bottom, #848484, #ffffff, #818080);
               box-shadow: 0 0 12px 0 #9b9b9b, inset 0 2px 4px 0 rgba(0, 0, 0, 0.5);
             } 
+            &--loader{
+                .unf-loader-circle{
+                    width: 56px;
+                    height: 56px;
+                    opacity: .7;
+                    @include breakpoint(sm){
+                      width: 84px;
+                      height: 84px;
+                    }
+                }
+            }
           }
           &__star{
             background-image: url(../img/star2.svg);
@@ -116,6 +138,17 @@
             &-border{
               background-image: linear-gradient(to bottom, #ae670b, #fdf8ef, #cc7f30);
               box-shadow: 0 0 12px 0 #e6c15e, inset 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+            }
+            &--loader{
+                .unf-loader-circle{
+                    width: 56px;
+                    height: 56px;
+                    opacity: .7;
+                    @include breakpoint(sm){
+                      width: 84px;
+                      height: 84px;
+                    }
+                }
             }
           }
           &__star{
@@ -209,6 +242,20 @@
           margin: 0;
           font-size: 14px;
           font-weight: 900;
+        }
+        &--loader{
+          &-name, &-phone, &-score{
+              margin-bottom: 4px;
+              width: 100%;
+              opacity: .7;
+          }
+          &-phone{
+              opacity: .5;
+              width: 80%;
+          }
+          &-score{
+              width: 40%;
+          }
         }
       }
     }
