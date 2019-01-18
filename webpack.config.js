@@ -122,6 +122,10 @@ const webpackConfig = {
       template: './src/general_complete.html',
       filename: 'general_complete.html',
     }),
+    new HtmlWebpackPlugin({
+      template: './src/general_leaderboard.html',
+      filename: 'general_leaderboard.html',
+    }),
     new MiniCssExtractPlugin({
       filename: isProduction ? '[name].[contenthash].min.css' : '[name].css',
       chunkFilename: '[id].css',
