@@ -1,0 +1,208 @@
+@include keyframes(infiniteRotate){
+    0%{
+        transform: translateX(-50%) rotate(0) scale(1);
+    }
+    25%{
+        transform: translateX(-50%) rotate(90deg) scale(1.2);
+    }
+    50%{
+        transform: translateX(-50%) rotate(180deg) scale(1);
+    }
+    75%{
+        transform: translateX(-50%) rotate(270deg) scale(1.2);
+    }
+    100%{
+        transform: translateX(-50%) rotate(360deg) scale(1);
+    }
+}
+.general-trivia {
+    .dialog {
+        &--custom {
+            .dialog {
+                &__content {
+                    &::before,
+                    &::after {
+                        content: '';
+                        width: 100%;
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        margin: 0 auto;
+                        z-index: 2;
+                    }
+                    &::before {
+                        background-size: contain;
+                        height: 45px;
+                        top: -32px;
+                    }
+                    &:after {
+                        height: 66px;
+                        bottom: -58px;
+                    }
+                }
+            }
+        }
+        &--home {
+            .dialog {
+                &__inner {
+                    padding-top: 40px;
+                    background-image: none;
+                }
+                &__desc {
+                    margin: 0 auto 16px;
+                }
+                &__content {
+                    &::before {
+                        background-image: none;
+                    }
+                    &:after {
+                        background-image: none;
+                    }
+                }
+            }
+        }
+        &--back {
+            .dialog {
+                &__inner {
+                    text-align: left;
+                    background-image: none;
+                }
+                &__title{
+                    margin-bottom: 16px;
+                }
+                &__desc {
+                    color: rgba(0,0,0,.54);
+                    margin: 0 0 40px;
+                    line-height: 1.43;
+                }
+                &__content {
+                    &::before {
+                        background-image: none;
+                    }
+                    &:after {
+                        background-image: none;
+                    }
+                }
+            }
+        }
+        &--reward {
+            .dialog {
+                &__container{
+                    position: relative;
+                    &::before{
+                        content: '';
+                        position: absolute;
+                        width: 208px;
+                        height: 208px;
+                        top: -104px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        @include backgroundImg;
+                        background-image: url('../img/tokopedia/shine.png');
+                        background-position-y: top;
+                        opacity: .4;
+                        animation: infiniteRotate 15s linear 0s infinite normal forwards;
+                    }
+                }
+                &__inner {
+                    background-image: none;
+                    padding-top: 40px;
+                    .coupon {
+                        margin-top: 8px;
+                        margin-bottom: 16px;
+                        &__list{
+                            max-width: 90%;
+                        }
+                    }
+                }
+                &__desc {
+                    margin: 0;
+                }
+                &__star{
+                    &-icon{
+                        width: 66px;
+                        background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NiIgaGVpZ2h0PSI2MyIgdmlld0JveD0iMCAwIDY2IDYzIj4gICAgPGRlZnM+ICAgICAgICA8cmFkaWFsR3JhZGllbnQgaWQ9ImEiIGN5PSIwJSIgcj0iNzguODIyJSIgZng9IjUwJSIgZnk9IjAlIj4gICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRkZGIi8+ICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIzNi4yNiUiIHN0b3AtY29sb3I9IiNGOEUwQUEiLz4gICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNFREI5M0UiLz4gICAgICAgIDwvcmFkaWFsR3JhZGllbnQ+ICAgIDwvZGVmcz4gICAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4gICAgICAgIDxwYXRoIGZpbGw9InVybCgjYSkiIHN0cm9rZT0iI0ZGRiIgc3Ryb2tlLXdpZHRoPSIzIiBkPSJNMzcgNTUuNWwtMTQuNTc0IDcuNjYyYTQgNCAwIDAgMS01LjgwNC00LjIxN2wyLjc4My0xNi4yMjgtMTEuNzktMTEuNDkzQTQgNCAwIDAgMSA5LjgzMiAyNC40bDE2LjI5NC0yLjM2OCA3LjI4Ny0xNC43NjVhNCA0IDAgMCAxIDcuMTc0IDBsNy4yODcgMTQuNzY1IDE2LjI5NCAyLjM2OGE0IDQgMCAwIDEgMi4yMTcgNi44MjNsLTExLjc5IDExLjQ5MyAyLjc4MyAxNi4yMjhhNCA0IDAgMCAxLTUuODA0IDQuMjE3TDM3IDU1LjV6IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNCAtMykiLz4gICAgICAgIDxwYXRoIHN0cm9rZT0iI0REQTkyQSIgZD0iTTMzIDQ3bC0xMS42OTUgNi4xNDlhMiAyIDAgMCAxLTIuOTAyLTIuMTA5bDIuMjMzLTEzLjAyMy05LjQ2Mi05LjIyM2EyIDIgMCAwIDEgMS4xMDktMy40MTFsMTMuMDc2LTEuOSA1Ljg0OC0xMS44NDlhMiAyIDAgMCAxIDMuNTg2IDBsNS44NDggMTEuODQ5IDEzLjA3NiAxLjlhMiAyIDAgMCAxIDEuMTA5IDMuNDExbC05LjQ2MiA5LjIyMyAyLjIzMyAxMy4wMjNhMiAyIDAgMCAxLTIuOTAyIDIuMTA5TDMzIDQ3eiIvPiAgICA8L2c+PC9zdmc+);
+                    }
+                }
+            }
+        }
+        &__content {
+            box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.3);
+            background: none;
+            padding: 0;
+        }
+        &__inner {
+            text-align: center;
+            padding: 24px 16px 32px;
+            background-color: $whitePrimary;
+            border-radius: 8px;
+        }
+        &__close {
+            width: 22px;
+            height: 22px;
+            top: 16px;
+            right: 16px;
+            transform: rotate(45deg);
+            &::before,
+            &::after {
+                height: 22px;
+            }
+            &::before {
+                transform: rotate(0) translateX(11px);
+                background: none;
+                background-color: #bdbdbd;
+            }
+            &::after {
+                transform: rotate(90deg) translateY(-11px);
+                background: none;
+                background-color: #bdbdbd;
+            }
+        }
+        &__shield {
+            &-top {
+                width: 100%;
+                display: block;
+                position: absolute;
+                z-index: 1;
+                top: -20px; // left: -6px;
+            }
+            &-bottom {
+                width: 100%;
+                display: block;
+                position: absolute;
+                z-index: 2; // bottom: -64px;
+                bottom: -60px;
+            }
+        }
+        &__title {
+            text-shadow: none;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 1.38;
+            color: rgba(0,0,0,.7);
+        }
+        &__desc {
+            max-width: 100%;
+            font-size: 14px;
+            font-weight: normal;
+            text-shadow: none;
+            line-height: 1.29;
+            color: rgba(0,0,0,.7);
+        }
+        &__star {
+            &-icon {
+                background-image: none;
+            }
+            &::before,
+            &::after {
+                background-image: none;
+            }
+            &::before {
+                transform: none;
+            }
+        }
+        .coupon {
+            margin-bottom: 0;
+        }
+    }
+}

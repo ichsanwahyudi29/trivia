@@ -1,0 +1,58 @@
+.leaderboard {
+    background-image: url(../img/tokopedia/bg-general_quiz.jpg);
+    &::before {
+        background-image: none;
+    }
+    &__menu {
+        @include breakpoint(sm) {
+            padding: 32px 0;
+            margin: 0 32px;
+        }
+        .menu {
+            &__title {
+                line-height: 29px;
+                text-shadow: none;
+                color: $whitePrimary;
+            }
+        }
+    }
+    &__top {
+        .top {
+            &__info {
+                &-phone {
+                    margin: 3px 0 8px;
+                    font-size: 12px;
+                    opacity: .7;
+                    font-family: 'SPProText';
+                }
+            }
+            &__img{
+                height: 130px;
+                @include breakpoint(sm){
+                    height: 180px;
+                }
+            }
+        }
+    }
+    .ranking {
+        &__info {
+            .info {
+                &-profile {
+                    .profile {
+                        &-name {
+                            font-weight: normal;
+                            color: rgba(0, 0, 0, .7);
+                        }
+                        &-phone {
+                            color: rgba(0, 0, 0, .38);
+                        }
+                    }
+                }
+            }
+        }
+        &__score {
+            font-weight: bold;
+            color: rgba(0, 0, 0, .7);
+        }
+    }
+}
