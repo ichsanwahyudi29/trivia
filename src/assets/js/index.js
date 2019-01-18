@@ -240,7 +240,7 @@ function renderHome() {
   $('body').prepend(sound);
   $('body').prepend(wrapper);
   renderWrapper(html);
-  soundsHome();
+  soundHome();
 
   dummyInfo()
 }

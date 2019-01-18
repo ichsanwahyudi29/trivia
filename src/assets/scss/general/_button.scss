@@ -13,7 +13,7 @@
   border-width: initial;
   border-style: none;
   border-color: initial;
-  background: radial-gradient(circle, transparent 1%,$whitePrimary 1%) center center / 15000%$whitePrimary;
+  background: radial-gradient(circle, transparent 1%, $whitePrimary 1%) center center / 15000% $whitePrimary;
   width: 240px;
 
   &__inner{
@@ -59,6 +59,12 @@
     border: solid $whitePrimary 1px;
     color: $whitePrimary;
     background: radial-gradient(circle, transparent 1%, transparent 1%) center center / 15000% transparent;
+    .btn__inner{
+      box-shadow: none;
+    }
+    &:active{
+      background-color: transparent;
+    }
   }
 
   &--primary{
