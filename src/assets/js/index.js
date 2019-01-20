@@ -838,6 +838,19 @@ function renderComplete() {
     <audio id="js_sound-score" src="./assets/music/score.mp3"></audio>
 
     <div class="ads">
+      <div class="ads__countdown">
+        <span class="countdown__num">0</span>
+        <svg class="countdown__progress">
+          <defs>
+            <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:#b21c26" />
+              <stop offset="100%" style="stop-color:#ffdb84" />
+            </linearGradient>
+          </defs>
+          <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
+          <circle class="countdown__progress-bar" />
+        </svg>
+      </div>
       <img class="ads__image" src="./assets/img/ads1.jpg" alt=""/>
     </div>
 
@@ -851,7 +864,34 @@ function renderComplete() {
 
 window.renderAds = renderAds;
 function renderAds() {
-  $('.ads').addClass('ads--show');
+  $('.ads').addClass('ads--show')
+    .find('.countdown__num').removeClass('countdown__num--close');
+  handleTimeAds(7)
+}
+
+$(function closeAds(){
+  $('.game-over').on('click', '.countdown__num--close', function(){
+    $('.ads').removeClass('ads--show');
+  })
+})
+
+function handleTimeAds(start){
+  var milistart = start * 1000
+  $('.ads .countdown__num').text(start);
+  var bar = 82;
+  var timeOut = setInterval(() => {
+    milistart -= 4
+    var newBar = (milistart/(start * 1000)) * bar
+    $('.ads .countdown__num').text(Math.ceil(milistart/1000));
+    $('.ads .countdown__progress-bar').css({
+      'stroke-dashoffset': newBar,
+    });
+    if (milistart <= 0) {
+      $('.ads .countdown__num').text('')
+        .addClass('countdown__num--close')
+      clearInterval(timeOut);
+    }
+  }, 1);
 }
 
 function soundScore(play) {

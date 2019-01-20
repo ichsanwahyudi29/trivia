@@ -72,4 +72,53 @@
     height: auto;
     object-fit: cover;
   }
+  &__countdown{
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    background-color: black;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5);
+    .countdown{
+      &__num{
+        font-size: 16px;
+        font-weight: 900;
+        text-align: center;
+        top: 8px;
+        position: relative;
+        &--close{
+          &::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 14px;
+            height: 14px;
+            transform: translateX(-50%);
+            @include backgroundImg;
+            background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4gICAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiNGRkYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+ICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjIuNCIgZD0iTTIgMTRMMTQgMiIvPiAgICAgICAgPHBhdGggc3Ryb2tlLXdpZHRoPSIyLjUiIGQ9Ik0yIDJsMTIgMTIiLz4gICAgPC9nPjwvc3ZnPg==);
+          }
+        }
+      }
+      &__progress{
+        width: 32px;
+        height: 32px;
+        &-bar, &-gradient{
+          cx: 16px;
+          cy: 16px;
+        }
+        &-bar{
+          r: 13px;
+          stroke-width: 6px;
+          stroke-dasharray: 82;
+          stroke-dashoffset: 82;
+        }
+        &-gradient{
+          r: 16px;
+        }
+      }
+    }
+  }
 }
