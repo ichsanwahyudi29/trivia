@@ -4,7 +4,7 @@
       "img_url": "",
       "img_bg_url": "",
       "bgm_url": "",
-      "onboarding_message": "",
+      "onboarding_message": "Bantu misi Captain Marvel dengan jawab 5 pertanyaan berikut ini",
       "class_name": ""
   },
   "questions": [
@@ -123,7 +123,7 @@
           "answer_id": 3,
           "answer_title": "Salah Semua",
           "config": {
-            "img_url": "https://lh3.googleusercontent.com/W4tRiCBWiUPD9uV9QZn7trLRK2MrJCW1ZNheQkus1aY04NnHgj7WSX1kG9wepYMLNvIsCX5kts8ansOsuxOvYA1fZaRQB4PWHU5bwhmFO0UPKsn1091XhmPvbp6hAHzNlTh89CBbVD4RLnqiL90XXCBgAKhU76W96Yk9f4y3A9p4J2ESLNkLWsaqS4QvjU9SEGv4SsBkP03FClAdwtGzSOToRfYyI0R8lklEp9jYSfgOvuZ7wBfl5T8i9fj8IyP5dB3-wwd-Ivd5QObrC77uMTsnaP67dXUvWKt663VWCtHigx1Vvy6o0yx1ETXlYrdNlTLOBBwCFKNXsiSsdh3id24_T7Cl9KcBRFT9PGq7ODNB_oHokx0m08XevS-z7Q4gRaeazuN0P2RRcU2tTp8KP-cvJvjSPuO7OzvaDxANTdYEo06LQowAXC2jcX5S1wHTD1T4NGv5mDQlAVoNntbgIcptV9yli8Jn5wI_u9bnniPrdPGg2aw0-9Qj2nVlcwZxlOYD_vlYO3gOHTcjxVSKoHTAcJnUyvT5rGMC0sEiGJ6G7Luzr2BrlAzwwuyGUZHj1SU3CqcWy3QgPZCNWTYhFnJRlW7s4NN5=w2880-h1424"
+            "img_url": "https://lh3.googleusercontent.com/495weEJRPqAIbeMwHfqGDw6OSAimpavGwQrVayqb-belRTcHOtNXPaCYTIvt2eFiL3AwYjrRUU2Lql67S8vVy-4WEkZu_fT75h5Rtqg8_9dq2CZnp7PCLBAmRBMVjuKS0PdA670odijh62Z-KNxxIXHn4wXW_Sfm-EYrvMlvM_jBmY8QZjkWYJsr_jco1rAqbZSmczy1pmek3f2ZT3ISo5vf5hzATScD_T5nbzYL4iiljibLnhCTBvx99QSNe0JpXaeppaSvLu57DXiUKpPaSGNxG5k_7Xjj1DX4LwHrPP6TjYr6xxcQA3qB_hVXC-2wX1FBIhTUDO5UwwEcMqJkgqqZtg4kKO3CnYUi18FwcwVx6TleTGzpB13UZwpQX0g7S9lspLzN30rYh_U1GlmkMXxApBBZa-1hcC9QIVysExntuqloj2MDoq43DWFuaKLJe7fZB3VQxuWK5FdakgK3d6Ek_OpoLvzO3MMMGGg6gIUC29DtjNhV95oDmronFQ-qa42epazDyyue31Oc8ozqxeiZnBwUZns4NnIVW170l3Em7ERTnPoB6urPmsBGu8aIrQXrB_0WUpExizzDtLYJooDrRVqeEaz2=w2880-h1424"
           }
         }
       ]

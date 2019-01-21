@@ -1,105 +1,9 @@
 import dataQuiz from './quiz.json';
+import dataRanking from './ranking.json';
 
-const dataRanking = [
-  {
-    ranking: '1',
-    name: 'Ichsan Indra Wahyudi',
-    image: '../assets/img/thor.jpg',
-    phone: '08743xxx872',
-    skor: '999999',
-  },
-  {
-    ranking: '2',
-    name: 'Irwanto',
-    image: '../assets/img/thor.jpg',
-    phone: '08743xxx872',
-    skor: '41604',
-  },
-  {
-    ranking: '3',
-    name: 'Rendi Christian Rendi Christian',
-    image: '../assets/img/thor.jpg',
-    phone: '08743xxx872',
-    skor: '19904',
-  },
-  {
-    ranking: '4',
-    name: 'Fajar',
-    image: '../assets/img/thor.jpg',
-    phone: '08743xxx872',
-    skor: '999999',
-  },
-  {
-    ranking: '5',
-    name: 'Ryan aja',
-    image: '../assets/img/thor.jpg',
-    phone: '08743xxx872',
-    skor: '9904',
-  },
-  {
-    ranking: '6',
-    name: 'Mbo Dharmi',
-    image: '../assets/img/thor.jpg',
-    phone: '08743xxx872',
-    skor: '9904',
-  },
-  {
-    ranking: '7',
-    name: 'Leonardy oleoleo oleoleo',
-    image: '../assets/img/thor.jpg',
-    phone: '08743xxx872',
-    skor: '9904',
-  },
-  {
-    ranking: '8',
-    name: 'Shinta Tamara',
-    image: '../assets/img/thor.jpg',
-    phone: '08743xxx872',
-    skor: '9904',
-  },
-  {
-    ranking: '9',
-    name: 'Zarrah',
-    image: '../assets/img/thor.jpg',
-    phone: '08743xxx872',
-    skor: '9904',
-  },
-  {
-    ranking: '10',
-    name: 'Adek Tresno',
-    image: '../assets/img/thor.jpg',
-    phone: '08743xxx872',
-    skor: '9904',
-  },
-  {
-    ranking: '10000',
-    name: 'Erazzzz',
-    image: '../assets/img/thor.jpg',
-    phone: '08743xxx872',
-    skor: '9904',
-  },
-  {
-    ranking: '10000',
-    name: 'Erazzzz',
-    image: '../assets/img/thor.jpg',
-    phone: '08743xxx872',
-    skor: '9904',
-  },
-  {
-    ranking: '10000',
-    name: 'Erazzzz',
-    image: '../assets/img/thor.jpg',
-    phone: '08743xxx872',
-    skor: '9904',
-  },
-  {
-    ranking: '10000',
-    name: 'Erazzzz',
-    image: '../assets/img/thor.jpg',
-    phone: '08743xxx872',
-    skor: '9904',
-  },
-];
+const quizReady = ['satu', 'dua', 'tiga', 'empat', 'lima'];
+let quizCount = 0;
+const totalQUiz = dataQuiz.questions.length;
 
 // window.onBack = onBack;
 
@@ -179,7 +83,7 @@ function renderHome() {
           <div class="landing-page__menu menu">
             <a href="" class="menu__action menu__action--back"></a>
             <div class="landing-page__menu-right">
-              <span class="menu__action menu__action--leaderboard" onclick="renderLeaderboard()"></span>
+              <span class="menu__action menu__action--leaderboard" onclick="renderLeaderboard('home')"></span>
               <span class="menu__action menu__action--share"></span>
             </div>
           </div>
@@ -193,7 +97,10 @@ function renderHome() {
             <p class="landing-page__desc">Kuis akan segera dimulai.</p>
             <button onclick="renderStartQuiz()" class="btn btn--primary">
               <div class="btn__inner">
-                <span>Mulai Main</span>
+                <div class="btn__inner-shine">
+                   <span>Mulai Main</span>
+                </div>
+               
               </div>
             </button>
             <button onclick="handleOpenDialog()" class="btn btn--small btn--price">
@@ -249,11 +156,11 @@ function renderHome() {
 // Leaderboard
 
 window.renderLeaderboard = renderLeaderboard;
-function renderLeaderboard(page = 'home') {
+function renderLeaderboard(page) {
   const html = `
     <div class="leaderboard">
       <div class="leaderboard__menu menu">
-        <span onClick="renderHome()" class="menu__action menu__action--back"></span>
+        <span class="menu__action menu__action--back"></span>
         <h1 class="menu__title">Leaderboard</h1>
       </div>
 
@@ -277,6 +184,12 @@ function renderLeaderboard(page = 'home') {
   `;
 
   renderWrapper(html);
+
+  if (page == 'home') {
+    $('.menu__action--back').attr('onclick', 'renderHome()');
+  } else {
+    $('.menu__action--back').attr('onclick', 'renderComplete()');
+  }
 
   handleLoaderResult();
   topRanking(dataRanking);
@@ -509,15 +422,13 @@ function renderStartQuiz() {
       <audio id="js_sound-choose" src="./assets/music/choose-answer.mp3"></audio>
       <audio id="js_sound-correct" src="./assets/music/right-answer.mp3"></audio>
       <audio id="js_sound-wrong" src="./assets/music/wrong-answer.mp3"></audio>
+      <audio id="js_sound-countdown-quiz" src="./assets/music/countdown-quiz.mp3"></audio>
     </div>
   `;
 
   renderPage(html);
   soundOnboardingQuiz();
-  getReady(
-    false,
-    'Bantu misi Captain Marvel dengan jawab 5 pertanyaan berikut ini'
-  );
+  getReady(false, dataQuiz.config.onboarding_message);
 }
 
 function getReady(next, text) {
@@ -553,11 +464,9 @@ function handleTimeStart(next, time) {
       clearInterval(timeStart);
       $('.quiz__wrapper-start').empty();
       if (!next) {
-        console.log('bukan next');
         renderMenuQuiz();
         initQuiz();
       } else {
-        console.log('next');
         initQuiz();
       }
     }
@@ -595,19 +504,40 @@ function renderTimeQuiz() {
   `;
 
   $('.quiz__menu').append(time);
-  handleTimeQuiz(7);
+  handleTimeQuiz(10);
 }
 
-let quizCount = dataQuiz.questions.length;
+function renderScore() {
+  const score = `
+    <div class="quiz__score">
+      <div class="quiz__score-inner"><span>+14.230</span>Skor</div>
+      <div class="quiz__score-background"><div></div></div>
+    </div>
+  `;
+
+  $('.quiz').append(score);
+}
+
+function renderTimesup() {
+  const score = `
+    <div class="quiz__score quiz__score--wrong">
+      <div class="quiz__score-inner">TIME IS UP</div>
+      <div class="quiz__score-background"><div></div></div>
+    </div>
+  `;
+
+  $('.quiz').append(score);
+}
+
+function removeToasterScore() {
+  $('.quiz__score').addClass('quiz__score--hide');
+  setTimeout(() => {
+    $('.quiz__score').remove();
+  }, 300);
+}
 
 function initQuiz() {
-  console.log('init awal', quizCount);
-  quizCount = quizCount - (quizCount - 1);
-
-  console.log(quizCount);
   questionsAnswer(quizCount);
-  // for (const key of dataQuiz.questions) {
-  // }
 }
 
 function questionsAnswer(idx) {
@@ -617,17 +547,16 @@ function questionsAnswer(idx) {
   $('.quiz__wrapper-content').empty();
 
   const data = dataQuiz.questions[idx];
+  let typeAnswerQuiz = true;
 
   const questionsContainer = `
-    <div class="quiz__content quiz__content--text">
+    <div class="quiz__content">
       <div class="quiz__question"></div>
       <div class="quiz__answer"></div>
     </div>
   `;
 
   $('.quiz__wrapper-content').append(questionsContainer);
-
-  console.log(data.config.img_url != '');
 
   let questions = `
     <div class="quiz__question-inner">
@@ -638,7 +567,6 @@ function questionsAnswer(idx) {
   $('.quiz__question').append(questions);
 
   if (data.config.img_url != '') {
-    console.log('mausk');
     let questionsImg = `
       <img src="${data.config.img_url}" alt="">
     `;
@@ -646,9 +574,7 @@ function questionsAnswer(idx) {
   }
 
   let numberQuiz = `
-    <h6 class="quiz__of">${quizCount} dari ${
-    dataQuiz.questions.length
-  } pertanyaan</h6>
+    <h6 class="quiz__of">${idx + 1} dari ${totalQUiz} pertanyaan</h6>
   `;
 
   $('.quiz__content').append(numberQuiz);
@@ -656,16 +582,31 @@ function questionsAnswer(idx) {
   for (const key of data.answers) {
     let answer = `
       <div class="quiz__answer-btn">
-        <div class="answer-btn" onclick="handleBtnAnswerTxt(this)">
+        <div class="answer-btn">
           <div class="answer-btn__inner">
             <div class="answer-btn__val">
+              <img src="${key.config.img_url}" alt="">
               <span>${key.answer_title}</span>
             </div>
           </div>
         </div>
       </div>
     `;
+
     $('.quiz__answer').append(answer);
+
+    if (key.config.img_url == '') {
+      typeAnswerQuiz = false;
+      $('.answer-btn__val img').remove();
+    }
+  }
+
+  if (typeAnswerQuiz) {
+    $('.quiz__answer').addClass('quiz__answer--img');
+    $('.answer-btn').attr('onclick', 'handleBtnAnswerImg(this)');
+  } else {
+    $('.quiz__answer').addClass('quiz__answer--text');
+    $('.answer-btn').attr('onclick', 'handleBtnAnswerTxt(this)');
   }
 }
 
@@ -678,12 +619,13 @@ function handleTimeQuiz(start) {
     setTimeout(() => {
       $('.countdown').removeClass('countdown--animate');
     }, 500);
+    if (start < 3) {
+      soundCountdownQuiz('play');
+    }
     if (start < 0) {
       clearInterval(timeOut);
+      soundCountdownQuiz('stop');
       handleCheckAnswer();
-      // setTimeout(() => {
-      //   nextQuestions();
-      // }, 1000);
     }
   }, 1000);
 
@@ -695,30 +637,70 @@ function handleTimeQuiz(start) {
     if (start < 0) {
       clearInterval(barCount);
     }
-  }, 50);
+  }, 70);
 }
 
 function handleCheckAnswer() {
   let $answer = $('.answer-btn--active');
-  // console.log($answer);
-  $answer.removeClass('answer-btn--active').addClass('answer-btn--correct');
-  soundCorrectAnswer();
-  // soundWrongAnswer();
+  if ($answer.length != 0) {
+    // Check answer correct or wrong
+    if ($answer.length == 0) {
+      handleCorrectAnswer();
+    } else {
+      handleWrongAnswer();
+    }
+  } else {
+    renderTimesup();
+  }
 
+  quizCount++;
+  if (quizCount <= totalQUiz - 1) {
+    setTimeout(() => {
+      nextQuestions();
+    }, 3000);
+  } else {
+    setTimeout(() => {
+      gameOver();
+    }, 5000);
+  }
+}
+
+function handleCorrectAnswer() {
+  soundCorrectAnswer();
   setTimeout(() => {
-    nextQuestions();
+    $('.answer-btn--active')
+      .removeClass('answer-btn--active')
+      .addClass('answer-btn--correct');
   }, 1000);
 }
 
+function handleWrongAnswer() {
+  $('.answer-btn--active')
+    .removeClass('answer-btn--active')
+    .addClass('answer-btn--wrong');
+  soundWrongAnswer();
+}
+
 function nextQuestions() {
+  removeToasterScore();
   setTimeout(() => {
-    // $('.quiz__menu').addClass('quiz__menu--hide');
+    $('.quiz__time').addClass('quiz__time--hide');
     $('.quiz__content').addClass('quiz__content--hide');
-  }, 1000);
+  }, 500);
   setTimeout(() => {
-    // renderComplete();
-    getReady(true, 'Siap jawab pertanyaan kedua');
+    getReady(true, `Siap jawab pertanyaan ke${quizReady[quizCount]}`);
   }, 1500);
+}
+
+function gameOver() {
+  removeToasterScore();
+  setTimeout(() => {
+    $('.quiz__time').addClass('quiz__time--hide');
+    $('.quiz__content').addClass('quiz__content--hide');
+  }, 500);
+  setTimeout(() => {
+    initGameOver();
+  }, 1000);
 }
 
 window.handleBtnAnswerTxt = handleBtnAnswerTxt;
@@ -733,27 +715,7 @@ function handleBtnAnswerImg(e) {
   focusAnswer('img');
   $(e).removeClass('answer-btn--disabled');
   $(e).addClass('answer-btn--active');
-}
-
-function soundQuiz() {
-  let audioQuiz = document.getElementById('js_sound-quiz');
-  audioQuiz.play();
-  audioQuiz.loop = true;
-}
-
-function soundChooseAnswer() {
-  let audioChooseAnswer = document.getElementById('js_sound-choose');
-  audioChooseAnswer.play();
-}
-
-function soundCorrectAnswer() {
-  let audioCorrectAnswer = document.getElementById('js_sound-correct');
-  audioCorrectAnswer.play();
-}
-
-function soundWrongAnswer() {
-  let audioWrongAnswer = document.getElementById('js_sound-wrong');
-  audioWrongAnswer.play();
+  soundChooseAnswer();
 }
 
 function focusAnswer(type) {
@@ -770,98 +732,103 @@ function focusAnswer(type) {
 
 // Complete
 
+function initGameOver() {
+  const wrapper = `
+    <div id="wrapper"></div>
+  `;
+
+  const sound = `
+    <audio id="js_sound-opening" src="./assets/music/opening.mp3"></audio>
+    <audio id="js_sound-game-over" src="./assets/music/game-over.mp3"></audio>
+  `;
+  $('body').empty();
+  $('body').prepend(wrapper);
+  $('body').prepend(sound);
+  soundOpening();
+  soundGameOver();
+  renderComplete();
+}
+
 function renderComplete() {
   const html = `
     <div class="game-over">
-    <div class="game-over__menu menu">
-      <span class="menu__action menu__action--back"></span>
-      <span onclick="renderLeaderboard()" class="menu__action menu__action--leaderboard"></span>
-    </div>
+      <div class="game-over__menu menu">
+        <span class="menu__action menu__action--back"></span>
+        <span onclick="renderLeaderboard('complete')" class="menu__action menu__action--leaderboard"></span>
+      </div>
 
-    <div class="game-over__container">
-      <div class="game-over__content">
-        <h1 class="game-over__title">MISSION COMPLETE</h1>
-        <h3 class="game-over__score">Total Skor : <span id="js_result-score">0</span></h3>
-        <button class="btn btn--score">
+      <div class="game-over__container">
+        <div class="game-over__content">
+          <h1 class="game-over__title">MISSION COMPLETE</h1>
+          <h3 class="game-over__score">Total Skor : <span id="js_result-score">0</span></h3>
+          <button class="btn btn--score">
+            <div class="btn__inner">
+              <span>Pamerkan Skor</span>
+            </div>
+          </button>
+          <div class="game-over__separator">
+            <div class="game-over__separator-inner"></div>
+          </div>
+        </div>
+        <p class="game-over__desc">Lihat konten berikut untuk dapatkan 2x skor</p>
+        <button class="btn btn--primary" onclick="renderAds()">
           <div class="btn__inner">
-            <span>Pamerkan Skor</span>
+            <span>Gandakan Skor</span>
           </div>
         </button>
-        <div class="game-over__separator">
-          <div class="game-over__separator-inner"></div>
-        </div>
       </div>
-      <p class="game-over__desc">Lihat konten berikut untuk dapatkan 2x skor</p>
-      <button class="btn btn--primary" onclick="renderAds()">
-        <div class="btn__inner">
-          <span>Gandakan Skor</span>
-        </div>
-      </button>
-    </div>
 
-    <div class="overlay"></div>
-    <div class="dialog dialog--reward">
-      <div class="dialog__container">
-        <div id="js_close-dialog" class="dialog__close"></div>
-        <div class="dialog__star">
-          <div class="dialog__star-line dialog__star-line--left">
-            <div class="dialog__star-line__inner"></div>
+      <div class="overlay"></div>
+      <div class="dialog dialog--reward">
+        <div class="dialog__container">
+          <div id="js_close-dialog" class="dialog__close"></div>
+          <div class="dialog__star">
+            <div class="dialog__star-line dialog__star-line--left">
+              <div class="dialog__star-line__inner"></div>
+            </div>
+            <div class="dialog__star-icon"></div>
+            <div class="dialog__star-line dialog__star-line--right">
+              <div class="dialog__star-line__inner"></div>
+            </div>
           </div>
-          <div class="dialog__star-icon"></div>
-          <div class="dialog__star-line dialog__star-line--right">
-            <div class="dialog__star-line__inner"></div>
-          </div>
-        </div>
-        <div class="dialog__content">
-          <div class="dialog__inner dialog__inner--star">
-            <p class="dialog__desc">Selamat!<br>
-            Anda mendapatkan kupon cashback hingga Rp 200.000</p>
-            <div class="coupon">
-              <div class="coupon__list">
-                <img src="./assets/img/coupon.png" alt="" srcset="">
-              </div>
-              <div class="coupon__list">
-                <img src="./assets/img/coupon.png" alt="" srcset="">
-              </div>
-              <div class="coupon__list">
-                <img src="./assets/img/coupon.png" alt="" srcset="">
-              </div>
-              <div class="coupon__list">
-                <img src="./assets/img/coupon.png" alt="" srcset="">
+          <div class="dialog__content">
+            <div class="dialog__inner dialog__inner--star">
+              <p class="dialog__desc">Selamat!<br>
+              Anda mendapatkan kupon cashback hingga Rp 200.000</p>
+              <div class="coupon">
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <div class="ads">
+        <img class="ads__image" src="./assets/img/ads1.jpg" alt=""/>
+      </div>
+
     </div>
-
-    <audio id="js_sound-score" src="./assets/music/score.mp3"></audio>
-
-    <div class="ads">
-      <img class="ads__image" src="./assets/img/ads1.jpg" alt=""/>
-    </div>
-
-  </div>
   `;
 
-  renderPage(html);
-  soundScore(true);
-  countUp(1500);
+  renderWrapper(html);
+  // soundScore(true);
+  countUp(457);
 }
 
 window.renderAds = renderAds;
 function renderAds() {
   $('.ads').addClass('ads--show');
-}
-
-function soundScore(play) {
-  let audioScore = document.getElementById('js_sound-score');
-  if (play) {
-    audioScore.play();
-    audioScore.loop = true;
-  } else {
-    audioScore.pause();
-  }
 }
 
 function countUp(count) {
@@ -880,7 +847,7 @@ function countUp(count) {
       $display.text(curr_count);
     } else {
       clearInterval(int);
-      soundScore(false);
+      // soundScore(false);
     }
   }, int_speed);
 }
@@ -891,6 +858,11 @@ function soundOpening() {
   let audioHome = document.getElementById('js_sound-opening');
   audioHome.play();
   audioHome.loop = true;
+}
+
+function soundGameOver() {
+  let audioHome = document.getElementById('js_sound-game-over');
+  audioHome.play();
 }
 
 function soundOnboardingQuiz() {
@@ -904,4 +876,49 @@ function soundCountdown() {
   setTimeout(() => {
     audioCountdown.play();
   }, 1500);
+}
+
+function soundQuiz() {
+  let audioQuiz = document.getElementById('js_sound-quiz');
+  audioQuiz.volume = 0.2;
+  audioQuiz.play();
+  audioQuiz.loop = true;
+}
+
+function soundCountdownQuiz(type) {
+  let audioCountdown = document.getElementById('js_sound-countdown-quiz');
+  audioCountdown.loop = true;
+  if (type == 'play') {
+    audioCountdown.play();
+  } else {
+    audioCountdown.pause();
+    setTimeout(() => {
+      audioCountdown.currentTime = 0;
+    }, 1200);
+  }
+}
+
+function soundChooseAnswer() {
+  let audioChooseAnswer = document.getElementById('js_sound-choose');
+  audioChooseAnswer.play();
+}
+
+function soundCorrectAnswer() {
+  let audioCorrectAnswer = document.getElementById('js_sound-correct');
+  audioCorrectAnswer.play();
+}
+
+function soundWrongAnswer() {
+  let audioWrongAnswer = document.getElementById('js_sound-wrong');
+  audioWrongAnswer.play();
+}
+
+function soundScore(type) {
+  let audioScore = document.getElementById('js_sound-score');
+  if (type == 'play') {
+    audioScore.play();
+    audioScore.loop = true;
+  } else {
+    audioScore.pause();
+  }
 }
