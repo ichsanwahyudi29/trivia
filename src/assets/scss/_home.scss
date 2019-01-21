@@ -133,10 +133,10 @@
     opacity: .7;
     margin: 0 0 8px;
   }
-}
-
-.trivia{
-  &--marvel{
-    
+  &__content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // opacity: 0;
   }
 }

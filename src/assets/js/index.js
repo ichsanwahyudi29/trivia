@@ -5,15 +5,48 @@ const quizReady = ['satu', 'dua', 'tiga', 'empat', 'lima'];
 let quizCount = 0;
 const totalQUiz = dataQuiz.questions.length;
 
-// window.onBack = onBack;
-
-// function onBack(page) {
-//   renderHome();
-// }
-
 $(document).ready(function() {
   initHome();
+  // loading('%');
 });
+
+// Loading
+
+// let numInterval = null;
+
+function loading(percent = '') {
+  const loading = `
+  <div class="loading">
+    <div class="loading__container">
+      <div class="loading__loader">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+  `;
+
+  const loadingPercent = `
+    <span id="js_loading-percent" class="loading__percent">0%</span>
+  `;
+
+  $('body').append(loading);
+  $('.overlay').addClass('overlay--show');
+  if (percent != '') {
+    let num = 0;
+    $('.loading__container').append(loadingPercent);
+    let numInterval = setInterval(() => {
+      num++;
+      $('#js_loading-percent').text(`${num}%`);
+      if (num == 20) {
+        clearInterval(numInterval);
+        $('.overlay').removeClass('overlay--show');
+        $('.loading').remove();
+      }
+    }, 150);
+  }
+}
 
 // General
 
@@ -62,6 +95,11 @@ function initHome() {
   const sound = `
     <audio id="js_sound-opening" src="./assets/music/opening.mp3"></audio>
   `;
+
+  // $('#js_sound-quiz').remove();
+  // $('body').prepend(soundBg);
+  // soundOpening();
+
   $('body').empty();
   $('body').prepend(wrapper);
   $('body').prepend(sound);
@@ -80,34 +118,27 @@ function renderHome() {
         </div>
         
         <div class="landing-page__container content">
-          <div class="landing-page__menu menu">
-            <a href="" class="menu__action menu__action--back"></a>
-            <div class="landing-page__menu-right">
-              <span class="menu__action menu__action--leaderboard" onclick="renderLeaderboard('home')"></span>
-              <span class="menu__action menu__action--share"></span>
-            </div>
-          </div>
-          
           <div class="landing-page__action">
             <img class="landing-page__logo" src="./assets/img/logo_marvel.png" alt="" srcset="">
             <div class="landing-page__title">
               <span>Quiz</span>
               <div class="landing-page__title-spark"></div>
             </div>
-            <p class="landing-page__desc">Kuis akan segera dimulai.</p>
-            <button onclick="renderStartQuiz()" class="btn btn--primary">
-              <div class="btn__inner">
-                <div class="btn__inner-shine">
-                   <span>Mulai Main</span>
+            <div class="landing-page__content">
+              <p class="landing-page__desc">Kuis akan dimulai pada 12.00 - 13.00</p>
+              <button id="js_btn-landing" onclick="handleRemindMe(this)" class="btn btn--primary">
+                <div class="btn__inner">
+                  <div class="btn__inner-shine">
+                    <span>Ingatkan Saya</span>
+                  </div>
                 </div>
-               
-              </div>
-            </button>
-            <button onclick="handleOpenDialog()" class="btn btn--small btn--price">
-              <div class="btn__inner">
-                <span class="icon icon--price">Info Hadiah</span>
-              </div>
-            </button>
+              </button>
+              <button onclick="handleOpenDialog()" class="btn btn--small btn--price">
+                <div class="btn__inner">
+                  <span class="icon icon--price">Info Hadiah</span>
+                </div>
+              </button>
+            </div>
           </div>
         </div> 
       </div>
@@ -151,6 +182,45 @@ function renderHome() {
   `;
 
   renderWrapper(html);
+}
+
+window.renderStatePlay = renderStatePlay;
+function renderStatePlay() {
+  $('.landing-page__desc').text('Kuis akan segera dimulai.');
+  $('#js_btn-landing').removeAttr('onclick');
+  $('#js_btn-landing').attr('onclick', 'renderStartQuiz()');
+  $('#js_btn-landing')
+    .find('span')
+    .text('Mulai Main');
+}
+
+window.handleRemindMe = handleRemindMe;
+function handleRemindMe(e) {
+  if ($(e).hasClass('btn--transparent')) {
+    $(e).removeClass('btn--transparent');
+    $(e)
+      .find('span')
+      .text('Ingatkan Saya');
+  } else {
+    $(e).addClass('btn--transparent');
+    $(e)
+      .find('span')
+      .text('Hapus Pengingat');
+  }
+}
+
+function renderMenuHome() {
+  const menu = `
+    <div class="landing-page__menu menu">
+      <a href="" class="menu__action menu__action--back"></a>
+      <div class="landing-page__menu-right">
+        <span class="menu__action menu__action--leaderboard" onclick="renderLeaderboard('home')"></span>
+        <span class="menu__action menu__action--share"></span>
+      </div>
+    </div>
+  `;
+
+  $('.landing-page__container').prepend(menu);
 }
 
 // Leaderboard
