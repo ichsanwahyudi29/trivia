@@ -4,10 +4,13 @@ import dataRanking from './ranking.json';
 const quizReady = ['satu', 'dua', 'tiga', 'empat', 'lima'];
 let quizCount = 0;
 const totalQUiz = dataQuiz.questions.length;
+let userScore = 13240;
 
 $(document).ready(function() {
-  initHome();
+  initGameOver();
+  // initHome();
   // loading('%');
+  renderStatePlay(); // if quiz is time
 });
 
 // Loading
@@ -184,9 +187,10 @@ function renderHome() {
   renderWrapper(html);
 }
 
-window.renderStatePlay = renderStatePlay;
 function renderStatePlay() {
-  $('.landing-page__desc').text('Kuis akan segera dimulai.');
+  $('#js_btn-landing')
+    .prev()
+    .text('Kuis akan segera dimulai.');
   $('#js_btn-landing').removeAttr('onclick');
   $('#js_btn-landing').attr('onclick', 'renderStartQuiz()');
   $('#js_btn-landing')
@@ -196,16 +200,13 @@ function renderStatePlay() {
 
 window.handleRemindMe = handleRemindMe;
 function handleRemindMe(e) {
-  if ($(e).hasClass('btn--transparent')) {
-    $(e).removeClass('btn--transparent');
-    $(e)
-      .find('span')
-      .text('Ingatkan Saya');
+  let $this = $(e);
+  if ($this.hasClass('btn--transparent')) {
+    $this.removeClass('btn--transparent');
+    $this.find('span').text('Ingatkan Saya');
   } else {
-    $(e).addClass('btn--transparent');
-    $(e)
-      .find('span')
-      .text('Hapus Pengingat');
+    $this.addClass('btn--transparent');
+    $this.find('span').text('Hapus Pengingat');
   }
 }
 
@@ -819,6 +820,7 @@ function initGameOver() {
   renderComplete();
 }
 
+window.renderComplete = renderComplete;
 function renderComplete() {
   const html = `
     <div class="game-over">
@@ -843,7 +845,9 @@ function renderComplete() {
         <p class="game-over__desc">Lihat konten berikut untuk dapatkan 2x skor</p>
         <button class="btn btn--primary" onclick="renderAds()">
           <div class="btn__inner">
-            <span>Gandakan Skor</span>
+            <div class="btn__inner-shine">
+              <span>Gandakan Skor</span>
+            </div>
           </div>
         </button>
       </div>
@@ -885,41 +889,146 @@ function renderComplete() {
       </div>
 
       <div class="ads">
-        <img class="ads__image" src="./assets/img/ads1.jpg" alt=""/>
-      </div>
+        <div class="ads__countdown">
+            <span class="countdown__num" onclick="closeAds()">0</span>
+            <svg class="countdown__progress">
+                <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#EEBA3F" />
+                    <stop offset="100%" style="stop-color:#FAEAC9" />
+                </linearGradient>
+                <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
+                <circle class="countdown__progress-bar" />
+            </svg>
+        </div>
+        <img class="ads__image" src="./assets/img/ads1.jpg" alt="" onclick="gotoAdsPage('https://www.tokopedia.com/')"/>
+    </div>
+
 
     </div>
   `;
 
   renderWrapper(html);
   // soundScore(true);
-  countUp(457);
+  countUp(userScore);
 }
+
+// function countUp(count) {
+//   var div_by = 100,
+//     speed = Math.round(count / div_by),
+//     $display = $('#js_result-score'),
+//     run_count = 1,
+//     int_speed = 24;
+
+//   var int = setInterval(function() {
+//     if (run_count < div_by) {
+//       $display.text(speed * run_count);
+//       run_count++;
+//     } else if (parseInt($display.text()) < count) {
+//       var curr_count = parseInt($display.text()) + 1;
+//       $display.text(curr_count);
+//     } else {
+//       clearInterval(int);
+//     }
+//   }, int_speed);
+// }
+
+function countUp(count, start) {
+  var $display = $('#js_result-score'),
+    init = start === undefined ? 0 : start,
+    add = 1,
+    inc = 0;
+  $display.text(convertScore(init));
+  var counting = setInterval(() => {
+    init += add;
+    inc += add;
+    add = Math.ceil(inc / 10);
+    if (init < count) {
+      $display.text(convertScore(init));
+    } else {
+      $display.text(convertScore(count));
+      clearInterval(counting);
+    }
+  }, 25);
+}
+
+function addScore(score) {
+  handleShowScore(score);
+  countUp(userScore + score, score);
+  userScore += score;
+}
+
+function convertScore(score) {
+  score += '';
+  var x = score.split(',');
+  var x1 = x[0];
+  var x2 = x.length > 1 ? ',' + x[1] : '';
+  var rgx = /(\d+)(\d{3})/;
+  while (rgx.test(x1)) {
+    x1 = x1.replace(rgx, '$1' + '.' + '$2');
+  }
+  return x1 + x2;
+}
+
+window.gotoAdsPage = gotoAdsPage;
+function gotoAdsPage(link) {
+  window.open(link, '_blank');
+}
+
+window.closeAds = closeAds;
+function closeAds() {
+  $('.ads').removeClass('ads--show');
+
+  setTimeout(() => {
+    $('.ads .countdown__progress-bar').css({
+      'stroke-dashoffset': 82,
+    });
+  }, 400);
+
+  addScore(userScore);
+  renderBtnReminder('#js_btn-over');
+}
+
+// Ads
+
+let viewAds = false;
 
 window.renderAds = renderAds;
 function renderAds() {
-  $('.ads').addClass('ads--show');
+  $('.ads')
+    .addClass('ads--show')
+    .find('.countdown__num')
+    .removeClass('countdown__num--close');
+  handleTimeAds(10);
+  viewAds = true;
 }
 
-function countUp(count) {
-  var div_by = 100,
-    speed = Math.round(count / div_by),
-    $display = $('#js_result-score'),
-    run_count = 1,
-    int_speed = 24;
+function handleTimeAds(start) {
+  var newStart = start;
+  var bar = 82;
 
-  var int = setInterval(function() {
-    if (run_count < div_by) {
-      $display.text(speed * run_count);
-      run_count++;
-    } else if (parseInt($display.text()) < count) {
-      var curr_count = parseInt($display.text()) + 1;
-      $display.text(curr_count);
-    } else {
-      clearInterval(int);
-      // soundScore(false);
+  $('.ads .countdown__num').text(start);
+  setTimeout(function() {
+    $('.ads .countdown__progress-bar').css({
+      'stroke-dashoffset': ((newStart - 1) / start) * bar,
+      transition: 'stroke-dashoffset 1s linear',
+    });
+  }, 1);
+
+  var timeOut = setInterval(() => {
+    newStart -= 1;
+    var newBar =
+      ((newStart - 1) / start) * bar > 0 ? ((newStart - 1) / start) * bar : 0;
+    $('.ads .countdown__num').text(Math.ceil(newStart));
+    $('.ads .countdown__progress-bar').css({
+      'stroke-dashoffset': newBar,
+    });
+    if (newStart <= 0) {
+      $('.ads .countdown__num')
+        .text('')
+        .addClass('countdown__num--close');
+      clearInterval(timeOut);
     }
-  }, int_speed);
+  }, 1000);
 }
 
 // Audio

@@ -82,38 +82,26 @@
       @include backgroundImg;
       background-image: url(../img/quiz-bg.png);
       animation: zoomIn 2.5s linear .2s infinite normal forwards;
-      // @include breakpoint(sm){
-        @include keyframes(zoomIn){
-          0%{
-            transform: scale(1);
-            opacity: 1;
-          }
-          50%{
-            transform: scale(.9);
-            opacity: .78;
-          }
-          100%{
-            transform: scale(1);
-            opacity: 1;
-          }
+      @include breakpoint(sm){
+        background-size: 300px;
+      }
+      @include breakpoint(xs){
+        background-size: cover;
+      }
+      @include keyframes(zoomIn){
+        0%{
+          transform: scale(1);
+          opacity: 1;
         }
-      // }
-      // @include breakpoint(xs){
-      //   @include keyframes(zoomIn){
-      //     0%{
-      //       transform: scale(1);
-      //       opacity: 1;
-      //     }
-      //     50%{
-      //       transform: scale(.9);
-      //       opacity: .78;
-      //     }
-      //     100%{
-      //       transform: scale(1);
-      //       opacity: 1;
-      //     }
-      //   }
-      // }
+        50%{
+          transform: scale(.9);
+          opacity: .78;
+        }
+        100%{
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
     }
     
   }
