@@ -9,9 +9,9 @@
   },
   "questions": [
     {
-      "question_id": 0,
+      "trivia_quiz_repo_id": 0,
       "question_text": "Siapakah pemeran utama pada film Captain Marvel?",
-      "type_question": 1,
+      "type_quiz": 1,
       "config": {
           "img_url": "",
           "img_bg_url": "",
@@ -49,9 +49,9 @@
       ]
     },
     {
-      "question_id": 1,
+      "trivia_quiz_repo_id": 1,
       "question_text": "Ada berapa anggota Avenger hayo?",
-      "type_question": 1,
+      "type_quiz": 1,
       "config": {
         "img_url": "https://lh3.googleusercontent.com/N3N8ZSmjJpOVhQ0y9GIY5wJqcRd95FsC_jp5J05Dy3MguKpTwrX00WcFp00P5DZeXmzb5H7zHL5qHDthe4aoJbtdn651q5nXtJRZu4CLo_eDcKeTN_7lwqKeqNV-IEz5TcDSHudGkPZz-DQjPB3pFpOQXkZNvp3FNBWW5NKzrzen4Uw4q3m_dJ_oWKbu43wTdrOIhoWlPf03w9cB4CbNKyYg8lfmXgviL0AO-SRVB6QKe102-lNxsCTvZKhtDYMmQwTDJ_P9a6fSxERp_lukXbaQTh9OqEGrD_dAE1GftqNYIug-za1viWDwu0lhsLjQl-ND2JmLuoSlRCSAhqnZv8ZErTSFwHVt8Lh0S_8ELM9nUfMrGedZH1l3gChpnSd4yW6HfXB-ObB96l1fV3Rd6xsUsge0Roqek-7kpgr1jmkF9GMO3fjrQlFypAFCxSMZ3BxnifWC6kjY0mHf0_ljjOPWsVJOgKiIyc2SmWyLb_klviBzRYcLgFqgDKST2o7rLQejY5uHZWHVyasL2EnJq_diTqCFQm0ztarfFSGsFa2Ji5gF8ygrAtKnv4vaPkXzx86k5MQDcHrDipP_UkbZJ8IGRG-WV7Vq=w2880-h1424",
         "img_bg_url": "",
@@ -89,9 +89,9 @@
       ]
     },
     {
-      "question_id": 2,
+      "trivia_quiz_repo_id": 2,
       "question_text": "Siapakah pemeran utama pada film Kuch Kuch Hota Hai?",
-      "type_question": 1,
+      "type_quiz": 1,
       "config": {
         "img_url": "",
         "img_bg_url": "",

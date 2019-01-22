@@ -6,6 +6,7 @@ const totalQUiz = dataQuiz.questions.length;
 
 let quizCount = 0;
 let userScore = 0;
+let participant = 1000;
 
 let isViewAds = false;
 let isPlayBtn = true;
@@ -14,12 +15,61 @@ let isLeaderboardOnAds = false;
 $(document).ready(function() {
   // initGameOver();
   initHome();
-  loading('%');
+  // checkDesktop();
+  // loading('%');
 });
 
-// Loading
+// window.checkDesktop = checkDesktop
+function checkDesktop() {
+  var userAgent = window.navigator.userAgent,
+    platform = window.navigator.platform,
+    macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+    windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+    iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+    os = null,
+    windowWidth = $(window).width();
 
-// let numInterval = null;
+  if (macosPlatforms.indexOf(platform) !== -1) {
+    os = 'Mac OS';
+  } else if (iosPlatforms.indexOf(platform) !== -1) {
+    os = 'iOS';
+  } else if (windowsPlatforms.indexOf(platform) !== -1) {
+    os = 'Windows';
+  } else if (/Android/.test(userAgent)) {
+    os = 'Android';
+  } else if (!os && /Linux/.test(platform)) {
+    os = 'Linux';
+  }
+
+  if ((os === 'Android' || os === 'iOS') && windowWidth <= 1024) {
+    renderHome();
+  } else {
+    renderBlocker();
+  }
+}
+
+window.renderBlocker = renderBlocker;
+function renderBlocker() {
+  var html = `
+    <div class="blocker">
+      <div class="blocker__container">
+      <img src="./assets/img/blocker.png"/>
+      <div class="blocker__desc">
+          NET Play Hanya dapat diakses melalui aplikasi.
+          <br/>
+          Download aplikasi Tokopedia di sini
+      </div>
+      <div class="blocker__download">
+          <a href="https://itunes.apple.com/us/app/tokopedia-jual-beli-online/id1001394201#?platform=iphone" class="btn__download btn__download--ios"></a>
+          <a href="https://play.google.com/store/apps/details?id=com.tokopedia.tkpd" class="btn__download btn__download--android"></a>
+      </div>
+      </div>
+  </div>
+  `;
+  renderPage(html);
+}
+
+// Loading
 
 function loading(percent = '') {
   const loading = `
@@ -42,7 +92,9 @@ function loading(percent = '') {
   $('.overlay').addClass('overlay--show');
   if (percent != '') {
     let num = 0;
-    $('.loading__container').append(loadingPercent);
+    if (percent != '') {
+      $('.loading__container').append(loadingPercent);
+    }
     let numInterval = setInterval(() => {
       num++;
       $('#js_loading-percent').text(`${num}%`);
@@ -103,10 +155,6 @@ function initHome() {
     <audio id="js_sound-opening" src="./assets/music/opening.mp3"></audio>
   `;
 
-  // $('#js_sound-quiz').remove();
-  // $('body').prepend(soundBg);
-  // soundOpening();
-
   $('body').empty();
   $('body').prepend(wrapper);
   $('body').prepend(sound);
@@ -120,8 +168,8 @@ function renderHome() {
     <div class="landing-page">
       <div class="landing-page__wrapper">
         <div class="landing-page__info">
-          <p class="landing-page__info-text">Ichsan Indra mendapatkan skor 999.999</p>
-          <span class="landing-page__info-num">999.999</span>
+          <div class="landing-page__info-text">Ichsan Indra mendapatkan skor 999.999</div>
+          <span class="landing-page__info-num"></span>
         </div>
         
         <div class="landing-page__container content">
@@ -190,6 +238,62 @@ function renderHome() {
 
   renderWrapper(html);
   renderPlayBtn();
+  dummyInfo();
+  dummyParticipant();
+}
+
+var dummyInfoInterval;
+
+function dummyInfo() {
+  dummyInfoInterval = setInterval(function() {
+    randomDummy();
+  }, 1000);
+}
+function randomDummy() {
+  let numb = Math.ceil(Math.random() * 10);
+  if (numb >= 7) {
+    otherPlayerInfo();
+    clearInterval(dummyInfoInterval);
+  }
+}
+
+function otherPlayerInfo() {
+  let data = dataRanking[Math.floor(Math.random() * dataRanking.length)];
+  // console.log(data)
+  $('.landing-page__info')
+    .find('div:first-child')
+    .html(
+      `<div>${data.name}</div><div>mendapatkan skor ${convertScore(data.skor)}</div>`
+    )
+    .end()
+    .addClass('landing-page__info--show');
+  
+    console.log('masuk')
+
+  setTimeout(() => {
+    $('.landing-page__info').removeClass('landing-page__info--show');
+    dummyInfoInterval = setInterval(function() {
+      randomDummy();
+    }, 1000);
+  }, 5000);
+}
+
+function dummyParticipant() {
+  let dummyParticipantInterval = setInterval(function() {
+    randomAdd();
+  }, 1000);
+}
+
+function randomAdd() {
+  var numb = Math.ceil(Math.random() * 10);
+  if (numb >= 6) {
+    participant += 1;
+  } else if (numb > 3 && numb < 6) {
+    participant -= 1;
+  } else {
+    participant += 0;
+  }
+  $('.landing-page__info>span').text(convertScore(participant));
 }
 
 function renderPlayBtn() {
@@ -971,9 +1075,9 @@ function renderGameOver() {
       </div>
 
       <div class="overlay"></div>
-      <div class="dialog dialog--reward">
+      <div class="dialog dialog--custom dialog--reward">
         <div class="dialog__container">
-          <div id="js_close-dialog" class="dialog__close"></div>
+          <div class="dialog__close" onclick="handleCloseDialog()"></div>
           <div class="dialog__star">
             <div class="dialog__star-line dialog__star-line--left">
               <div class="dialog__star-line__inner"></div>
@@ -1015,6 +1119,7 @@ function renderGameOver() {
   if (!isLeaderboardOnAds) {
     isLeaderboardOnAds = true;
     countUp('#js_result-score', userScore);
+    handleOpenDialog();
   }
 }
 
@@ -1070,7 +1175,7 @@ function renderGameOverBtn() {
 //   }, int_speed);
 // }
 
-function countUp(el, start, count) {
+function countUp(el, count, start) {
   console.log(start, count);
   var $display = $(el),
     init = start === undefined ? 0 : start,
@@ -1083,10 +1188,8 @@ function countUp(el, start, count) {
     inc += add;
     add = Math.ceil(inc / 10);
     if (init < count) {
-      console.log('MASUK')
       $display.text(convertScore(init));
     } else {
-      console.log('GAK MASUK')
       $display.text(convertScore(count));
       clearInterval(counting);
     }
@@ -1096,9 +1199,9 @@ function countUp(el, start, count) {
 function addScore(score, results) {
   renderScore(score);
   if (results) {
-    countUp('#js_result-score', userScore, score);
+    countUp('#js_result-score', userScore + score, score);
   } else {
-    countUp('#js_quiz-score', userScore, score);
+    countUp('#js_quiz-score', userScore + score, score);
   }
 
   userScore += score;
