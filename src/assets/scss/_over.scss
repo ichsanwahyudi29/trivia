@@ -54,6 +54,15 @@
     opacity: .7;
     margin: 16px 0;
   }
+  .btn{
+    &--transparent{
+      .btn{
+        &__inner{
+          background-color: #000000;
+        }
+      }
+    }
+  }
 }
 
 .ads{
@@ -65,14 +74,32 @@
   right: 0;
   background: $whitePrimary;
   transition: all ease .4s;
-  transform: translateY(100%);
-  &--show{
-    transform: translateY(0px)
+  // transform: translateY(100%);
+  animation: showAds .4s ease forwards;
+  @include keyframes(showAds){
+    0%{
+      transform: translateY(100%);
+    }
+    100%{
+      transform: translateY(0px)
+    }
+  }
+  &--hide{
+    animation: hideAds .4s ease forwards;
+    @include keyframes(hideAds){
+      0%{
+        transform: translateY(0px)
+      }
+      100%{ 
+        transform: translateY(100%);
+      }
+    }
   }
   &__image{
-    max-width: 100%;
+    width: 100%;
     height: auto;
     object-fit: cover;
+    display: block;
   }
   &__countdown{
     position: absolute;
@@ -81,7 +108,7 @@
     width: 32px;
     height: 32px;
     border-radius: 16px;
-    background-color: black;
+    background-color: #011b32;
     box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5);
     .countdown{
       &__num{
@@ -122,7 +149,7 @@
           transition: stroke-dashoffset 1s linear;
         }
         &-gradient{
-          r: 16px;
+          r: 15px;
         }
       }
     }

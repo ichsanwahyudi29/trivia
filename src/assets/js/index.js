@@ -2,15 +2,19 @@ import dataQuiz from './quiz.json';
 import dataRanking from './ranking.json';
 
 const quizReady = ['satu', 'dua', 'tiga', 'empat', 'lima'];
-let quizCount = 0;
 const totalQUiz = dataQuiz.questions.length;
+
+let quizCount = 0;
 let userScore = 13240;
+
+let isViewAds = false;
+let isPlayBtn = true;
+let isLeaderboardOnAds = false;
 
 $(document).ready(function() {
   initGameOver();
   // initHome();
   // loading('%');
-  renderStatePlay(); // if quiz is time
 });
 
 // Loading
@@ -106,7 +110,7 @@ function initHome() {
   $('body').empty();
   $('body').prepend(wrapper);
   $('body').prepend(sound);
-  soundOpening();
+  soundOpening('play');
   renderHome();
 }
 
@@ -128,14 +132,7 @@ function renderHome() {
               <div class="landing-page__title-spark"></div>
             </div>
             <div class="landing-page__content">
-              <p class="landing-page__desc">Kuis akan dimulai pada 12.00 - 13.00</p>
-              <button id="js_btn-landing" onclick="handleRemindMe(this)" class="btn btn--primary">
-                <div class="btn__inner">
-                  <div class="btn__inner-shine">
-                    <span>Ingatkan Saya</span>
-                  </div>
-                </div>
-              </button>
+              <div class="landing-page__content-btn"></div>
               <button onclick="handleOpenDialog()" class="btn btn--small btn--price">
                 <div class="btn__inner">
                   <span class="icon icon--price">Info Hadiah</span>
@@ -185,26 +182,59 @@ function renderHome() {
   `;
 
   renderWrapper(html);
+  renderPlayBtn();
 }
 
-function renderStatePlay() {
-  $('#js_btn-landing')
-    .prev()
-    .text('Kuis akan segera dimulai.');
-  $('#js_btn-landing').removeAttr('onclick');
-  $('#js_btn-landing').attr('onclick', 'renderStartQuiz()');
-  $('#js_btn-landing')
-    .find('span')
-    .text('Mulai Main');
+function renderPlayBtn() {
+  const playBtn = `
+    <p class="landing-page__desc">Kuis telah dimulai</p>
+    <button class="btn btn--primary" onclick="handleBtnRemind(this)">
+      <div class="btn__inner">
+        <div class="btn__inner-shine">
+          <span>Mulai Main</span>
+        </div>
+      </div>
+    </button>
+  `;
+
+  const remindBtn = `
+    <p class="game-over__desc">Kuis akan dimulai pada 12.00 - 13.00</p>
+    <button class="btn btn--primary" onclick="handleBtnReminder(this)">
+      <div class="btn__inner">
+        <div class="btn__inner-shine">
+          <span>Ingatkan Saya</span>
+        </div>
+      </div>
+    </button>
+  `;
+
+  if (isPlayBtn) {
+    $('.landing-page__content-btn').append(playBtn);
+  } else {
+    $('.landing-page__content-btn').append(remindBtn);
+  }
 }
+
+// function renderStatePlay() {
+//   $('#js_btn-landing')
+//     .prev()
+//     .text('Kuis akan segera dimulai.');
+//   $('#js_btn-landing').removeAttr('onclick');
+//   $('#js_btn-landing').attr('onclick', 'renderStartQuiz()');
+//   $('#js_btn-landing')
+//     .find('span')
+//     .text('Mulai Main');
+// }
 
 window.handleRemindMe = handleRemindMe;
 function handleRemindMe(e) {
   let $this = $(e);
   if ($this.hasClass('btn--transparent')) {
     $this.removeClass('btn--transparent');
+    $this.addClass('btn--primary');
     $this.find('span').text('Ingatkan Saya');
   } else {
+    $this.removeClass('btn--primary');
     $this.addClass('btn--transparent');
     $this.find('span').text('Hapus Pengingat');
   }
@@ -243,11 +273,11 @@ function renderLeaderboard(page) {
         <div class="leaderboard__content">
           <div id="js_search" class="search">
             <div class="unf-searchbar">
-              <input id="js_search-ranking" type="text" class="unf-searchbar__input" placeholder="Cari Namamu">
-              <button id="js_reset-search-ranking" class="unf-searchbar__close"></button>
+              <input id="js_search-ranking" oninput="handleOnInputRanking(this)" onkeyup="handleOnKeypressRanking(event, this)" type="text" class="unf-searchbar__input" placeholder="Cari Namamu">
+              <button onclick="handleResetSearchRanking()" class="unf-searchbar__close"></button>
             </div>
           </div> 
-          <div id="js_ranking" class="ranking"></div>
+          <div id="js_ranking" class="ranking" onscroll="handleScrollRanking(this)"></div>
         </div>
 
       </div>
@@ -263,10 +293,10 @@ function renderLeaderboard(page) {
   }
 
   handleLoaderResult();
-  topRanking(dataRanking);
   setTimeout(() => {
+    topRanking(dataRanking);
     initDataRanking();
-  }, 2000);
+  }, 3000);
 }
 
 function appendRankingElem(el) {
@@ -278,21 +308,19 @@ function initDataRanking() {
   resultsRanking(dataRanking);
 }
 
-$(function handleScrollRanking() {
-  $('#js_ranking').on({
-    scroll: function() {
-      let scroll = $(this).scrollTop();
-
-      if (scroll > 0) {
-        $('#js_search').addClass('search--shadow');
-      } else {
-        $('#js_search').removeClass('search--shadow');
-      }
-    },
-  });
-});
+window.handleScrollRanking = handleScrollRanking;
+function handleScrollRanking(e) {
+  let scroll = $(e).scrollTop();
+  if (scroll > 0) {
+    $('#js_search').addClass('search--shadow');
+  } else {
+    $('#js_search').removeClass('search--shadow');
+  }
+}
 
 function topRanking(obj) {
+  $('#js_top-ranking').empty();
+
   obj = obj.filter(function(value, index, arr) {
     return value.ranking <= 3;
   });
@@ -372,6 +400,27 @@ function resultsRanking(obj) {
 }
 
 function handleLoaderResult() {
+  // const loaderTopRank = `
+  //   <div class="col-4">
+  //     <div class="top">
+  //       <div class="top__img">
+  //         <div class="top__img-border">
+  //           <div class="top__img-val">
+  //             <div class="top__star"></div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //       <div class="top__info">
+  //         <h4 class="top__info-name"><span class="unf-loader-line"></span></h4>
+  //       </div>
+  //     </div>
+  //   </div>
+  // `;
+
+  // $('#js_top-ranking').append(loaderTopRank);
+  // $('#js_top-ranking').append(loaderTopRank);
+  // $('#js_top-ranking').append(loaderTopRank);
+
   const loader = `<div id="js_ranking-loader" class="ranking__loader"></div>`;
 
   appendRankingElem(loader);
@@ -400,65 +449,120 @@ function handleLoaderResult() {
   }
 }
 
-$(function handleSearchRanking() {
-  $('#js_search-ranking').on({
-    input: function(e) {
-      let _self = $(this);
+window.handleOnInputRanking = handleOnInputRanking;
+function handleOnInputRanking(e) {
+  let _self = $(e);
 
-      if (_self.val()) {
-        _self.siblings().addClass('unf-searchbar__close--show');
-      } else {
-        _self.siblings().removeClass('unf-searchbar__close--show');
-      }
-    },
-    keypress: function(e) {
-      const results = [];
-      let val = $(this).val();
-      if (val) {
-        if (e.which == 13) {
-          $(this).blur();
-          for (let i = 0; i < dataRanking.length; i++) {
-            for (key in dataRanking[i]) {
-              if (
-                dataRanking[i][key].toLowerCase().indexOf(val.toLowerCase()) !=
-                -1
-              ) {
-                results.push(dataRanking[i]);
-              }
-            }
+  if (_self.val()) {
+    _self.siblings().addClass('unf-searchbar__close--show');
+  } else {
+    _self.siblings().removeClass('unf-searchbar__close--show');
+  }
+}
+
+window.handleOnKeypressRanking = handleOnKeypressRanking;
+function handleOnKeypressRanking(e, el) {
+  const results = [];
+  let $this = $(el);
+  let val = $this.val();
+  let char = e.which || e.keyCode;
+  if (val) {
+    if (char == 13) {
+      $this.blur();
+      console.log(dataRanking);
+      for (let i = 0; i < dataRanking.length; i++) {
+        for (let key in dataRanking[i]) {
+          // console.log(dataRanking[i]);
+          // console.log(key);
+          // console.log(dataRanking[i]['name']);
+          if (
+            dataRanking[i]['name'].toLowerCase().indexOf(val.toLowerCase()) !=
+            -1
+          ) {
+            results.push(dataRanking[i]);
           }
-          handleLoaderResult();
-          setTimeout(() => {
-            if (results != 0) {
-              resultsRanking(results);
-            } else {
-              // handleEmptyResult();
-            }
-          }, 3000);
-        }
-      } else {
-        if (e.which == 13) {
-          $(this).blur();
-          handleLoaderResult();
-          setTimeout(() => {
-            initDataRanking();
-          }, 3000);
         }
       }
-    },
-  });
-});
+      handleLoaderResult();
+      setTimeout(() => {
+        if (results != 0) {
+          resultsRanking(results);
+        } else {
+          handleEmptyResult();
+        }
+      }, 3000);
+    }
+  } else {
+    if (char == 13) {
+      $this.blur();
+      handleLoaderResult();
+      setTimeout(() => {
+        initDataRanking();
+      }, 3000);
+    }
+  }
+}
 
-$(function handleResetSearchRanking() {
-  $('#js_reset-search-ranking').on({
-    click: function() {
-      let input = $('#js_search-ranking');
-      input.val('');
-      input.siblings().removeClass('unf-searchbar__close--show');
-      initDataRanking();
-    },
-  });
-});
+// $(function handleSearchRanking() {
+//   $('#js_search-ranking').on({
+//     input: function(e) {
+//       let _self = $(this);
+
+//       if (_self.val()) {
+//         _self.siblings().addClass('unf-searchbar__close--show');
+//       } else {
+//         _self.siblings().removeClass('unf-searchbar__close--show');
+//       }
+//     },
+//     keypress: function(e) {
+//       const results = [];
+//       let val = $(this).val();
+//       if (val) {
+//         if (e.which == 13) {
+//           $(this).blur();
+//           for (let i = 0; i < dataRanking.length; i++) {
+//             for (key in dataRanking[i]) {
+//               if (
+//                 dataRanking[i][key].toLowerCase().indexOf(val.toLowerCase()) !=
+//                 -1
+//               ) {
+//                 results.push(dataRanking[i]);
+//               }
+//             }
+//           }
+//           handleLoaderResult();
+//           setTimeout(() => {
+//             if (results != 0) {
+//               resultsRanking(results);
+//             } else {
+//               handleEmptyResult();
+//             }
+//           }, 3000);
+//         }
+//       } else {
+//         if (e.which == 13) {
+//           $(this).blur();
+//           handleLoaderResult();
+//           setTimeout(() => {
+//             initDataRanking();
+//           }, 3000);
+//         }
+//       }
+//     },
+//   });
+// });
+
+window.handleResetSearchRanking = handleResetSearchRanking;
+function handleResetSearchRanking() {
+  let input = $('#js_search-ranking');
+  input.val('');
+  input.siblings().removeClass('unf-searchbar__close--show');
+  initDataRanking();
+}
+
+function handleEmptyResult() {
+  console.log('masuk');
+}
 
 // Quiz
 
@@ -578,26 +682,36 @@ function renderTimeQuiz() {
   handleTimeQuiz(10);
 }
 
-function renderScore() {
-  const score = `
+function renderScore(score) {
+  let isScore = $('.quiz__score');
+
+  if (isScore.length != 0) {
+    isScore.remove();
+  }
+
+  const quizScore = `
     <div class="quiz__score">
-      <div class="quiz__score-inner"><span>+14.230</span>Skor</div>
+      <div class="quiz__score-inner"><span>+${score}</span>Skor</div>
       <div class="quiz__score-background"><div></div></div>
     </div>
   `;
 
-  $('.quiz').append(score);
+  $('body').append(quizScore);
+
+  setTimeout(() => {
+    $('.quiz__score').addClass('quiz__score--hide');
+  }, 3000);
 }
 
 function renderTimesup() {
-  const score = `
+  const quizTimesup = `
     <div class="quiz__score quiz__score--wrong">
       <div class="quiz__score-inner">TIME IS UP</div>
       <div class="quiz__score-background"><div></div></div>
     </div>
   `;
 
-  $('.quiz').append(score);
+  $('body').append(quizTimesup);
 }
 
 function removeToasterScore() {
@@ -815,7 +929,7 @@ function initGameOver() {
   $('body').empty();
   $('body').prepend(wrapper);
   $('body').prepend(sound);
-  soundOpening();
+  soundOpening('play');
   soundGameOver();
   renderComplete();
 }
@@ -832,7 +946,7 @@ function renderComplete() {
       <div class="game-over__container">
         <div class="game-over__content">
           <h1 class="game-over__title">MISSION COMPLETE</h1>
-          <h3 class="game-over__score">Total Skor : <span id="js_result-score">0</span></h3>
+          <h3 class="game-over__score">Total Skor : <span id="js_result-score">${convertScore(userScore)}</span></h3>
           <button class="btn btn--score">
             <div class="btn__inner">
               <span>Pamerkan Skor</span>
@@ -842,14 +956,7 @@ function renderComplete() {
             <div class="game-over__separator-inner"></div>
           </div>
         </div>
-        <p class="game-over__desc">Lihat konten berikut untuk dapatkan 2x skor</p>
-        <button class="btn btn--primary" onclick="renderAds()">
-          <div class="btn__inner">
-            <div class="btn__inner-shine">
-              <span>Gandakan Skor</span>
-            </div>
-          </div>
-        </button>
+        <div class="game-over__footer"></div>
       </div>
 
       <div class="overlay"></div>
@@ -888,28 +995,48 @@ function renderComplete() {
         </div>
       </div>
 
-      <div class="ads">
-        <div class="ads__countdown">
-            <span class="countdown__num" onclick="closeAds()">0</span>
-            <svg class="countdown__progress">
-                <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" style="stop-color:#EEBA3F" />
-                    <stop offset="100%" style="stop-color:#FAEAC9" />
-                </linearGradient>
-                <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
-                <circle class="countdown__progress-bar" />
-            </svg>
-        </div>
-        <img class="ads__image" src="./assets/img/ads1.jpg" alt="" onclick="gotoAdsPage('https://www.tokopedia.com/')"/>
-    </div>
-
-
     </div>
   `;
 
   renderWrapper(html);
-  // soundScore(true);
-  countUp(userScore);
+  renderCompleteBtn(isViewAds);
+
+  if (!isLeaderboardOnAds) {
+    isLeaderboardOnAds = true;
+    countUp(userScore);
+  }
+}
+
+function renderCompleteBtn() {
+  $('.game-over__footer').empty();
+
+  const doubleSkor = `
+    <p class="game-over__desc">Lihat konten berikut untuk dapatkan 2x skor</p>
+    <button class="btn btn--primary" onclick="renderAds()">
+      <div class="btn__inner">
+        <div class="btn__inner-shine">
+          <span>Gandakan Skor</span>
+        </div>
+      </div>
+    </button>
+  `;
+
+  const remindBtn = `
+    <p class="game-over__desc">Kuis akan dimulai pada 12.00 - 13.00</p>
+    <button class="btn btn--primary" onclick="handleBtnReminder(this)">
+      <div class="btn__inner">
+        <div class="btn__inner-shine">
+          <span>Ingatkan Saya</span>
+        </div>
+      </div>
+    </button>
+  `;
+
+  if (isViewAds) {
+    $('.game-over__footer').append(remindBtn);
+  } else {
+    $('.game-over__footer').append(doubleSkor);
+  }
 }
 
 // function countUp(count) {
@@ -952,7 +1079,8 @@ function countUp(count, start) {
 }
 
 function addScore(score) {
-  handleShowScore(score);
+  // handleShowScore(score);
+  renderScore(score);
   countUp(userScore + score, score);
   userScore += score;
 }
@@ -969,37 +1097,34 @@ function convertScore(score) {
   return x1 + x2;
 }
 
-window.gotoAdsPage = gotoAdsPage;
-function gotoAdsPage(link) {
-  window.open(link, '_blank');
-}
-
-window.closeAds = closeAds;
-function closeAds() {
-  $('.ads').removeClass('ads--show');
-
-  setTimeout(() => {
-    $('.ads .countdown__progress-bar').css({
-      'stroke-dashoffset': 82,
-    });
-  }, 400);
-
-  addScore(userScore);
-  renderBtnReminder('#js_btn-over');
-}
-
 // Ads
-
-let viewAds = false;
 
 window.renderAds = renderAds;
 function renderAds() {
-  $('.ads')
-    .addClass('ads--show')
-    .find('.countdown__num')
-    .removeClass('countdown__num--close');
+  soundOpening('stop');
+  isViewAds = true;
+
+  const ads = `
+    <div class="ads">
+      <div class="ads__countdown">
+          <span class="countdown__num" onclick="closeAds()"></span>
+          <svg class="countdown__progress">
+              <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#EEBA3F" />
+                  <stop offset="100%" style="stop-color:#FAEAC9" />
+              </linearGradient>
+              <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
+              <circle class="countdown__progress-bar" />
+          </svg>
+      </div>
+      <a href="https://www.tokopedia.com/" target="_blank">
+        <img class="ads__image" src="https://lh3.googleusercontent.com/WfRh1tG1HGwtToqPc75BR_CA5eRBx-NbL3JZ0cS8ZxdbVw8eiSwWsqnQzUBh4UX7Hv7zISEH3wsgJ9dAqoc9HPFHavRDCgZaLL8XsOhWJ1xwjM53xzaqgV9zycwm_TLn8vLRWXNIjrh2_r9Uv5nSq1uB-CIv9WkakkEO_IHPtKAuTSG0YIan-qrPmCImbpIfUnoUsCiXcvt4HI_rbG0110WqRO9bGOUvp16KhJpzhD-zuYM3J-43ExUx2_STOf1W_Cm5s7aUYpuaWp9ECzXqDWloijtRjzIuG_Qmmf6Fn6wHxdONfFUkTdcjO_fpRxpAjnEjEzRU4JLNeJXUpT0sAUtR49igIQATYRVLP1FNRqVsTsnBm6z8CmFePI4pkh4ysGMfSVY3UVJzzqpuEi4LM4pOXmpNpOXEs9L9oIo8UERjbDHanNfY-RFMXj0CXBQeQunyff95ahsFdU9vTes2ZEbwJrRrSsiQLxWyOF3iazQN5YtbEUKj16s7bGyTOppCkMklOPR6CrV0z6mQAdqyJooq2xF-ArjFb-rPIPpojtWS9F1DN00UCtY5VlJvR-m67-nbaOvAQKLDynIjyWJ1x7thmmtLcs0Y=w2880-h1424" alt=""/>
+      </a>
+    </div>
+  `;
+
+  $('.game-over').append(ads);
   handleTimeAds(10);
-  viewAds = true;
 }
 
 function handleTimeAds(start) {
@@ -1031,12 +1156,61 @@ function handleTimeAds(start) {
   }, 1000);
 }
 
+window.closeAds = closeAds;
+function closeAds() {
+  $('.ads').addClass('ads--hide');
+  setTimeout(() => {
+    $('.ads').remove();
+  }, 300);
+
+  soundOpening('play');
+  addScore(userScore);
+  renderCompleteBtn(isViewAds);
+}
+
+// window.handleShowScore = handleShowScore;
+// function handleShowScore(score) {
+//   $('.quiz__score')
+//     .find('.quiz__score-inner span')
+//     .text('+' + convertScore(score))
+//     .end()
+//     .addClass('quiz__score--show')
+//     .removeClass('quiz__score--hide');
+
+//   setTimeout(() => {
+//     $('.quiz__score')
+//       .removeClass('quiz__score--show')
+//       .addClass('quiz__score--hide');
+//   }, 3000);
+// }
+
+window.handleBtnReminder = handleBtnReminder;
+function handleBtnReminder(e) {
+  let $this = $(e);
+  if ($this.hasClass('btn--transparent')) {
+    $this.removeClass('btn--transparent');
+    $this.addClass('btn--primary');
+    $this.find('span').text('Ingatkan Saya');
+  } else {
+    $this.removeClass('btn--primary');
+    $this.addClass('btn--transparent');
+    $this.find('span').text('Hapus Pengingat');
+  }
+}
+
 // Audio
 
-function soundOpening() {
+function soundOpening(type) {
   let audioHome = document.getElementById('js_sound-opening');
-  audioHome.play();
-  audioHome.loop = true;
+  if (type == 'play') {
+    audioHome.play();
+    audioHome.loop = true;
+  } else {
+    audioHome.pause();
+    setTimeout(() => {
+      audioHome.currentTime = 0;
+    }, 100);
+  }
 }
 
 function soundGameOver() {
@@ -1059,7 +1233,7 @@ function soundCountdown() {
 
 function soundQuiz() {
   let audioQuiz = document.getElementById('js_sound-quiz');
-  audioQuiz.volume = 0.2;
+  // audioQuiz.volume = 0.2;
   audioQuiz.play();
   audioQuiz.loop = true;
 }

@@ -91,9 +91,9 @@
   }
 
   &--transparent{
+    background: linear-gradient(to right, #cc7f30,#eebb3f, #fcf2df, #cc7f30);
     #{$btn}{
       &__inner{
-        background: none;
         background-color: #020121;
         span{
           color: #f0c177;
