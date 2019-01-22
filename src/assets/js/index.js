@@ -14,8 +14,8 @@ let isLeaderboardOnAds = false;
 
 $(document).ready(function() {
   // initGameOver();
-  initHome();
-  // checkDesktop();
+  // initHome();
+  checkDesktop();
   // loading('%');
 });
 
@@ -53,7 +53,7 @@ function renderBlocker() {
   var html = `
     <div class="blocker">
       <div class="blocker__container">
-      <img src="./assets/img/blocker.png"/>
+      <img src="https://lh3.googleusercontent.com/oqyY6hp_34ToIUKzxPEDSJ4Htk35VqoFwxvwoafWm31ujE0wzKpsESofGzOec85Dq3VXfrHxORHI0TxyBr0mZPISB2NozvIMnn0E8YYr8vdvaytGqxidcuJMOIxdIKK_DzRRVB1I5kn2_gpyrye0alTTpUWsj-LP6yb4Uf_uI_ZW4eMQx21jQwc_vD6EUpIBZGWF3PQQkKDGJZHmEv6L107Qys7Jx10tbHv9xiSCsAEmofS0teqz6Uq6N3mmIdlqX0pDyO9q9xtWcr2-HyYzlo5PD9kaUQw6I1uEz9CjScnR7eHejxZSAqqPP6GHzuC86MfnDily_kIx1YXUCntv1yjIHzhaksv9d_Iknw0TWR81_nNfowYCE1N49h2ZeJJ0-fAvzp-tJ1Pm__gRKbXo4G_CeYOinUiax0uGb9uraBVeN3ErEbyrj4NpkK6G9jijyEADvqLQyD5fEwGbo9ZE-GcPZNtTKDSOSxrH5bbaY0RkYgV6nQFTC4EtUYTCoowBL_NC39ORQcF7Kt2aSJwAjsxQIViiENzhyKJdd1tZtTE-1LVDyg3T9ZDf-NV7dujYmZELR3RuVuHMa5l_kumRfe3cSr1Zim-m=w2880-h1424"/>
       <div class="blocker__desc">
           NET Play Hanya dapat diakses melalui aplikasi.
           <br/>
@@ -249,6 +249,7 @@ function dummyInfo() {
     randomDummy();
   }, 1000);
 }
+
 function randomDummy() {
   let numb = Math.ceil(Math.random() * 10);
   if (numb >= 7) {
@@ -259,23 +260,22 @@ function randomDummy() {
 
 function otherPlayerInfo() {
   let data = dataRanking[Math.floor(Math.random() * dataRanking.length)];
-  // console.log(data)
   $('.landing-page__info')
     .find('div:first-child')
     .html(
-      `<div>${data.name}</div><div>mendapatkan skor ${convertScore(data.skor)}</div>`
+      `<div>${data.name}</div><div>mendapatkan skor ${convertScore(
+        data.skor
+      )}</div>`
     )
     .end()
     .addClass('landing-page__info--show');
-  
-    console.log('masuk')
 
   setTimeout(() => {
     $('.landing-page__info').removeClass('landing-page__info--show');
     dummyInfoInterval = setInterval(function() {
       randomDummy();
     }, 1000);
-  }, 5000);
+  }, 3000);
 }
 
 function dummyParticipant() {
@@ -369,6 +369,11 @@ function handleRemindMe(e) {
 
 window.renderLeaderboard = renderLeaderboard;
 function renderLeaderboard(prevPage) {
+  if (prevPage == 'home') {
+    clearInterval(dummyInfoInterval);
+    clearInterval(dummyParticipantInterval);
+  }
+
   const html = `
     <div class="leaderboard">
       <div class="leaderboard__menu menu">
