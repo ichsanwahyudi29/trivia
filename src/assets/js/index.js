@@ -5,16 +5,16 @@ const quizReady = ['satu', 'dua', 'tiga', 'empat', 'lima'];
 const totalQUiz = dataQuiz.questions.length;
 
 let quizCount = 0;
-let userScore = 13240;
+let userScore = 0;
 
 let isViewAds = false;
 let isPlayBtn = true;
 let isLeaderboardOnAds = false;
 
 $(document).ready(function() {
-  initGameOver();
-  // initHome();
-  // loading('%');
+  // initGameOver();
+  initHome();
+  loading('%');
 });
 
 // Loading
@@ -46,7 +46,7 @@ function loading(percent = '') {
     let numInterval = setInterval(() => {
       num++;
       $('#js_loading-percent').text(`${num}%`);
-      if (num == 20) {
+      if (num == 75) {
         clearInterval(numInterval);
         $('.overlay').removeClass('overlay--show');
         $('.loading').remove();
@@ -125,6 +125,13 @@ function renderHome() {
         </div>
         
         <div class="landing-page__container content">
+          <div class="landing-page__menu menu">
+            <a href="" class="menu__action menu__action--back"></a>
+            <div class="landing-page__menu-right">
+              <span class="menu__action menu__action--leaderboard" onclick="renderLeaderboard('home')"></span>
+              <span class="menu__action menu__action--share"></span>
+            </div>
+          </div>
           <div class="landing-page__action">
             <img class="landing-page__logo" src="./assets/img/logo_marvel.png" alt="" srcset="">
             <div class="landing-page__title">
@@ -188,7 +195,7 @@ function renderHome() {
 function renderPlayBtn() {
   const playBtn = `
     <p class="landing-page__desc">Kuis telah dimulai</p>
-    <button class="btn btn--primary" onclick="handleBtnRemind(this)">
+    <button class="btn btn--primary" onclick="renderStartQuiz()">
       <div class="btn__inner">
         <div class="btn__inner-shine">
           <span>Mulai Main</span>
@@ -240,24 +247,24 @@ function handleRemindMe(e) {
   }
 }
 
-function renderMenuHome() {
-  const menu = `
-    <div class="landing-page__menu menu">
-      <a href="" class="menu__action menu__action--back"></a>
-      <div class="landing-page__menu-right">
-        <span class="menu__action menu__action--leaderboard" onclick="renderLeaderboard('home')"></span>
-        <span class="menu__action menu__action--share"></span>
-      </div>
-    </div>
-  `;
+// function renderMenuHome() {
+//   const menu = `
+//     <div class="landing-page__menu menu">
+//       <a href="" class="menu__action menu__action--back"></a>
+//       <div class="landing-page__menu-right">
+//         <span class="menu__action menu__action--leaderboard" onclick="renderLeaderboard('home')"></span>
+//         <span class="menu__action menu__action--share"></span>
+//       </div>
+//     </div>
+//   `;
 
-  $('.landing-page__container').prepend(menu);
-}
+//   $('.landing-page__container').prepend(menu);
+// }
 
 // Leaderboard
 
 window.renderLeaderboard = renderLeaderboard;
-function renderLeaderboard(page) {
+function renderLeaderboard(prevPage) {
   const html = `
     <div class="leaderboard">
       <div class="leaderboard__menu menu">
@@ -273,8 +280,8 @@ function renderLeaderboard(page) {
         <div class="leaderboard__content">
           <div id="js_search" class="search">
             <div class="unf-searchbar">
-              <input id="js_search-ranking" oninput="handleOnInputRanking(this)" onkeyup="handleOnKeypressRanking(event, this)" type="text" class="unf-searchbar__input" placeholder="Cari Namamu">
-              <button onclick="handleResetSearchRanking()" class="unf-searchbar__close"></button>
+              <input id="js_search-ranking" type="text" class="unf-searchbar__input" placeholder="Cari Namamu">
+              <button id="js_reset-search-ranking" class="unf-searchbar__close"></button>
             </div>
           </div> 
           <div id="js_ranking" class="ranking" onscroll="handleScrollRanking(this)"></div>
@@ -286,13 +293,25 @@ function renderLeaderboard(page) {
 
   renderWrapper(html);
 
-  if (page == 'home') {
-    $('.menu__action--back').attr('onclick', 'renderHome()');
-  } else {
-    $('.menu__action--back').attr('onclick', 'renderComplete()');
+  let backTo;
+
+  switch (prevPage) {
+    case 'home':
+      backTo = 'renderHome()';
+      break;
+
+    case 'gameover':
+      backTo = 'renderGameOver()';
+      break;
+
+    default:
+      break;
   }
 
+  $('.menu__action--back').attr('onclick', backTo);
+
   handleLoaderResult();
+  handleLeaderBoardAction();
   setTimeout(() => {
     topRanking(dataRanking);
     initDataRanking();
@@ -400,26 +419,32 @@ function resultsRanking(obj) {
 }
 
 function handleLoaderResult() {
-  // const loaderTopRank = `
-  //   <div class="col-4">
-  //     <div class="top">
-  //       <div class="top__img">
-  //         <div class="top__img-border">
-  //           <div class="top__img-val">
-  //             <div class="top__star"></div>
-  //           </div>
-  //         </div>
-  //       </div>
-  //       <div class="top__info">
-  //         <h4 class="top__info-name"><span class="unf-loader-line"></span></h4>
-  //       </div>
-  //     </div>
-  //   </div>
-  // `;
+  for (let i = 1; i <= 3; i++) {
+    const loaderTopRank = `
+      <div class="col-4">
+        <div class="top top--${i}">
+          <div class="top__img top__img--loader">
+            <span class="unf-loader-circle"></span>
+          </div>
+          <div class="top__info--loader-name">
+            <span class="unf-loader-line"></span>
+          </div>
+          <div class="top__info--loader-phone">
+            <span class="unf-loader-line"></span>
+          </div>
+          <div class="top__info--loader-score">
+            <span class="unf-loader-line"></span>
+          </div>
+        </div>
+      </div>
+    `;
 
-  // $('#js_top-ranking').append(loaderTopRank);
-  // $('#js_top-ranking').append(loaderTopRank);
-  // $('#js_top-ranking').append(loaderTopRank);
+    if (i != 2) {
+      $('#js_top-ranking').append(loaderTopRank);
+    } else {
+      $('#js_top-ranking').prepend(loaderTopRank);
+    }
+  }
 
   const loader = `<div id="js_ranking-loader" class="ranking__loader"></div>`;
 
@@ -449,115 +474,63 @@ function handleLoaderResult() {
   }
 }
 
-window.handleOnInputRanking = handleOnInputRanking;
-function handleOnInputRanking(e) {
-  let _self = $(e);
+function handleLeaderBoardAction() {
+  $('#js_search-ranking').on({
+    input: function(e) {
+      let $this = $(this);
 
-  if (_self.val()) {
-    _self.siblings().addClass('unf-searchbar__close--show');
-  } else {
-    _self.siblings().removeClass('unf-searchbar__close--show');
-  }
-}
-
-window.handleOnKeypressRanking = handleOnKeypressRanking;
-function handleOnKeypressRanking(e, el) {
-  const results = [];
-  let $this = $(el);
-  let val = $this.val();
-  let char = e.which || e.keyCode;
-  if (val) {
-    if (char == 13) {
-      $this.blur();
-      console.log(dataRanking);
-      for (let i = 0; i < dataRanking.length; i++) {
-        for (let key in dataRanking[i]) {
-          // console.log(dataRanking[i]);
-          // console.log(key);
-          // console.log(dataRanking[i]['name']);
-          if (
-            dataRanking[i]['name'].toLowerCase().indexOf(val.toLowerCase()) !=
-            -1
-          ) {
-            results.push(dataRanking[i]);
+      if ($this.val()) {
+        $this.siblings().addClass('unf-searchbar__close--show');
+      } else {
+        $this.siblings().removeClass('unf-searchbar__close--show');
+      }
+    },
+    keypress: function(e) {
+      const results = [];
+      let val = $(this).val();
+      if (val) {
+        if (e.which == 13) {
+          $(this).blur();
+          for (let i = 0; i < dataRanking.length; i++) {
+            for (key in dataRanking[i]) {
+              if (
+                dataRanking[i][key].toLowerCase().indexOf(val.toLowerCase()) !=
+                -1
+              ) {
+                results.push(dataRanking[i]);
+              }
+            }
           }
+          handleLoaderResult();
+          setTimeout(() => {
+            if (results != 0) {
+              resultsRanking(results);
+            } else {
+              handleEmptyResult();
+            }
+          }, 3000);
+        }
+      } else {
+        if (e.which == 13) {
+          $(this).blur();
+          handleLoaderResult();
+          setTimeout(() => {
+            initDataRanking();
+          }, 3000);
         }
       }
-      handleLoaderResult();
-      setTimeout(() => {
-        if (results != 0) {
-          resultsRanking(results);
-        } else {
-          handleEmptyResult();
-        }
-      }, 3000);
-    }
-  } else {
-    if (char == 13) {
-      $this.blur();
-      handleLoaderResult();
-      setTimeout(() => {
-        initDataRanking();
-      }, 3000);
-    }
-  }
-}
+    },
+  });
 
-// $(function handleSearchRanking() {
-//   $('#js_search-ranking').on({
-//     input: function(e) {
-//       let _self = $(this);
-
-//       if (_self.val()) {
-//         _self.siblings().addClass('unf-searchbar__close--show');
-//       } else {
-//         _self.siblings().removeClass('unf-searchbar__close--show');
-//       }
-//     },
-//     keypress: function(e) {
-//       const results = [];
-//       let val = $(this).val();
-//       if (val) {
-//         if (e.which == 13) {
-//           $(this).blur();
-//           for (let i = 0; i < dataRanking.length; i++) {
-//             for (key in dataRanking[i]) {
-//               if (
-//                 dataRanking[i][key].toLowerCase().indexOf(val.toLowerCase()) !=
-//                 -1
-//               ) {
-//                 results.push(dataRanking[i]);
-//               }
-//             }
-//           }
-//           handleLoaderResult();
-//           setTimeout(() => {
-//             if (results != 0) {
-//               resultsRanking(results);
-//             } else {
-//               handleEmptyResult();
-//             }
-//           }, 3000);
-//         }
-//       } else {
-//         if (e.which == 13) {
-//           $(this).blur();
-//           handleLoaderResult();
-//           setTimeout(() => {
-//             initDataRanking();
-//           }, 3000);
-//         }
-//       }
-//     },
-//   });
-// });
-
-window.handleResetSearchRanking = handleResetSearchRanking;
-function handleResetSearchRanking() {
-  let input = $('#js_search-ranking');
-  input.val('');
-  input.siblings().removeClass('unf-searchbar__close--show');
-  initDataRanking();
+  // reset
+  $('#js_reset-search-ranking').on({
+    click: function() {
+      let input = $('#js_search-ranking');
+      input.val('');
+      input.siblings().removeClass('unf-searchbar__close--show');
+      initDataRanking();
+    },
+  });
 }
 
 function handleEmptyResult() {
@@ -653,7 +626,7 @@ function renderMenuQuiz() {
     <div class="quiz__menu menu">
       <span class="menu__action menu__action--back" onclick="handleOpenDialog()"></span>
       <div class="menu__score">
-        <span>0</span>
+        <span id="js_quiz-score">0</span>
       </div>
     </div>
   `;
@@ -692,7 +665,7 @@ function renderScore(score) {
   const quizScore = `
     <div class="quiz__score">
       <div class="quiz__score-inner"><span>+${score}</span>Skor</div>
-      <div class="quiz__score-background"><div></div></div>
+      <div class="quiz__score-background"><div style="background-image: url(../img/bg-quiz.jpg)"></div></div>
     </div>
   `;
 
@@ -795,6 +768,41 @@ function questionsAnswer(idx) {
   }
 }
 
+// function handleTimeQuiz(start) {
+//   var newStart = start;
+//   var bar = 82;
+
+//   $('.countdown__num').text(start);
+//   setTimeout(function() {
+//     $('.countdown__progress-bar').css({
+//       'stroke-dashoffset': ((newStart - 1) / start) * bar,
+//       transition: 'stroke-dashoffset 1s linear',
+//     });
+//   }, 1);
+
+//   var timeOut = setInterval(() => {
+//     newStart -= 1;
+//     var newBar =
+//       ((newStart - 1) / start) * bar > 0 ? ((newStart - 1) / start) * bar : 0;
+//     $('.countdown__num').text(Math.ceil(newStart));
+//     $('.countdown').addClass('countdown--animate');
+//     setTimeout(() => {
+//       $('.countdown').removeClass('countdown--animate');
+//     }, 500);
+//     $('.countdown__progress-bar').css({
+//       'stroke-dashoffset': newBar,
+//     });
+//     if (newStart < 3) {
+//       soundCountdownQuiz('play');
+//     }
+//     if (newStart <= 0) {
+//       clearInterval(timeOut);
+//       soundCountdownQuiz('stop');
+//       handleCheckAnswer();
+//     }
+//   }, 1000);
+// }
+
 function handleTimeQuiz(start) {
   $('.countdown__num').text(start);
   var bar = 500;
@@ -829,8 +837,9 @@ function handleCheckAnswer() {
   let $answer = $('.answer-btn--active');
   if ($answer.length != 0) {
     // Check answer correct or wrong
-    if ($answer.length == 0) {
+    if ($answer.length != 0) {
       handleCorrectAnswer();
+      addScore(1000);
     } else {
       handleWrongAnswer();
     }
@@ -877,17 +886,6 @@ function nextQuestions() {
   }, 1500);
 }
 
-function gameOver() {
-  removeToasterScore();
-  setTimeout(() => {
-    $('.quiz__time').addClass('quiz__time--hide');
-    $('.quiz__content').addClass('quiz__content--hide');
-  }, 500);
-  setTimeout(() => {
-    initGameOver();
-  }, 1000);
-}
-
 window.handleBtnAnswerTxt = handleBtnAnswerTxt;
 function handleBtnAnswerTxt(e) {
   focusAnswer('text');
@@ -915,7 +913,18 @@ function focusAnswer(type) {
   $('.answer-btn').removeClass('answer-btn--active');
 }
 
-// Complete
+// GameOver
+
+function gameOver() {
+  removeToasterScore();
+  setTimeout(() => {
+    $('.quiz__time').addClass('quiz__time--hide');
+    $('.quiz__content').addClass('quiz__content--hide');
+  }, 500);
+  setTimeout(() => {
+    initGameOver();
+  }, 1000);
+}
 
 function initGameOver() {
   const wrapper = `
@@ -931,22 +940,24 @@ function initGameOver() {
   $('body').prepend(sound);
   soundOpening('play');
   soundGameOver();
-  renderComplete();
+  renderGameOver();
 }
 
-window.renderComplete = renderComplete;
-function renderComplete() {
+window.renderGameOver = renderGameOver;
+function renderGameOver() {
   const html = `
     <div class="game-over">
       <div class="game-over__menu menu">
         <span class="menu__action menu__action--back"></span>
-        <span onclick="renderLeaderboard('complete')" class="menu__action menu__action--leaderboard"></span>
+        <span onclick="renderLeaderboard('gameover')" class="menu__action menu__action--leaderboard"></span>
       </div>
 
       <div class="game-over__container">
         <div class="game-over__content">
           <h1 class="game-over__title">MISSION COMPLETE</h1>
-          <h3 class="game-over__score">Total Skor : <span id="js_result-score">${convertScore(userScore)}</span></h3>
+          <h3 class="game-over__score">Total Skor : <span id="js_result-score">${convertScore(
+            userScore
+          )}</span></h3>
           <button class="btn btn--score">
             <div class="btn__inner">
               <span>Pamerkan Skor</span>
@@ -999,15 +1010,15 @@ function renderComplete() {
   `;
 
   renderWrapper(html);
-  renderCompleteBtn(isViewAds);
+  renderGameOverBtn(isViewAds);
 
   if (!isLeaderboardOnAds) {
     isLeaderboardOnAds = true;
-    countUp(userScore);
+    countUp('#js_result-score', userScore);
   }
 }
 
-function renderCompleteBtn() {
+function renderGameOverBtn() {
   $('.game-over__footer').empty();
 
   const doubleSkor = `
@@ -1059,29 +1070,37 @@ function renderCompleteBtn() {
 //   }, int_speed);
 // }
 
-function countUp(count, start) {
-  var $display = $('#js_result-score'),
+function countUp(el, start, count) {
+  console.log(start, count);
+  var $display = $(el),
     init = start === undefined ? 0 : start,
     add = 1,
     inc = 0;
+  console.log(init);
   $display.text(convertScore(init));
   var counting = setInterval(() => {
     init += add;
     inc += add;
     add = Math.ceil(inc / 10);
     if (init < count) {
+      console.log('MASUK')
       $display.text(convertScore(init));
     } else {
+      console.log('GAK MASUK')
       $display.text(convertScore(count));
       clearInterval(counting);
     }
   }, 25);
 }
 
-function addScore(score) {
-  // handleShowScore(score);
+function addScore(score, results) {
   renderScore(score);
-  countUp(userScore + score, score);
+  if (results) {
+    countUp('#js_result-score', userScore, score);
+  } else {
+    countUp('#js_quiz-score', userScore, score);
+  }
+
   userScore += score;
 }
 
@@ -1164,25 +1183,10 @@ function closeAds() {
   }, 300);
 
   soundOpening('play');
-  addScore(userScore);
-  renderCompleteBtn(isViewAds);
+  soundGameOver();
+  addScore(userScore, true);
+  renderGameOverBtn(isViewAds);
 }
-
-// window.handleShowScore = handleShowScore;
-// function handleShowScore(score) {
-//   $('.quiz__score')
-//     .find('.quiz__score-inner span')
-//     .text('+' + convertScore(score))
-//     .end()
-//     .addClass('quiz__score--show')
-//     .removeClass('quiz__score--hide');
-
-//   setTimeout(() => {
-//     $('.quiz__score')
-//       .removeClass('quiz__score--show')
-//       .addClass('quiz__score--hide');
-//   }, 3000);
-// }
 
 window.handleBtnReminder = handleBtnReminder;
 function handleBtnReminder(e) {
@@ -1225,15 +1229,14 @@ function soundOnboardingQuiz() {
 
 function soundCountdown() {
   let audioCountdown = document.getElementById('js_sound-countdown');
-  audioCountdown.loop = true;
   setTimeout(() => {
     audioCountdown.play();
+    audioCountdown.loop = true;
   }, 1500);
 }
 
 function soundQuiz() {
   let audioQuiz = document.getElementById('js_sound-quiz');
-  // audioQuiz.volume = 0.2;
   audioQuiz.play();
   audioQuiz.loop = true;
 }
@@ -1247,7 +1250,7 @@ function soundCountdownQuiz(type) {
     audioCountdown.pause();
     setTimeout(() => {
       audioCountdown.currentTime = 0;
-    }, 1200);
+    }, 1105);
   }
 }
 
@@ -1264,6 +1267,7 @@ function soundCorrectAnswer() {
 function soundWrongAnswer() {
   let audioWrongAnswer = document.getElementById('js_sound-wrong');
   audioWrongAnswer.play();
+  audioWrongAnswer.volume = 0.6;
 }
 
 function soundScore(type) {

@@ -74,6 +74,16 @@
                 height: 120px;
               }
             }
+            &--loader{
+              .unf-loader-circle{
+                width: 80px;
+                height: 80px;
+                @include breakpoint(sm){
+                  width: 112px;
+                  height: 112px;
+                }
+              }
+            }
           }
           &__star{
             bottom: -25px;
@@ -156,6 +166,17 @@
           @include backgroundImg;
           position: relative;
         }
+        &--loader{
+          .unf-loader-circle{
+            width: 64px;
+            height: 64px;
+            opacity: .7;
+            @include breakpoint(sm){
+              width: 100px;
+              height: 100px;
+            }
+          }
+        }
       }
       &__star{
         width: 70%;
@@ -210,6 +231,20 @@
           margin: 0;
           font-size: 14px;
           font-weight: 900;
+        }
+        &--loader{
+          &-name, &-phone, &-score{
+            margin-bottom: 4px;
+            width: 100%;
+            opacity: .7;
+          }
+          &-phone{
+            opacity: .5;
+            width: 80%;
+          }
+          &-score{
+            width: 40%;
+          }
         }
       }
     }

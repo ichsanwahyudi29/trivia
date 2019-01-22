@@ -23,5 +23,10 @@
       }
     }
   }
+  &-circle{
+    margin: auto;
+    background-image: linear-gradient(63deg,#EFEFEF,#E0E0E0);
+    border-radius: 50%;
+  }
 }
 
