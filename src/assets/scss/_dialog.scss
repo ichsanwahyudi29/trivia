@@ -97,7 +97,7 @@
       &__desc{
         margin: 0 0 24px;
       }
-       &__content{
+      &__content{
         &::before{
           background-image: url(../img/shield-top_back.svg);
         }
@@ -110,10 +110,20 @@
   &--reward{
     #{$dialog}{
       &__inner{
+        padding-top: 32px;
         background-image: linear-gradient(to bottom, #2D455C,#0C2E5F,#0A367A);
       }
       &__desc{
         margin: 0 0 16px;
+      }
+      &__content{
+        &::before{
+          background-image: url(../img/shield-top_reward.svg);
+        }
+        &:after{
+          background-image: url(../img/shield-bottom_reward.svg);
+          background-size: contain;
+        }
       }
     }
   }
@@ -124,7 +134,6 @@
   }
   &__content{
     padding: 0 2px;
-    // box-shadow: 0 0 22px 0 rgba(255, 255, 255, 0.5);
     background: linear-gradient(to right, #edb836,#fdf8ef,#F5E5D1);
     position: relative;
   }
@@ -165,14 +174,12 @@
       position: absolute;
       z-index: 1;
       top: -20px;
-      // left: -6px;
     }
     &-bottom{
       width: 100%;
       display: block;
       position: absolute;
       z-index: 2;
-      // bottom: -64px;
       bottom: -60px;
     }
   }
@@ -188,6 +195,7 @@
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     line-height: 1.43;
     margin: 0;
+    text-align: center;
   }
   &__star{
     position: absolute;
@@ -207,11 +215,6 @@
       margin: 0 auto;
       z-index: 2;
     }
-    // &-line{
-    //   width: 99px;
-    //   height: 15px;
-    //   background-image: linear-gradient(to right, #BF9332 ,#F8E2B0, #F8E2B0)
-    // }
     &::before,
     &::after{
       content: '';
