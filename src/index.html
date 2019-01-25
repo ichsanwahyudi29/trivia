@@ -1,13 +1,323 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Marvel Trivia</title>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Marvel Trivia</title>
+  </head>
+  <body>
+    <div id="wrapper"></div>
 
-<body>
+    <audio preload="auto" id="js_sound-opening" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/opening.mp3"></audio>
+    <audio preload="auto" id="js_sound-quiz" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/quiz.mp3"></audio>
+    <audio preload="auto" id="js_sound-get-ready" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/get-ready.mp3"></audio>
+    <audio preload="auto" id="js_sound-choose" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-choose.mp3"></audio>
+    <audio preload="auto" id="js_sound-correct" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-correct.mp3"></audio>
+    <audio preload="auto" id="js_sound-wrong" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-wrong.mp3"></audio>
+    <audio preload="auto" id="js_sound-countdown-quiz" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/countdown-quiz.mp3"></audio>
+    <audio preload="auto" id="js_sound-countdown-get-ready" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/countdown-get-ready.mp3"></audio>
 
-</body>
+    <script type="html" id="home-page">
+      <div class="landing-page">
+        <div class="landing-page__wrapper">
+          <div class="landing-page__info">
+            <div class="landing-page__info-text">Ichsan Indra mendapatkan skor 999.999</div>
+            <span class="landing-page__info-num"></span>
+          </div>
+
+          <div class="landing-page__container content">
+            <div class="landing-page__menu menu">
+              <a href="https://www.tokopedia.com/" class="menu__action menu__action--back"></a>
+              <div class="landing-page__menu-right">
+                <a class="menu__action menu__action--leaderboard" onclick="renderLeaderboard('home')"></a>
+                <a class="menu__action menu__action--share"></a>
+              </div>
+            </div>
+            <div class="landing-page__action">
+              <img class="landing-page__logo" src="https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/logo_marvel.png" alt="" srcset="">
+              <div class="landing-page__title">
+                <span>Quiz</span>
+                <div class="landing-page__title-spark"></div>
+              </div>
+              <div class="landing-page__content">
+                <div class="landing-page__content-btn">
+                  <p class="landing-page__desc">Kuis telah dimulai</p>
+                  <button id="" class="btn btn--primary" onclick="renderStartQuiz()">
+                    <div class="btn__inner">
+                      <div class="btn__inner-shine">
+                        <span>Mulai Main</span>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+                <button onclick="handleOpenDialog()" class="btn btn--small btn--price">
+                  <div class="btn__inner">
+                    <span class="icon icon--price">Info Hadiah</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="overlay"></div>
+        <div class="dialog dialog--custom dialog--home">
+          <div class="dialog__container">
+            <div onclick="handleCloseDialog()" class="dialog__close"></div>
+            <div class="dialog__star">
+              <div class="dialog__star-line dialog__star-line--left">
+                <div class="dialog__star-line__inner"></div>
+              </div>
+              <div class="dialog__star-icon"></div>
+              <div class="dialog__star-line dialog__star-line--right">
+                <div class="dialog__star-line__inner"></div>
+              </div>
+            </div>
+            <div class="dialog__content">
+              <div class="dialog__inner">
+                <p class="dialog__desc">Dapatkan kesempatan menangkan kupon cashback sampai 60%!</p>
+                <div class="coupon">
+                  <div class="coupon__list">
+                    <img src="https://cdn.tokopedia.net/play-groupchat/assets/img/coupon.png" alt="coupon">
+                  </div>
+                  <div class="coupon__list">
+                    <img src="https://cdn.tokopedia.net/play-groupchat/assets/img/coupon.png" alt="coupon">
+                  </div>
+                  <div class="coupon__list">
+                    <img src="https://cdn.tokopedia.net/play-groupchat/assets/img/coupon.png" alt="coupon">
+                  </div>
+                  <div class="coupon__list">
+                    <img src="https://cdn.tokopedia.net/play-groupchat/assets/img/coupon.png" alt="coupon">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </script>
+
+    <script type="html" id="leader-page">
+      <div class="leaderboard">
+        <div class="leaderboard__menu menu">
+          <a class="menu__action menu__action--back" onClick="$back"></a>
+          <h1 class="menu__title">Leaderboard</h1>
+        </div>
+
+        <div class="leaderboard__container container">
+          <div class="leaderboard__top">
+            <div id="js_top-ranking" class="row"></div>
+          </div>
+          <div class="leaderboard__content-wrapper border-radius-12" id="js_leader-container">
+            <div class="leaderboard__content">
+              <div id="js_search" class="search">
+                <div class="unf-searchbar">
+                  <input id="js_search-ranking" type="text" class="unf-searchbar__input" placeholder="Cari Namamu">
+                  <button id="js_reset-search-ranking" class="unf-searchbar__close"></button>
+                </div>
+              </div>
+
+              <div id="js_ranking" class="ranking"></div>
+
+              <div id="js_own-rank" class="leaderboard__own-rank">
+                <div class="row">
+                  <div class="ranking__list-left">
+                    <div class="ranking__info">
+                      <div class="info-num">
+                        <span>35</span>
+                      </div>
+                      <div class="info-profile">
+                        <div class="profile-text">
+                          <span class="profile-name">Peter</span>
+                          <span class="profile-phone">08743xxx872</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ranking__list-right">
+                    <span class="ranking__score">999999</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script type="html" id="loader-container">
+      <div id="js_ranking-loader" class="ranking__loader"></div>
+    </script>
+
+    <script type="html" id="loader-top-rank-template">
+      <div class="col-4">
+        <div class="top top--$id">
+          <div class="top__img top__img--loader"> 
+            <span class="unf-loader-circle"></span>
+          </div>
+            <div class="top__info--loader-name"><span class="unf-loader-line"></span></div>
+            <div class="top__info--loader-phone"><span class="unf-loader-line"></span></div>
+            <div class="top__info--loader-score"><span class="unf-loader-line"></span></div>
+          </div>
+        </div>
+      </div>
+    </script>
+    
+    <script type="html" id="loader-list-rank-template">
+      <div class="row">
+        <div class="col-1">
+          <span class="unf-loader-line"></span>
+        </div>
+        <div class="col-9">
+          <div class="loader__name">
+            <span class="unf-loader-line"></span>
+          </div>
+          <div class="loader__phone">
+            <span class="unf-loader-line"></span>
+          </div> 
+        </div>
+        <div class="col-2">
+          <span class="unf-loader-line"></span>
+        </div>
+      </div>
+    </script>
+
+    <script type="html" id="list-rank-container">
+      <div id="js_ranking-list" class="ranking__list"></div> 
+    </script>
+
+    <script type="html" id="top-rank-template">
+      <div class="col-4">
+        <div class="top top--$ranking">
+          <div class="top__img">   
+            <div class="top__img-border">
+              <div class="top__img-val" style="background-image: url($image)">
+                <div class="top__star"></div>
+              </div>
+            </div>
+          </div>
+          <div class="top__info">
+            <h4 class="top__info-name">$name</h4>
+            <h6 class="top__info-phone">$phone</h6>
+            <h5 class="top__info-score">$skor</h5>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script type="html" id="list-rank-template">
+      <div class="row">
+        <div class="ranking__list-left">
+          <div class="ranking__info">
+            <div class="info-num">
+              <span>$ranking</span>
+            </div>
+            <div class="info-profile">
+              <div class="profile-text">
+                <span class="profile-name">$name</span>
+                <span class="profile-phone">$phone</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ranking__list-right">
+          <span class="ranking__score">$skor</span>
+        </div>
+      </div>
+    </script>
+
+    <script type="html" id="quiz-page">
+      <div class="quiz">
+        <div class="quiz__wrapper">
+          <div class="quiz__wrapper-start"></div>
+          <div class="quiz__wrapper-menu"></div>
+          <div class="quiz__wrapper-content"></div>
+        </div>
+        <div class="overlay"></div>
+        <div class="dialog dialog--custom dialog--back">
+          <div class="dialog__container">
+            <div class="dialog__close" onclick="handleCloseDialog()"></div>
+            <div class="dialog__content">
+              <div class="dialog__inner">
+                <h3 class="dialog__title">Kembali ke Home Captain Marvel Quiz?</h3>
+                <p class="dialog__desc">Skor akan hangus dan Anda tidak dapat melanjutkan kuis hari ini apabila telah keluar.</p>
+                <button class="btn btn--exit" onclick="renderHome()">
+                  <div class="btn__inner">
+                    <span>Ya, Keluar</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script type="html" id="quiz-menu-container">
+      <div class="quiz__menu menu">
+        <span class="menu__action menu__action--back" onclick="handleOpenDialog()"></span>
+        <div class="menu__score">
+          <span id="js_quiz-score">$score</span>
+        </div>
+      </div>
+    </script>
+
+    <script type="html" id="quiz-countdown-template">
+      <div class="quiz__start start">
+        <div class="start__txt">$text</div>
+        <div class="start__timer countdown">
+          <h1 class="start__timer-num countdown__num"></h1>
+        </div>
+      </div>
+    </script>
+    
+    <script type="html" id="quiz-timer-template">
+      <div class="countdown quiz__time">
+        <span class="countdown__num"></span>
+        <svg class="countdown__progress">
+          <defs>
+            <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:#b21c26" />
+              <stop offset="100%" style="stop-color:#ffdb84" />
+            </linearGradient>
+          </defs>
+          <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
+          <circle class="countdown__progress-bar" />
+        </svg>
+      </div>
+    </script>
+
+    <script type="html" id="load-page">
+      <div class="loading">
+        <div class="loading__container">
+          <div class="loading__loader">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <span id="js_loading-percent" class="loading__percent">0%</span>
+        </div>
+      </div>
+    </script>
+
+    <script type="html" id="blocker-page">
+      <div class="blocker">
+        <div class="blocker__container">
+          <img src="https://cdn.tokopedia.net/play-groupchat/assets/img/blocker.png"/>
+          <div class="blocker__desc">
+            NET Play Hanya dapat diakses melalui aplikasi.
+            <br/>
+            Download aplikasi Tokopedia di sini
+          </div>
+          <div class="blocker__download">
+            <a href="https://itunes.apple.com/us/app/tokopedia-jual-beli-online/id1001394201#?platform=iphone" class="btn__download btn__download--ios"></a>
+            <a href="https://play.google.com/store/apps/details?id=com.tokopedia.tkpd" class="btn__download btn__download--android"></a>
+          </div>
+        </div>
+      </div>
+    </script>
+
+  </body>
 </html>

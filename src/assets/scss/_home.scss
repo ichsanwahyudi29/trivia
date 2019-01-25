@@ -48,7 +48,7 @@
         height: 11px;
         margin-right: 4px;
         @include backgroundImg;
-        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAhCAYAAADDAmudAAAAAXNSR0IArs4c6QAAAfFJREFUSA3dlrtKA0EUhrMqaGEwWijYaLCzsLDwAYKFiIKVIAix8Q20sfCCT2DlG/gAImJhq6ioAUELb2gjIhiDCiGFid8viUnMzO4mmzQe+MjsOXP+MzM7M9lQyMNyuVwEluAQXuEDErAGYY909zACE5ACmz0QiLmrWKIkTsGXTbnEn6VdXRESukHL4dc0E+NyNVkmMI+/yxIzuftwLpgCRh+jOfM79JJ+CZOYY3KS9IY/Yoq5+D4dx6lYJtsStbgI2UJpU8BW4NbU2cN3ZYrbCmybOnv49j3ixTDvIAzaen7thY7tRQUfLRJioEPkZRk6TPqQrOxCooq4zSRJfKwyswoPAlouXWy64HTR6YQfwSJUbMsqpOvT1XjQJM3odPxnYBwGoAeaQZaFZ9B23oMtDtkjv96GcCusQBr8mvouQ6trBTpE4QZqtWsS+41FCPTCXa3KJXnS6C0rgsOBk5JOQZvH0vwtwsNcUEVDflwFNHK9mHson5aiweyJ9Kguu2mot7iGJs1pFZjVU4MsriVKId7RoALvmoHtP6EeNTMSP62HkkXjQAU2LMGg7hwCmz8ivId1wz4O6lotGyFqo7AL1Vxyfweh3B0YKYgXj3PeQ7CN5hAM5xnkV195nVD4VtLO07dTEi7hPM8F13aG9j+yb5Zy03m4IE1rAAAAAElFTkSuQmCC');
+        background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/participant.png);
       }
     }
     &--show{
@@ -67,9 +67,11 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      span{
-        &:first-child{
-          margin-right: 16px;
+      .menu{
+        &__action{
+          &:last-child{
+            margin-left: 16px;
+          }
         }
       }
     }
@@ -78,7 +80,7 @@
     height: calc(100vh - 30px);
     @include backgroundImg;
     background-position: top;
-    background-image: url(../img/main.jpg);
+    background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/bg_main.jpg);
   }
   &__logo{
     display: block;
@@ -112,7 +114,7 @@
       width: 100%;
       height: 60px;
       @include backgroundImg;
-      background-image: url(../img/quiz-bg.png);
+      background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/spark-red.png);
       animation: zoomIn 2.5s linear .2s infinite normal forwards;
       @include breakpoint(sm){
         background-size: 300px;

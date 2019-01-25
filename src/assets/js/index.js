@@ -4,19 +4,45 @@ import dataRanking from './ranking.json';
 const quizReady = ['satu', 'dua', 'tiga', 'empat', 'lima'];
 const totalQUiz = dataQuiz.questions.length;
 
-let quizCount = 0;
+let quizCount = 1;
 let userScore = 0;
-let participant = 1000;
+let participant = 378653;
+let isLoad = true;
+let loadAmount = 0;
 
+let username = 'Peter';
 let isViewAds = false;
 let isPlayBtn = true;
 let isLeaderboardOnAds = false;
+let getCoupon = true;
+
+// page
+var loadPage = $('#load-page').text();
+var blockerPage = $('#blocker-page').text();
+var homePage = $('#home-page').text();
+var leaderPage = $('#leader-page').text();
+var quizPage = $('#quiz-page').text();
+// var completePage = $('#complete-page').text();
+// var adsPage = $('#ads-page').text();
+
+//container
+var listRankContainer = $('#list-rank-container').text();
+var loaderContainer = $('#loader-container').text();
+var quizMenuContainer = $('#quiz-menu-container').text();
+
+//templater
+var topRankTemp = $('#top-rank-template').text();
+var listRankTemp = $('#list-rank-template').text();
+var loaderTopRankTemp = $('#loader-top-rank-template').text();
+var loaderListRankTemp = $('#loader-list-rank-template').text();
+var quizCountdownTemp = $('#quiz-countdown-template').text();
+var quizTimerTemp = $('#quiz-timer-template').text();
+// var adsTemp = $('#ads-template').text();
+// var bottomSheetTemp = $('#bottom-sheet-template').text();
 
 $(document).ready(function() {
-  // initGameOver();
-  // initHome();
-  checkDesktop();
-  // loading('%');
+  renderHome();
+  // checkDesktop();
 });
 
 // window.checkDesktop = checkDesktop
@@ -48,72 +74,89 @@ function checkDesktop() {
   }
 }
 
-window.renderBlocker = renderBlocker;
+// Blocker Page
+
 function renderBlocker() {
-  var html = `
-    <div class="blocker">
-      <div class="blocker__container">
-      <img src="https://lh3.googleusercontent.com/oqyY6hp_34ToIUKzxPEDSJ4Htk35VqoFwxvwoafWm31ujE0wzKpsESofGzOec85Dq3VXfrHxORHI0TxyBr0mZPISB2NozvIMnn0E8YYr8vdvaytGqxidcuJMOIxdIKK_DzRRVB1I5kn2_gpyrye0alTTpUWsj-LP6yb4Uf_uI_ZW4eMQx21jQwc_vD6EUpIBZGWF3PQQkKDGJZHmEv6L107Qys7Jx10tbHv9xiSCsAEmofS0teqz6Uq6N3mmIdlqX0pDyO9q9xtWcr2-HyYzlo5PD9kaUQw6I1uEz9CjScnR7eHejxZSAqqPP6GHzuC86MfnDily_kIx1YXUCntv1yjIHzhaksv9d_Iknw0TWR81_nNfowYCE1N49h2ZeJJ0-fAvzp-tJ1Pm__gRKbXo4G_CeYOinUiax0uGb9uraBVeN3ErEbyrj4NpkK6G9jijyEADvqLQyD5fEwGbo9ZE-GcPZNtTKDSOSxrH5bbaY0RkYgV6nQFTC4EtUYTCoowBL_NC39ORQcF7Kt2aSJwAjsxQIViiENzhyKJdd1tZtTE-1LVDyg3T9ZDf-NV7dujYmZELR3RuVuHMa5l_kumRfe3cSr1Zim-m=w2880-h1424"/>
-      <div class="blocker__desc">
-          NET Play Hanya dapat diakses melalui aplikasi.
-          <br/>
-          Download aplikasi Tokopedia di sini
-      </div>
-      <div class="blocker__download">
-          <a href="https://itunes.apple.com/us/app/tokopedia-jual-beli-online/id1001394201#?platform=iphone" class="btn__download btn__download--ios"></a>
-          <a href="https://play.google.com/store/apps/details?id=com.tokopedia.tkpd" class="btn__download btn__download--android"></a>
-      </div>
-      </div>
-  </div>
-  `;
+  var html = blockerPage;
   renderPage(html);
 }
 
 // Loading
 
-function loading(percent = '') {
-  const loading = `
-  <div class="loading">
-    <div class="loading__container">
-      <div class="loading__loader">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    </div>
-  </div>
-  `;
+function loading(percent = false) {
+  const loading = loadPage;
 
-  const loadingPercent = `
-    <span id="js_loading-percent" class="loading__percent">0%</span>
-  `;
+  // console.log(!!percent);
 
-  $('body').append(loading);
-  $('.overlay').addClass('overlay--show');
-  if (percent != '') {
+  if (isLoad) {
+    $('body').append(loading);
+    $('.overlay').addClass('overlay--show');
+
     let num = 0;
-    if (percent != '') {
-      $('.loading__container').append(loadingPercent);
-    }
     let numInterval = setInterval(() => {
       num++;
       $('#js_loading-percent').text(`${num}%`);
       if (num == 75) {
+        num = 100;
+      }
+
+      if (num >= 100) {
         clearInterval(numInterval);
         $('.overlay').removeClass('overlay--show');
         $('.loading').remove();
       }
-    }, 150);
+    }, 30);
+    isLoad = false;
   }
 }
+
+// function loading(percent = '') {
+//   const loading = `
+//   <div class="loading">
+//     <div class="loading__container">
+//       <div class="loading__loader">
+//         <div></div>
+//         <div></div>
+//         <div></div>
+//       </div>
+//     </div>
+//   </div>
+//   `;
+
+//   const loadingPercent = `
+//     <span id="js_loading-percent" class="loading__percent">0%</span>
+//   `;
+
+//   $('body').append(loading);
+//   $('.overlay').addClass('overlay--show');
+//   if (percent != '') {
+//     let num = 0;
+//     if (percent != '') {
+//       $('.loading__container').append(loadingPercent);
+//     }
+//     let numInterval = setInterval(() => {
+//       num++;
+//       $('#js_loading-percent').text(`${num}%`);
+//       if (num == 75) {
+//         clearInterval(numInterval);
+//         $('.overlay').removeClass('overlay--show');
+//         $('.loading').remove();
+//       }
+//     }, 150);
+//   }
+// }
 
 // General
 
 $(function globalCloseDialog() {
   $('body').on({
-    click: function(e) {
-      if ($(event.target).hasClass('dialog--show')) {
+    click: function() {
+      if (
+        $(event.target).hasClass('dialog--show') ||
+        $(event.target).hasClass('overlay--show')
+      ) {
         handleCloseDialog();
+        handleCloseBottomSheet();
       }
     },
   });
@@ -133,9 +176,23 @@ function handleCloseDialog() {
   $('.dialog').removeClass('dialog--show');
 }
 
+function handleOpenBottomSheet() {
+  $('.bottom-sheet').addClass('bottom-sheet--show');
+  $('.overlay').addClass('overlay--show');
+}
+
+window.handleCloseBottomSheet = handleCloseBottomSheet;
+function handleCloseBottomSheet() {
+  $('.bottom-sheet').removeClass('bottom-sheet--show');
+  $('.overlay').removeClass('overlay--show');
+  setTimeout(() => {
+    $('.bottom-sheet').remove();
+  }, 300);
+}
+
 function renderPage(html) {
-  $('body').empty();
-  $('body').append(html);
+  $('#wrapper').empty();
+  $('#wrapper').append(html);
 }
 
 function renderWrapper(html) {
@@ -145,197 +202,42 @@ function renderWrapper(html) {
 
 // Home
 
-window.initHome = initHome;
-function initHome() {
-  const wrapper = `
-    <div id="wrapper"></div>
-  `;
-
-  const sound = `
-    <audio id="js_sound-opening" src="./assets/music/opening.mp3"></audio>
-  `;
-
-  $('body').empty();
-  $('body').prepend(wrapper);
-  $('body').prepend(sound);
-  soundOpening('play');
-  renderHome();
-}
-
 window.renderHome = renderHome;
 function renderHome() {
-  const html = `
-    <div class="landing-page">
-      <div class="landing-page__wrapper">
-        <div class="landing-page__info">
-          <div class="landing-page__info-text">Ichsan Indra mendapatkan skor 999.999</div>
-          <span class="landing-page__info-num"></span>
-        </div>
-        
-        <div class="landing-page__container content">
-          <div class="landing-page__menu menu">
-            <a href="" class="menu__action menu__action--back"></a>
-            <div class="landing-page__menu-right">
-              <span class="menu__action menu__action--leaderboard" onclick="renderLeaderboard('home')"></span>
-              <span class="menu__action menu__action--share"></span>
-            </div>
-          </div>
-          <div class="landing-page__action">
-            <img class="landing-page__logo" src="./assets/img/logo_marvel.png" alt="" srcset="">
-            <div class="landing-page__title">
-              <span>Quiz</span>
-              <div class="landing-page__title-spark"></div>
-            </div>
-            <div class="landing-page__content">
-              <div class="landing-page__content-btn"></div>
-              <button onclick="handleOpenDialog()" class="btn btn--small btn--price">
-                <div class="btn__inner">
-                  <span class="icon icon--price">Info Hadiah</span>
-                </div>
-              </button>
-            </div>
-          </div>
-        </div> 
-      </div>
+  let html = homePage
+    .replace('$otherPlayersInfo', '')
+    .replace('$participant', convertScore(participant));
 
-      <div class="overlay"></div>
-      <div class="dialog dialog--custom dialog--home">
-        <div class="dialog__container">
-          <div onclick="handleCloseDialog()" class="dialog__close"></div>
-          <div class="dialog__star">
-            <div class="dialog__star-line dialog__star-line--left">
-              <div class="dialog__star-line__inner"></div>
-            </div>
-            <div class="dialog__star-icon"></div>
-            <div class="dialog__star-line dialog__star-line--right">
-              <div class="dialog__star-line__inner"></div>
-            </div>
-          </div>
-          <div class="dialog__content">
-            <div class="dialog__inner">       
-              <p class="dialog__desc">Dapatkan kesempatan menangkan kupon cashback sampai 60%!</p>
-              <div class="coupon">
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  `;
-
-  renderWrapper(html);
+  renderPage(html);
+  soundOpening('play');
   renderPlayBtn();
+
+  loading(loadAmount);
+  // loading();
   dummyInfo();
   dummyParticipant();
 }
 
-var dummyInfoInterval;
-
-function dummyInfo() {
-  dummyInfoInterval = setInterval(function() {
-    randomDummy();
-  }, 1000);
-}
-
-function randomDummy() {
-  let numb = Math.ceil(Math.random() * 10);
-  if (numb >= 7) {
-    otherPlayerInfo();
-    clearInterval(dummyInfoInterval);
-  }
-}
-
-function otherPlayerInfo() {
-  let data = dataRanking[Math.floor(Math.random() * dataRanking.length)];
-  $('.landing-page__info')
-    .find('div:first-child')
-    .html(
-      `<div>${data.name}</div><div>mendapatkan skor ${convertScore(
-        data.skor
-      )}</div>`
-    )
-    .end()
-    .addClass('landing-page__info--show');
-
-  setTimeout(() => {
-    $('.landing-page__info').removeClass('landing-page__info--show');
-    dummyInfoInterval = setInterval(function() {
-      randomDummy();
-    }, 1000);
-  }, 3000);
-}
-
-function dummyParticipant() {
-  let dummyParticipantInterval = setInterval(function() {
-    randomAdd();
-  }, 1000);
-}
-
-function randomAdd() {
-  var numb = Math.ceil(Math.random() * 10);
-  if (numb >= 6) {
-    participant += 1;
-  } else if (numb > 3 && numb < 6) {
-    participant -= 1;
-  } else {
-    participant += 0;
-  }
-  $('.landing-page__info>span').text(convertScore(participant));
-}
-
 function renderPlayBtn() {
-  const playBtn = `
-    <p class="landing-page__desc">Kuis telah dimulai</p>
-    <button class="btn btn--primary" onclick="renderStartQuiz()">
-      <div class="btn__inner">
-        <div class="btn__inner-shine">
-          <span>Mulai Main</span>
-        </div>
-      </div>
-    </button>
-  `;
-
-  const remindBtn = `
-    <p class="game-over__desc">Kuis akan dimulai pada 12.00 - 13.00</p>
-    <button class="btn btn--primary" onclick="handleBtnReminder(this)">
-      <div class="btn__inner">
-        <div class="btn__inner-shine">
-          <span>Ingatkan Saya</span>
-        </div>
-      </div>
-    </button>
-  `;
-
+  var target = '#js_main-btn';
   if (isPlayBtn) {
-    $('.landing-page__content-btn').append(playBtn);
+    $(target)
+      .attr('onclick', 'renderStartQuiz()')
+      .find('.btn__inner')
+      .text('Mulai Main')
+      .end()
+      .prev()
+      .text('Kuis akan segera dimulai..');
   } else {
-    $('.landing-page__content-btn').append(remindBtn);
+    $(target)
+      .attr('onclick', 'handleBtnReminder(this)')
+      .find('.btn__inner')
+      .text('Ingatkan Saya')
+      .end()
+      .prev()
+      .text('Kuis akan dimulai pada 12.00 - 13.00');
   }
 }
-
-// function renderStatePlay() {
-//   $('#js_btn-landing')
-//     .prev()
-//     .text('Kuis akan segera dimulai.');
-//   $('#js_btn-landing').removeAttr('onclick');
-//   $('#js_btn-landing').attr('onclick', 'renderStartQuiz()');
-//   $('#js_btn-landing')
-//     .find('span')
-//     .text('Mulai Main');
-// }
 
 window.handleRemindMe = handleRemindMe;
 function handleRemindMe(e) {
@@ -349,6 +251,52 @@ function handleRemindMe(e) {
     $this.addClass('btn--transparent');
     $this.find('span').text('Hapus Pengingat');
   }
+}
+
+var dummyInfoInterval, dummyParticipantInterval;
+
+function dummyInfo() {
+  var data = dataRanking[Math.floor(Math.random() * dataRanking.length)];
+  $('.landing-page__info')
+    .find('div:first-child')
+    .html(
+      `<div>${data.name}</div>
+            <div>mendapatkan skor ${convertScore(data.skor)}</div>`
+    )
+    .end()
+    .addClass('landing-page__info--show');
+
+  dummyHideInfo();
+}
+
+function dummyHideInfo() {
+  dummyInfoInterval = setInterval(function() {
+    var num = Math.ceil(Math.random() * 20);
+    if (num > 17) {
+      clearInterval(dummyInfoInterval);
+      $('.landing-page__info').removeClass('landing-page__info--show');
+      setTimeout(() => {
+        dummyInfo();
+      }, 150);
+    }
+  }, 1000);
+}
+
+function dummyParticipant() {
+  dummyParticipantInterval = setInterval(function() {
+    randomAdd();
+  }, 1000);
+}
+function randomAdd() {
+  var numb = Math.ceil(Math.random() * 10);
+  if (numb >= 6) {
+    participant += 1;
+  } else if (numb > 3 && numb < 6) {
+    participant -= 1;
+  } else {
+    participant += 0;
+  }
+  $('.landing-page__info>span').text(convertScore(participant));
 }
 
 // function renderMenuHome() {
@@ -366,65 +314,38 @@ function handleRemindMe(e) {
 // }
 
 // Leaderboard
-
 window.renderLeaderboard = renderLeaderboard;
 function renderLeaderboard(prevPage) {
+  //clear dummy interval
   if (prevPage == 'home') {
     clearInterval(dummyInfoInterval);
     clearInterval(dummyParticipantInterval);
   }
 
-  const html = `
-    <div class="leaderboard">
-      <div class="leaderboard__menu menu">
-        <span class="menu__action menu__action--back"></span>
-        <h1 class="menu__title">Leaderboard</h1>
-      </div>
-
-      <div class="leaderboard__container container">
-        <div class="leaderboard__top">
-          <div id="js_top-ranking" class="row"></div>
-        </div>
-
-        <div class="leaderboard__content">
-          <div id="js_search" class="search">
-            <div class="unf-searchbar">
-              <input id="js_search-ranking" type="text" class="unf-searchbar__input" placeholder="Cari Namamu">
-              <button id="js_reset-search-ranking" class="unf-searchbar__close"></button>
-            </div>
-          </div> 
-          <div id="js_ranking" class="ranking" onscroll="handleScrollRanking(this)"></div>
-        </div>
-
-      </div>
-    </div>
-  `;
-
-  renderWrapper(html);
-
-  let backTo;
-
+  var back;
   switch (prevPage) {
     case 'home':
-      backTo = 'renderHome()';
+      back = 'renderHome()';
       break;
 
-    case 'gameover':
-      backTo = 'renderGameOver()';
+    case 'complete':
+      back = 'renderComplete()';
       break;
 
     default:
       break;
   }
-
-  $('.menu__action--back').attr('onclick', backTo);
+  var html = leaderPage.replace('$back', back);
+  renderPage(html);
 
   handleLoaderResult();
+  // handleLoaderOwnRank();
   handleLeaderBoardAction();
+
   setTimeout(() => {
-    topRanking(dataRanking);
     initDataRanking();
-  }, 3000);
+    topRanking(dataRanking);
+  }, 1000);
 }
 
 function appendRankingElem(el) {
@@ -448,33 +369,17 @@ function handleScrollRanking(e) {
 
 function topRanking(obj) {
   $('#js_top-ranking').empty();
-
   obj = obj.filter(function(value, index, arr) {
     return value.ranking <= 3;
   });
 
   for (const key of obj) {
-    const topRank = `
-      <div class="col-4">
-        <div class="top top--${key.ranking}">
-          <div class="top__img">   
-            <div class="top__img-border">
-              <div class="top__img-val" style="background-image: url(${
-                key.image
-              })">
-                <div class="top__star"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="top__info">
-            <h4 class="top__info-name">${key.name}</h4>
-            <h6 class="top__info-phone">${key.phone}</h6>
-            <h5 class="top__info-score">${key.skor}</h5>
-          </div>
-        </div>
-      </div>
-    `;
+    var topRank = topRankTemp
+      .replace('$ranking', key.ranking)
+      .replace('$image', key.image)
+      .replace('$name', key.name)
+      .replace('$phone', key.phone)
+      .replace('$skor', key.skor);
 
     if (key.ranking != 2) {
       $('#js_top-ranking').append(topRank);
@@ -484,145 +389,169 @@ function topRanking(obj) {
   }
 }
 
-function resultsRanking(obj) {
-  const listContainer = `
-    <div id="js_ranking-list" class="ranking__list"></div> 
-  `;
-
+function resultsRanking(obj, search) {
+  var listContainer = listRankContainer;
   appendRankingElem(listContainer);
 
-  obj = obj.filter(function(value, index, arr) {
-    return value.ranking > 3;
+  var filteredObj = obj.filter(function(value, index, arr) {
+    return (value.ranking > 3) & (value.ranking <= 10);
   });
 
-  for (const key of obj) {
+  var changeObj = !search ? filteredObj : obj;
+  for (var key of changeObj) {
     var ranking = key.ranking;
-
     if (ranking > 999) {
       ranking = '999+';
     }
-
-    const listRank = `
-      <div class="row">
-        <div class="ranking__list-left">
-          <div class="ranking__info">
-            <div class="info-num">
-              <span>${ranking}</span>
-            </div>
-            <div class="info-profile">
-              <div class="profile-text">
-                <span class="profile-name">${key.name}</span>
-                <span class="profile-phone">${key.phone}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="ranking__list-right">
-          <span class="ranking__score">${key.skor}</span>
-        </div>
-      </div>
-    `;
-
+    var listRank = listRankTemp
+      .replace('$ranking', ranking)
+      .replace('$name', key.name)
+      .replace('$phone', key.phone)
+      .replace('$skor', key.skor);
     $('#js_ranking-list').append(listRank);
+  }
+
+  var checkOwnObj = !search ? obj.filter(value => value.ranking <= 10) : obj;
+  checkOwnRank(checkOwnObj);
+  shadowRankList($('#js_ranking'));
+  resizeRankHeight($('#js_ranking'));
+}
+
+function handleLoaderResult(search) {
+  const loader = loaderContainer;
+
+  appendRankingElem(loader);
+  if (!search) {
+    for (var i = 1; i <= 3; i++) {
+      var loadRank = loaderTopRankTemp.replace('$id', i);
+
+      if (i != 2) {
+        $('#js_top-ranking').append(loadRank);
+      } else {
+        $('#js_top-ranking').prepend(loadRank);
+      }
+    }
+  }
+  const listLoader = loaderListRankTemp;
+
+  for (let i = 0; i < 3; i++) {
+    $('#js_ranking-loader').append(listLoader);
+  }
+
+  resizeRankHeight($('#js_ranking'));
+}
+
+function handleLoaderOwnRank() {
+  const listLoader = loaderListRankTemp;
+  var html = listRankTemp
+    .replace('$ranking', 35)
+    .replace('$name', username)
+    .replace('$phone', '08743xxx872')
+    .replace('$skor', 8000);
+
+  $('#js_own-rank').html(listLoader);
+  setTimeout(() => {
+    $('#js_own-rank').html(html);
+  }, 1000);
+}
+
+function checkOwnRank(obj) {
+  for (var i in obj) {
+    if (obj[i].name === username) {
+      $('#js_leader-container').addClass('own-rank--hide');
+      $('#js_ranking').css({
+        'max-height': $('#js_ranking').height() + 64,
+      });
+      return;
+    } else {
+      $('#js_leader-container').removeClass('own-rank--hide');
+      $('#js_ranking').removeAttr('style');
+    }
   }
 }
 
-function handleLoaderResult() {
-  for (let i = 1; i <= 3; i++) {
-    const loaderTopRank = `
-      <div class="col-4">
-        <div class="top top--${i}">
-          <div class="top__img top__img--loader">
-            <span class="unf-loader-circle"></span>
-          </div>
-          <div class="top__info--loader-name">
-            <span class="unf-loader-line"></span>
-          </div>
-          <div class="top__info--loader-phone">
-            <span class="unf-loader-line"></span>
-          </div>
-          <div class="top__info--loader-score">
-            <span class="unf-loader-line"></span>
-          </div>
-        </div>
-      </div>
-    `;
-
-    if (i != 2) {
-      $('#js_top-ranking').append(loaderTopRank);
+function resizeRankHeight(e) {
+  let scroll = e.scrollTop();
+  if (scroll + e.height() < e[0].scrollHeight) {
+    $('#js_leader-container').removeClass('border-radius-12');
+  } else {
+    var h;
+    if (
+      $('#js_leader-container').hasClass('own-rank--hide') &&
+      $('#js_ranking').height() === 132
+    ) {
+      h = 196;
     } else {
-      $('#js_top-ranking').prepend(loaderTopRank);
+      h = 'auto';
     }
+    $('#js_ranking').css('height', h);
+    $('#js_leader-container').addClass('border-radius-12');
+  }
+}
+
+function shadowRankList(e) {
+  let scroll = e.scrollTop();
+
+  if (scroll > 0) {
+    $('#js_search').addClass('search--shadow');
+  } else {
+    $('#js_search').removeClass('search--shadow');
   }
 
-  const loader = `<div id="js_ranking-loader" class="ranking__loader"></div>`;
-
-  appendRankingElem(loader);
-
-  const listLoader = `
-    <div class="row">
-      <div class="col-1">
-        <span class="unf-loader-line"></span>
-      </div>
-      <div class="col-9">
-        <div class="loader__name">
-          <span class="unf-loader-line"></span>
-        </div>
-        <div class="loader__phone">
-          <span class="unf-loader-line"></span>
-        </div> 
-      </div>
-      <div class="col-2">
-        <span class="unf-loader-line"></span>
-      </div>
-    </div>
-  `;
-
-  for (let i = 0; i < 5; i++) {
-    $('#js_ranking-loader').append(listLoader);
+  if (scroll + e.height() < e[0].scrollHeight) {
+    $('#js_own-rank').addClass('search-down--shadow');
+  } else {
+    $('#js_own-rank').removeClass('search-down--shadow');
   }
 }
 
 function handleLeaderBoardAction() {
+  //rank scroll effect
+  $('#js_ranking').on({
+    scroll: function() {
+      shadowRankList($(this));
+    },
+  });
+
+  //ranking
   $('#js_search-ranking').on({
     input: function(e) {
-      let $this = $(this);
+      let _self = $(this);
 
-      if ($this.val()) {
-        $this.siblings().addClass('unf-searchbar__close--show');
+      if (_self.val()) {
+        _self.siblings().addClass('unf-searchbar__close--show');
       } else {
-        $this.siblings().removeClass('unf-searchbar__close--show');
+        _self.siblings().removeClass('unf-searchbar__close--show');
       }
     },
     keypress: function(e) {
-      const results = [];
+      var data = dataRanking;
+      var results = [];
       let val = $(this).val();
       if (val) {
         if (e.which == 13) {
           $(this).blur();
-          for (let i = 0; i < dataRanking.length; i++) {
-            for (key in dataRanking[i]) {
-              if (
-                dataRanking[i][key].toLowerCase().indexOf(val.toLowerCase()) !=
-                -1
-              ) {
-                results.push(dataRanking[i]);
-              }
-            }
-          }
-          handleLoaderResult();
+          results = data.filter(item =>
+            item.name.toLowerCase().includes(val.toLowerCase())
+          );
+
+          handleLoaderResult(true);
           setTimeout(() => {
             if (results != 0) {
-              resultsRanking(results);
+              resultsRanking(results, true);
+              $('#js_ranking').removeClass('ranking--not-found');
             } else {
-              handleEmptyResult();
+              resultsRanking(results, true);
+              $('#js_ranking')
+                .addClass('ranking--not-found')
+                .text('Nama tidak ditemukan');
             }
           }, 3000);
         }
       } else {
         if (e.which == 13) {
           $(this).blur();
-          handleLoaderResult();
+          handleLoaderResult(true);
           setTimeout(() => {
             initDataRanking();
           }, 3000);
@@ -631,93 +560,60 @@ function handleLeaderBoardAction() {
     },
   });
 
-  // reset
+  //reset
   $('#js_reset-search-ranking').on({
     click: function() {
       let input = $('#js_search-ranking');
       input.val('');
       input.siblings().removeClass('unf-searchbar__close--show');
       initDataRanking();
+      $('#js_ranking').removeClass('ranking--not-found');
+      setTimeout(() => {
+        shadowRankList($('#js_ranking'));
+        resizeRankHeight($('#js_ranking'));
+      }, 100);
     },
   });
-}
-
-function handleEmptyResult() {
-  console.log('masuk');
 }
 
 // Quiz
 
 window.renderStartQuiz = renderStartQuiz;
 function renderStartQuiz() {
-  const html = `
-    <div class="quiz">
-      <div class="quiz__wrapper">
-        <div class="quiz__wrapper-start"></div>
-        <div class="quiz__wrapper-menu"></div>
-        <div class="quiz__wrapper-content"></div>
-      </div>
-      <div class="overlay"></div>
-      <div class="dialog dialog--custom dialog--back">
-        <div class="dialog__container">
-          <div class="dialog__close" onclick="handleCloseDialog()"></div>
-          <div class="dialog__content">
-            <div class="dialog__inner">
-              <h3 class="dialog__title">Kembali ke Home Captain Marvel Quiz?</h3>
-              <p class="dialog__desc">Skor akan hangus dan Anda tidak dapat melanjutkan kuis hari ini apabila telah keluar.</p>
-              <button class="btn btn--exit" onclick="initHome()">
-                <div class="btn__inner">
-                  <span>Ya, Keluar</span>
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <audio id="js_sound-quiz" src="./assets/music/quiz.mp3"></audio>
-      <audio id="js_sound-onboarding-quiz" src="./assets/music/start-quiz.mp3"></audio>
-      <audio id="js_sound-choose" src="./assets/music/choose-answer.mp3"></audio>
-      <audio id="js_sound-correct" src="./assets/music/right-answer.mp3"></audio>
-      <audio id="js_sound-wrong" src="./assets/music/wrong-answer.mp3"></audio>
-      <audio id="js_sound-countdown-quiz" src="./assets/music/countdown-quiz.mp3"></audio>
-    </div>
-  `;
+  const html = quizPage;
 
   renderPage(html);
-  soundOnboardingQuiz();
+  soundOpening('stop');
+  soundOnboardingQuiz('play');
   getReady(false, dataQuiz.config.onboarding_message);
 }
 
 function getReady(next, text) {
-  const countDown = `
-    <div class="quiz__start start">
-      <div class="start__txt">${text}</div>
-      <div class="start__timer countdown">
-        <div class="start__timer-moon countdown__illus"></div>
-        <div class="start__timer-spark"></div>
-        <h1 class="start__timer-num countdown__num"></h1>
-      </div>
-      <audio id="js_sound-countdown" src="./assets/music/countdowns.mp3"></audio>
-    </div>
-  `;
-
+  const countDown = quizCountdownTemp.replace('$text', text);
   $('.quiz__wrapper-start').prepend(countDown);
-  soundCountdown();
+  soundCountdownGetReady('play');
   handleTimeStart(next, 3);
-  if (next) {
-    $('.quiz__time').remove();
-  }
+  // if (next) {
+  //   $('.quiz__time').remove();
+  // }
 }
 
+let timeStart;
 function handleTimeStart(next, time) {
-  $('.countdown__num').text(time);
-  let timeStart = setInterval(() => {
-    $('.countdown__num').text(time--);
-    $('.countdown').addClass('countdown--animate');
+  $('.start .countdown__num').text(time);
+  $('.start .countdown').addClass('countdown--animate');
+  setTimeout(() => {
+    $('.start .countdown').removeClass('countdown--animate');
+  }, 500);
+
+  timeStart = setInterval(() => {
+    time -= 1;
+    $('.start .countdown__num').text(time);
+    $('.start .countdown').addClass('countdown--animate');
     setTimeout(() => {
-      $('.countdown').removeClass('countdown--animate');
+      $('.start .countdown').removeClass('countdown--animate');
     }, 500);
-    if (time < 0) {
+    if (time <= 0) {
       clearInterval(timeStart);
       $('.quiz__wrapper-start').empty();
       if (!next) {
@@ -725,82 +621,26 @@ function handleTimeStart(next, time) {
         initQuiz();
       } else {
         initQuiz();
+        $('.quiz__time').removeClass('quiz__time--hide');
       }
     }
-  }, 1500);
+  }, 1000);
 }
 
 function renderMenuQuiz() {
-  const menu = `
-    <div class="quiz__menu menu">
-      <span class="menu__action menu__action--back" onclick="handleOpenDialog()"></span>
-      <div class="menu__score">
-        <span id="js_quiz-score">0</span>
-      </div>
-    </div>
-  `;
-
-  $('.quiz__wrapper-menu').append(menu);
+  const menu = quizMenuContainer.replace('$score', userScore);
+  $('.quiz__wrapper-menu').html(menu);
 }
 
 function renderTimeQuiz() {
-  const time = `
-    <div class="countdown quiz__time">
-      <span class="countdown__num"></span>
-      <svg class="countdown__progress">
-        <defs>
-          <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:#b21c26" />
-            <stop offset="100%" style="stop-color:#ffdb84" />
-          </linearGradient>
-        </defs>
-        <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
-        <circle class="countdown__progress-bar" />
-      </svg>
-    </div>
-  `;
+  const time = quizTimerTemp;
 
-  $('.quiz__menu').append(time);
+  $('.quiz__menu')
+    .find('.quiz__time')
+    .remove()
+    .end()
+    .append(time);
   handleTimeQuiz(10);
-}
-
-function renderScore(score) {
-  let isScore = $('.quiz__score');
-
-  if (isScore.length != 0) {
-    isScore.remove();
-  }
-
-  const quizScore = `
-    <div class="quiz__score">
-      <div class="quiz__score-inner"><span>+${score}</span>Skor</div>
-      <div class="quiz__score-background"><div style="background-image: url(../img/bg-quiz.jpg)"></div></div>
-    </div>
-  `;
-
-  $('body').append(quizScore);
-
-  setTimeout(() => {
-    $('.quiz__score').addClass('quiz__score--hide');
-  }, 3000);
-}
-
-function renderTimesup() {
-  const quizTimesup = `
-    <div class="quiz__score quiz__score--wrong">
-      <div class="quiz__score-inner">TIME IS UP</div>
-      <div class="quiz__score-background"><div></div></div>
-    </div>
-  `;
-
-  $('body').append(quizTimesup);
-}
-
-function removeToasterScore() {
-  $('.quiz__score').addClass('quiz__score--hide');
-  setTimeout(() => {
-    $('.quiz__score').remove();
-  }, 300);
 }
 
 function initQuiz() {
@@ -845,6 +685,32 @@ function questionsAnswer(idx) {
   `;
 
   $('.quiz__content').append(numberQuiz);
+
+  // data.answers.map(key => {
+  //   var type, val;
+
+  //   if (key.config.img_url === '') {
+  //     type = 'text';
+  //     val = `<span>${key.answer_title}</span>`;
+  //     $('.quiz__content').addClass('quiz__content--text')
+  //   } else {
+  //     $('.quiz__content').addClass('quiz__content--img');
+  //     type = 'img';
+  //     val = `<img src="${key.config.img_url}" alt="${key.answer_title}"><span>${key.answer_title}</span>`;
+  //   }
+
+  //   let answer = `
+  //           <div class="quiz__answer-btn">
+  //               <div class="answer-btn" onclick="handleBtnAnswer(this, '${type}')">
+  //                   <div class="answer-btn__inner">
+  //                       <div class="answer-btn__val">
+  //                           ${val}
+  //                       </div>
+  //                   </div>
+  //               </div>
+  //           </div>`;
+  //   $('.quiz__answer').append(answer);
+  // });
 
   for (const key of data.answers) {
     let answer = `
@@ -983,6 +849,34 @@ function handleWrongAnswer() {
     .addClass('answer-btn--wrong');
   soundWrongAnswer();
 }
+
+function renderScore(score) {
+  $('.quiz__score')
+    .removeClass('quiz__score--hide quiz__score--wrong')
+    .addClass('quiz__score--show')
+    .find('.quiz__score-inner')
+    .html(`<span>+${convertScore(score)}</span>Skor`);
+
+  setTimeout(() => {
+    $('.quiz__score')
+      .removeClass('quiz__score--show')
+      .addClass('quiz__score--hide');
+  }, 3000);
+}
+
+function renderTimesup() {
+  $('.quiz__score')
+    .removeClass('quiz__score--hide')
+    .addClass('quiz__score--wrong quiz__score--show')
+    .find('.quiz__score-inner')
+    .text('TIME IS UP')
+    .end();
+
+  setTimeout(() => {
+    $('.quiz__score')
+      .removeClass('quiz__score--show')
+      .addClass('quiz__score--hide');
+  }, 3000);
 
 function nextQuestions() {
   removeToasterScore();
@@ -1330,34 +1224,50 @@ function soundGameOver() {
   audioHome.play();
 }
 
-function soundOnboardingQuiz() {
-  let audioStartQuiz = document.getElementById('js_sound-onboarding-quiz');
-  audioStartQuiz.play();
+function soundOnboardingQuiz(type) {
+  let audioStartQuiz = document.getElementById('js_sound-get-ready');
+  if (type == 'play') {
+    audioStartQuiz.play();
+  } else {
+    audioStartQuiz.pause();
+  }
 }
 
-function soundCountdown() {
-  let audioCountdown = document.getElementById('js_sound-countdown');
-  setTimeout(() => {
-    audioCountdown.play();
-    audioCountdown.loop = true;
-  }, 1500);
+function soundCountdownGetReady(type) {
+  let audioCountdownGetReady = document.getElementById(
+    'js_sound-countdown-get-ready'
+  );
+  if (type == 'play') {
+    setTimeout(() => {
+      audioCountdownGetReady.play();
+      audioCountdownGetReady.loop = true;
+    }, 1500);
+  } else {
+    audioCountdownGetReady.pause();
+    audioCountdownGetReady.currentTime = 0;
+  }
 }
 
-function soundQuiz() {
+function soundQuiz(type) {
   let audioQuiz = document.getElementById('js_sound-quiz');
-  audioQuiz.play();
-  audioQuiz.loop = true;
+  if (type == 'play') {
+    audioQuiz.play();
+    audioQuiz.loop = true;
+  } else {
+    audioQuiz.pause();
+    audioQuiz.currentTime = 0;
+  }
 }
 
 function soundCountdownQuiz(type) {
-  let audioCountdown = document.getElementById('js_sound-countdown-quiz');
-  audioCountdown.loop = true;
+  let audioCountdownQuiz = document.getElementById('js_sound-countdown-quiz');
+  audioCountdownQuiz.loop = true;
   if (type == 'play') {
-    audioCountdown.play();
+    audioCountdownQuiz.play();
   } else {
-    audioCountdown.pause();
+    audioCountdownQuiz.pause();
     setTimeout(() => {
-      audioCountdown.currentTime = 0;
+      audioCountdownQuiz.currentTime = 0;
     }, 1105);
   }
 }

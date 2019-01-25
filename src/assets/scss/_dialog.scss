@@ -80,10 +80,10 @@
       }
       &__content{
         &::before{
-          background-image: url(../img/shield-top.png);
+          background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-top.png);
         }
         &:after{
-          background-image: url(../img/shield-bottom.png);
+          background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-bottom.png);
         }
       }
     }
@@ -99,10 +99,10 @@
       }
       &__content{
         &::before{
-          background-image: url(../img/shield-top_back.svg);
+          background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-top_back.svg);
         }
         &:after{
-          background-image: url(../img/shield-bottom_back.svg);
+          background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-bottom_back.svg);
         }
       }
     }
@@ -118,10 +118,10 @@
       }
       &__content{
         &::before{
-          background-image: url(../img/shield-top_reward.svg);
+          background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-top_reward.svg);
         }
         &:after{
-          background-image: url(../img/shield-bottom_reward.svg);
+          background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-bottom_reward.svg);
           background-size: contain;
         }
       }
@@ -206,7 +206,7 @@
     z-index: 3;
     &-icon{
       @include backgroundImg;
-      background-image: url(../img/star.png);
+      background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/star.png);
       width: 64px;
       height: 64px;
       position: absolute;
@@ -225,7 +225,7 @@
       z-index: 1;
       top: 12px;
       @include backgroundImg;
-      background-image: url(../img/star-line.svg);
+      background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/star-line.svg);
     }
 
     &::before{

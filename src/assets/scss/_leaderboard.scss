@@ -87,7 +87,7 @@
           }
           &__star{
             bottom: -25px;
-            background-image: url(../img/star1.svg);
+            background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/star1.svg);
             @include breakpoint(sm){
               bottom: -38px;
             }
@@ -112,7 +112,7 @@
             } 
           }
           &__star{
-            background-image: url(../img/star2.svg);
+            background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/star2.svg);
             &:before{
               content: '2';
             }
@@ -129,7 +129,7 @@
             }
           }
           &__star{
-            background-image: url(../img/star3.svg);
+            background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/star3.svg);
             &:before{
               content: '3';
             }
@@ -250,11 +250,56 @@
     }
   }
 
+  &__content-wrapper{
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 0 6px 0 rgba(255, 255, 255, 0.5);
+    margin-top: 24px;
+    &.border-radius-12{
+      border-radius: 12px;
+      .leaderboard__content{
+        border-radius: 12px;
+      }
+    }
+    &.own-rank--hide{
+      .leaderboard__own-rank{
+        height: 0;
+        opacity: 0;
+      }
+    }
+  }
+
   &__content{
     border-radius: 12px 12px 0 0;
     box-shadow: 0 0 6px 0 rgba(255, 255, 255, 0.5);
     background-color: #f8f8f8;
     margin-top: 24px;
+  }
+
+  &__own-rank{
+    overflow: hidden;
+    height: 50px;
+    width: 100%;
+    background-color: #f8f8f8;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    opacity: 1;
+    transition: all ease .2s;
+    .row{
+      width: 100%;
+    }
+    .loader{
+      &__name{
+        margin-left: 16px;
+        max-width: 80%;
+        margin-bottom: 4px;
+      }
+      &__phone{
+        margin-left: 16px;
+        margin-top: 4px;
+        max-width: 60%;
+      }
+    }
   }
 
   .search{
@@ -263,17 +308,28 @@
     &--shadow{
       box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.12);
     }
+    &-down--shadow{
+      box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.12);
+    }
   }
 
   .ranking{
     padding: 0 16px;
-    min-height: 230px;
-    max-height: 230px;
+    min-height: 132px;
+    max-height: calc(100vh - 338px - 64px);
     overflow: auto;
-    color: black;
+    color: #000;
+    transition: all ease .2s;
     @include breakpoint(sm){
-      min-height: 500px;
-      max-height: 500px;
+      max-height: calc(100vh - 453px);
+    }
+    &--not-found{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+      color: $blackSecondary;
     }
     &__loader{
       .row{
