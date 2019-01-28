@@ -36,6 +36,7 @@
       stroke-dasharray: 500;
       stroke-dashoffset: 500;
       transition: stroke-dashoffset .4s;
+      // transition: stroke-dashoffset 1s linear;
     }
   }
   &--animate{

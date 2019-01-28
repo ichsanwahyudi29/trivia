@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Marvel Trivia</title>
-  </head>
-  <body>
-    <div id="wrapper"></div>
 
-    <audio preload="auto" id="js_sound-opening" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/opening.mp3"></audio>
-    <audio preload="auto" id="js_sound-quiz" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/quiz.mp3"></audio>
-    <audio preload="auto" id="js_sound-get-ready" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/get-ready.mp3"></audio>
-    <audio preload="auto" id="js_sound-choose" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-choose.mp3"></audio>
-    <audio preload="auto" id="js_sound-correct" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-correct.mp3"></audio>
-    <audio preload="auto" id="js_sound-wrong" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-wrong.mp3"></audio>
-    <audio preload="auto" id="js_sound-countdown-quiz" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/countdown-quiz.mp3"></audio>
-    <audio preload="auto" id="js_sound-countdown-get-ready" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/countdown-get-ready.mp3"></audio>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Marvel Trivia</title>
+</head>
 
-    <script type="html" id="home-page">
+<body>
+  <div id="wrapper"></div>
+
+  <audio preload="auto" id="js_sound-opening" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/opening.mp3"></audio>
+  <audio preload="auto" id="js_sound-quiz" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/quiz.mp3"></audio>
+  <audio preload="auto" id="js_sound-get-ready" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/get-ready.mp3"></audio>
+  <audio preload="auto" id="js_sound-choose" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-choose.mp3"></audio>
+  <audio preload="auto" id="js_sound-correct" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-correct.mp3"></audio>
+  <audio preload="auto" id="js_sound-wrong" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-wrong.mp3"></audio>
+  <audio preload="auto" id="js_sound-countdown-quiz" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/countdown-quiz.mp3"></audio>
+  <audio preload="auto" id="js_sound-countdown-get-ready" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/countdown-get-ready.mp3"></audio>
+
+  <script type="html" id="home-page">
       <div class="landing-page">
         <div class="landing-page__wrapper">
           <div class="landing-page__info">
@@ -99,7 +101,7 @@
       </div>
     </script>
 
-    <script type="html" id="leader-page">
+  <script type="html" id="leader-page">
       <div class="leaderboard">
         <div class="leaderboard__menu menu">
           <a class="menu__action menu__action--back" onClick="$back"></a>
@@ -147,11 +149,11 @@
       </div>
     </script>
 
-    <script type="html" id="loader-container">
+  <script type="html" id="loader-container">
       <div id="js_ranking-loader" class="ranking__loader"></div>
     </script>
 
-    <script type="html" id="loader-top-rank-template">
+  <script type="html" id="loader-top-rank-template">
       <div class="col-4">
         <div class="top top--$id">
           <div class="top__img top__img--loader"> 
@@ -164,8 +166,8 @@
         </div>
       </div>
     </script>
-    
-    <script type="html" id="loader-list-rank-template">
+
+  <script type="html" id="loader-list-rank-template">
       <div class="row">
         <div class="col-1">
           <span class="unf-loader-line"></span>
@@ -184,11 +186,11 @@
       </div>
     </script>
 
-    <script type="html" id="list-rank-container">
+  <script type="html" id="list-rank-container">
       <div id="js_ranking-list" class="ranking__list"></div> 
     </script>
 
-    <script type="html" id="top-rank-template">
+  <script type="html" id="top-rank-template">
       <div class="col-4">
         <div class="top top--$ranking">
           <div class="top__img">   
@@ -207,7 +209,7 @@
       </div>
     </script>
 
-    <script type="html" id="list-rank-template">
+  <script type="html" id="list-rank-template">
       <div class="row">
         <div class="ranking__list-left">
           <div class="ranking__info">
@@ -228,7 +230,7 @@
       </div>
     </script>
 
-    <script type="html" id="quiz-page">
+  <script type="html" id="quiz-page">
       <div class="quiz">
         <div class="quiz__wrapper">
           <div class="quiz__wrapper-start"></div>
@@ -255,7 +257,7 @@
       </div>
     </script>
 
-    <script type="html" id="quiz-menu-container">
+  <script type="html" id="quiz-menu-container">
       <div class="quiz__menu menu">
         <span class="menu__action menu__action--back" onclick="handleOpenDialog()"></span>
         <div class="menu__score">
@@ -264,7 +266,7 @@
       </div>
     </script>
 
-    <script type="html" id="quiz-countdown-template">
+  <script type="html" id="quiz-countdown-template">
       <div class="quiz__start start">
         <div class="start__txt">$text</div>
         <div class="start__timer countdown">
@@ -272,8 +274,8 @@
         </div>
       </div>
     </script>
-    
-    <script type="html" id="quiz-timer-template">
+
+  <script type="html" id="quiz-timer-template">
       <div class="countdown quiz__time">
         <span class="countdown__num"></span>
         <svg class="countdown__progress">
@@ -289,7 +291,7 @@
       </div>
     </script>
 
-    <script type="html" id="load-page">
+  <script type="html" id="load-page">
       <div class="loading">
         <div class="loading__container">
           <div class="loading__loader">
@@ -302,7 +304,7 @@
       </div>
     </script>
 
-    <script type="html" id="blocker-page">
+  <script type="html" id="blocker-page">
       <div class="blocker">
         <div class="blocker__container">
           <img src="https://cdn.tokopedia.net/play-groupchat/assets/img/blocker.png"/>
@@ -319,5 +321,91 @@
       </div>
     </script>
 
-  </body>
+  <script type="hmtl" id="over-page">
+
+
+    <div class="game-over">
+      <div class="game-over__menu menu">
+        <span class="menu__action menu__action--back"></span>
+        <span onclick="renderLeaderboard('gameover')" class="menu__action menu__action--leaderboard"></span>
+      </div>
+
+      <div class="game-over__container">
+        <div class="game-over__content">
+          <h1 class="game-over__title">MISSION COMPLETE</h1>
+          <h3 class="game-over__score">Total Skor : <span id="js_result-score">$score</span></h3>
+          <button class="btn btn--score">
+            <div class="btn__inner">
+              <span>Pamerkan Skor</span>
+            </div>
+          </button>
+          <div class="game-over__separator">
+            <div class="game-over__separator-inner"></div>
+          </div>
+        </div>
+        <div class="game-over__footer"></div>
+      </div>
+
+      <div class="overlay"></div>
+      <div class="dialog dialog--custom dialog--reward">
+        <div class="dialog__container">
+          <div class="dialog__close" onclick="handleCloseDialog()"></div>
+          <div class="dialog__star">
+            <div class="dialog__star-line dialog__star-line--left">
+              <div class="dialog__star-line__inner"></div>
+            </div>
+            <div class="dialog__star-icon"></div>
+            <div class="dialog__star-line dialog__star-line--right">
+              <div class="dialog__star-line__inner"></div>
+            </div>
+          </div>
+          <div class="dialog__content">
+            <div class="dialog__inner dialog__inner--star">
+              <p class="dialog__desc">Selamat!<br>
+              Anda mendapatkan kupon cashback hingga Rp 200.000</p>
+              <div class="coupon">
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+                <div class="coupon__list">
+                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </script>
+
+  <script type="html" id="ads-template">
+
+    <div class="ads">
+      <div class="ads__countdown">
+          <span class="countdown__num" onclick="closeAds()"></span>
+          <svg class="countdown__progress">
+              <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#EEBA3F" />
+                  <stop offset="100%" style="stop-color:#FAEAC9" />
+              </linearGradient>
+              <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
+              <circle class="countdown__progress-bar" />
+          </svg>
+      </div>
+      <a href="$url" target="_blank">
+        <img class="ads__image" src="$img" alt=""/>
+      </a>
+    </div>
+
+  </script>
+
+</body>
+
 </html>
