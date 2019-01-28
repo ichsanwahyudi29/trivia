@@ -22,8 +22,7 @@ var blockerPage = $('#blocker-page').text();
 var homePage = $('#home-page').text();
 var leaderPage = $('#leader-page').text();
 var quizPage = $('#quiz-page').text();
-// var completePage = $('#complete-page').text();
-// var adsPage = $('#ads-page').text();
+var overPage = $('#over-page').text();
 
 //container
 var listRankContainer = $('#list-rank-container').text();
@@ -37,11 +36,13 @@ var loaderTopRankTemp = $('#loader-top-rank-template').text();
 var loaderListRankTemp = $('#loader-list-rank-template').text();
 var quizCountdownTemp = $('#quiz-countdown-template').text();
 var quizTimerTemp = $('#quiz-timer-template').text();
-// var adsTemp = $('#ads-template').text();
+var adsTemp = $('#ads-template').text();
 // var bottomSheetTemp = $('#bottom-sheet-template').text();
 
 $(document).ready(function() {
-  renderHome();
+  // renderHome();
+  // renderGameOver()
+  renderLeaderboard()
   // checkDesktop();
 });
 
@@ -339,7 +340,7 @@ function renderLeaderboard(prevPage) {
   renderPage(html);
 
   handleLoaderResult();
-  // handleLoaderOwnRank();
+  handleLoaderOwnRank();
   handleLeaderBoardAction();
 
   setTimeout(() => {
@@ -410,9 +411,8 @@ function resultsRanking(obj, search) {
       .replace('$skor', key.skor);
     $('#js_ranking-list').append(listRank);
   }
-
   var checkOwnObj = !search ? obj.filter(value => value.ranking <= 10) : obj;
-  checkOwnRank(checkOwnObj);
+  checkOwnRank(checkOwnObj, search);
   shadowRankList($('#js_ranking'));
   resizeRankHeight($('#js_ranking'));
 }
@@ -439,6 +439,7 @@ function handleLoaderResult(search) {
   }
 
   resizeRankHeight($('#js_ranking'));
+  $('#js_leader-container').addClass('border-radius-12');
 }
 
 function handleLoaderOwnRank() {
@@ -449,23 +450,33 @@ function handleLoaderOwnRank() {
     .replace('$phone', '08743xxx872')
     .replace('$skor', 8000);
 
-  $('#js_own-rank').html(listLoader);
+  $('#js_own-rank').html(html);
+  $('#js_leader-container').addClass('own-rank--hide');
   setTimeout(() => {
     $('#js_own-rank').html(html);
   }, 1000);
 }
 
-function checkOwnRank(obj) {
+function checkOwnRank(obj, search) {
   for (var i in obj) {
     if (obj[i].name === username) {
-      $('#js_leader-container').addClass('own-rank--hide');
       $('#js_ranking').css({
-        'max-height': $('#js_ranking').height() + 64,
+        'max-height': $(window).height() - 338,
       });
       return;
+
     } else {
-      $('#js_leader-container').removeClass('own-rank--hide');
-      $('#js_ranking').removeAttr('style');
+      if(search){
+        $('#js_leader-container').addClass('own-rank--hide');
+        $('#js_ranking').css({
+          'max-height': $(window).height() - 338,
+        });
+        console.log(i, search)
+      }
+      else{
+        $('#js_leader-container').removeClass('own-rank--hide');
+        $('#js_ranking').removeAttr('style');
+      }
     }
   }
 }
@@ -475,16 +486,6 @@ function resizeRankHeight(e) {
   if (scroll + e.height() < e[0].scrollHeight) {
     $('#js_leader-container').removeClass('border-radius-12');
   } else {
-    var h;
-    if (
-      $('#js_leader-container').hasClass('own-rank--hide') &&
-      $('#js_ranking').height() === 132
-    ) {
-      h = 196;
-    } else {
-      h = 'auto';
-    }
-    $('#js_ranking').css('height', h);
     $('#js_leader-container').addClass('border-radius-12');
   }
 }
@@ -530,16 +531,17 @@ function handleLeaderBoardAction() {
       let val = $(this).val();
       if (val) {
         if (e.which == 13) {
+          $('#js_ranking').removeClass('ranking--not-found');
           $(this).blur();
           results = data.filter(item =>
             item.name.toLowerCase().includes(val.toLowerCase())
           );
 
           handleLoaderResult(true);
+          $('#js_leader-container').addClass('own-rank--hide');
           setTimeout(() => {
             if (results != 0) {
               resultsRanking(results, true);
-              $('#js_ranking').removeClass('ranking--not-found');
             } else {
               resultsRanking(results, true);
               $('#js_ranking')
@@ -550,6 +552,7 @@ function handleLeaderBoardAction() {
         }
       } else {
         if (e.which == 13) {
+          $('#js_ranking').removeClass('ranking--not-found');
           $(this).blur();
           handleLoaderResult(true);
           setTimeout(() => {
@@ -877,6 +880,7 @@ function renderTimesup() {
       .removeClass('quiz__score--show')
       .addClass('quiz__score--hide');
   }, 3000);
+}
 
 function nextQuestions() {
   removeToasterScore();
@@ -948,69 +952,7 @@ function initGameOver() {
 
 window.renderGameOver = renderGameOver;
 function renderGameOver() {
-  const html = `
-    <div class="game-over">
-      <div class="game-over__menu menu">
-        <span class="menu__action menu__action--back"></span>
-        <span onclick="renderLeaderboard('gameover')" class="menu__action menu__action--leaderboard"></span>
-      </div>
-
-      <div class="game-over__container">
-        <div class="game-over__content">
-          <h1 class="game-over__title">MISSION COMPLETE</h1>
-          <h3 class="game-over__score">Total Skor : <span id="js_result-score">${convertScore(
-            userScore
-          )}</span></h3>
-          <button class="btn btn--score">
-            <div class="btn__inner">
-              <span>Pamerkan Skor</span>
-            </div>
-          </button>
-          <div class="game-over__separator">
-            <div class="game-over__separator-inner"></div>
-          </div>
-        </div>
-        <div class="game-over__footer"></div>
-      </div>
-
-      <div class="overlay"></div>
-      <div class="dialog dialog--custom dialog--reward">
-        <div class="dialog__container">
-          <div class="dialog__close" onclick="handleCloseDialog()"></div>
-          <div class="dialog__star">
-            <div class="dialog__star-line dialog__star-line--left">
-              <div class="dialog__star-line__inner"></div>
-            </div>
-            <div class="dialog__star-icon"></div>
-            <div class="dialog__star-line dialog__star-line--right">
-              <div class="dialog__star-line__inner"></div>
-            </div>
-          </div>
-          <div class="dialog__content">
-            <div class="dialog__inner dialog__inner--star">
-              <p class="dialog__desc">Selamat!<br>
-              Anda mendapatkan kupon cashback hingga Rp 200.000</p>
-              <div class="coupon">
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  `;
+  const html = overPage.replace('$score', convertScore(userScore));
 
   renderWrapper(html);
   renderGameOverBtn(isViewAds);
@@ -1125,27 +1067,11 @@ function renderAds() {
   soundOpening('stop');
   isViewAds = true;
 
-  const ads = `
-    <div class="ads">
-      <div class="ads__countdown">
-          <span class="countdown__num" onclick="closeAds()"></span>
-          <svg class="countdown__progress">
-              <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" style="stop-color:#EEBA3F" />
-                  <stop offset="100%" style="stop-color:#FAEAC9" />
-              </linearGradient>
-              <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
-              <circle class="countdown__progress-bar" />
-          </svg>
-      </div>
-      <a href="https://www.tokopedia.com/" target="_blank">
-        <img class="ads__image" src="https://lh3.googleusercontent.com/WfRh1tG1HGwtToqPc75BR_CA5eRBx-NbL3JZ0cS8ZxdbVw8eiSwWsqnQzUBh4UX7Hv7zISEH3wsgJ9dAqoc9HPFHavRDCgZaLL8XsOhWJ1xwjM53xzaqgV9zycwm_TLn8vLRWXNIjrh2_r9Uv5nSq1uB-CIv9WkakkEO_IHPtKAuTSG0YIan-qrPmCImbpIfUnoUsCiXcvt4HI_rbG0110WqRO9bGOUvp16KhJpzhD-zuYM3J-43ExUx2_STOf1W_Cm5s7aUYpuaWp9ECzXqDWloijtRjzIuG_Qmmf6Fn6wHxdONfFUkTdcjO_fpRxpAjnEjEzRU4JLNeJXUpT0sAUtR49igIQATYRVLP1FNRqVsTsnBm6z8CmFePI4pkh4ysGMfSVY3UVJzzqpuEi4LM4pOXmpNpOXEs9L9oIo8UERjbDHanNfY-RFMXj0CXBQeQunyff95ahsFdU9vTes2ZEbwJrRrSsiQLxWyOF3iazQN5YtbEUKj16s7bGyTOppCkMklOPR6CrV0z6mQAdqyJooq2xF-ArjFb-rPIPpojtWS9F1DN00UCtY5VlJvR-m67-nbaOvAQKLDynIjyWJ1x7thmmtLcs0Y=w2880-h1424" alt=""/>
-      </a>
-    </div>
-  `;
+  const ads = adsTemp.replace('$url', 'https://www.tokopedia.com/')
+                      .replace('$img', 'https://cdn.tokopedia.net/play-groupchat/assets/img/dummy-ads.jpg');
 
   $('.game-over').append(ads);
-  handleTimeAds(10);
+  handleTimeAds(5);
 }
 
 function handleTimeAds(start) {
@@ -1156,7 +1082,7 @@ function handleTimeAds(start) {
   setTimeout(function() {
     $('.ads .countdown__progress-bar').css({
       'stroke-dashoffset': ((newStart - 1) / start) * bar,
-      transition: 'stroke-dashoffset 1s linear',
+      'transition': 'stroke-dashoffset 1s linear',
     });
   }, 1);
 
