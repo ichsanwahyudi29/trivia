@@ -1,3 +1,14 @@
+.marvel-logo{
+  position: fixed;
+  bottom: 8px;
+  right: 8px;
+  height: 9px;
+  width: 48px;
+  z-index: 0;
+  img{
+    width: 100%;
+  }
+}
 .countdown{
   $countdown:&;
   &__num{
