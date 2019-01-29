@@ -179,7 +179,7 @@ function handleCloseDialog() {
 window.handleCloseBottomSheet = handleCloseBottomSheet;
 function handleCloseBottomSheet() {
   $('.bottom-sheet').addClass('bottom-sheet--hide');
-  $('.overlay').removeClass('overlay--show').css('pointer-events','auto');
+  $('.overlay').removeClass('overlay--show');
   setTimeout(() => {
     $('.bottom-sheet').remove();
   }, 300);
@@ -1097,7 +1097,7 @@ function renderBottomShare(home) {
   $('#wrapper>div:first-child').append(html);
 
   setTimeout(() => {
-    $('.overlay').addClass('overlay--show').css('pointer-events','none');
+    $('.overlay').addClass('overlay--show');
   }, 100);
 
   var body = encodeURIComponent(

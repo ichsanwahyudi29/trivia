@@ -1,12 +1,15 @@
 .bottom-sheet{
     position: fixed;
+    font-family: 'Avenir';
     bottom: 0;
     left: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
     animation: fadeInSlide .4s ease forwards;
     z-index: 10;
-    font-family: 'Avenir';
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     &--hide{
         animation: fadeOutSlide .4s ease forwards;
     }
