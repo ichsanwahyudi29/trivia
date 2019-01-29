@@ -19,6 +19,7 @@
   <audio preload="auto" id="js_sound-wrong" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-wrong.mp3"></audio>
   <audio preload="auto" id="js_sound-countdown-quiz" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/countdown-quiz.mp3"></audio>
   <audio preload="auto" id="js_sound-countdown-get-ready" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/countdown-get-ready.mp3"></audio>
+  <audio preload="auto" id="js_sound-game-over" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/game-over.mp3"></audio>
 
   <script type="html" id="home-page">
       <div class="landing-page">
@@ -33,7 +34,7 @@
               <a href="https://www.tokopedia.com/" class="menu__action menu__action--back"></a>
               <div class="landing-page__menu-right">
                 <a class="menu__action menu__action--leaderboard" onclick="renderLeaderboard('home')"></a>
-                <a class="menu__action menu__action--share"></a>
+                <a class="menu__action menu__action--share" onclick="renderBottomShare(true)"></a>
               </div>
             </div>
             <div class="landing-page__action">
@@ -45,7 +46,7 @@
               <div class="landing-page__content">
                 <div class="landing-page__content-btn">
                   <p class="landing-page__desc">Kuis telah dimulai</p>
-                  <button id="" class="btn btn--primary" onclick="renderStartQuiz()">
+                  <button id="js_main-btn" class="btn btn--primary" onclick="renderStartQuiz()">
                     <div class="btn__inner">
                       <div class="btn__inner-shine">
                         <span>Mulai Main</span>
@@ -92,12 +93,17 @@
                   <div class="coupon__list">
                     <img src="https://cdn.tokopedia.net/play-groupchat/assets/img/coupon.png" alt="coupon">
                   </div>
+                  <div class="coupon__list">
+                    <img src="https://cdn.tokopedia.net/play-groupchat/assets/img/coupon.png" alt="coupon">
+                  </div>
+                  <div class="coupon__list">
+                    <img src="https://cdn.tokopedia.net/play-groupchat/assets/img/coupon.png" alt="coupon">
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </script>
 
@@ -245,7 +251,7 @@
               <div class="dialog__inner">
                 <h3 class="dialog__title">Kembali ke Home Captain Marvel Quiz?</h3>
                 <p class="dialog__desc">Skor akan hangus dan Anda tidak dapat melanjutkan kuis hari ini apabila telah keluar.</p>
-                <button class="btn btn--exit" onclick="renderHome()">
+                <button class="btn btn--exit" onclick="handleExitGame()">
                   <div class="btn__inner">
                     <span>Ya, Keluar</span>
                   </div>
@@ -270,6 +276,8 @@
       <div class="quiz__start start">
         <div class="start__txt">$text</div>
         <div class="start__timer countdown">
+          <div class="start__timer-moon countdown__illus"></div>
+          <div class="start__timer-spark"></div>
           <h1 class="start__timer-num countdown__num"></h1>
         </div>
       </div>
@@ -309,7 +317,7 @@
         <div class="blocker__container">
           <img src="https://cdn.tokopedia.net/play-groupchat/assets/img/blocker.png"/>
           <div class="blocker__desc">
-            NET Play Hanya dapat diakses melalui aplikasi.
+            $quiz Hanya dapat diakses melalui aplikasi.
             <br/>
             Download aplikasi Tokopedia di sini
           </div>
@@ -326,7 +334,7 @@
 
     <div class="game-over">
       <div class="game-over__menu menu">
-        <span class="menu__action menu__action--back"></span>
+        <span class="menu__action menu__action--back" onclick="handleExitGame()"></span>
         <span onclick="renderLeaderboard('gameover')" class="menu__action menu__action--leaderboard"></span>
       </div>
 
@@ -334,7 +342,7 @@
         <div class="game-over__content">
           <h1 class="game-over__title">MISSION COMPLETE</h1>
           <h3 class="game-over__score">Total Skor : <span id="js_result-score">$score</span></h3>
-          <button class="btn btn--score">
+          <button class="btn btn--score" onclick="renderBottomShare()">
             <div class="btn__inner">
               <span>Pamerkan Skor</span>
             </div>
@@ -365,16 +373,7 @@
               Anda mendapatkan kupon cashback hingga Rp 200.000</p>
               <div class="coupon">
                 <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
+                    <img src="https://cdn.tokopedia.net/play-groupchat/assets/img/coupon.png" alt="coupon">
                 </div>
               </div>
             </div>
@@ -399,11 +398,54 @@
               <circle class="countdown__progress-bar" />
           </svg>
       </div>
-      <a href="$url" target="_blank">
-        <img class="ads__image" src="$img" alt=""/>
-      </a>
+      <img class="ads__image" src="$img" alt="" onclick="gotoAdsPage('$url')"/>
     </div>
 
+  </script>
+
+  <script type="html" id="quiz-score-template">
+    <div class="quiz__score">
+      <div class="quiz__score-inner">$content</div>
+    </div>
+  </script>
+
+  <script type="html" id="bottom-sheet-template">
+      <div class="bottom-sheet">
+          <div class="bottom-sheet__title">
+              <div class="title-close" onclick="handleCloseBottomSheet()"></div>
+              <div class="title-text">Bagikan</div>
+          </div>
+          <div class="bottom-sheet__body">
+            <div class="share-item">
+              <div class="share-item__icon share-item__icon--gplus"></div>
+              <div class="share-item__text">Google+</div>
+            </div>
+            <div class="share-item">
+              <div class="share-item__icon share-item__icon--fb"></div>
+              <div class="share-item__text">Facebook</div>
+            </div>
+            <div class="share-item">
+              <div class="share-item__icon share-item__icon--line"></div>
+              <div class="share-item__text">Line</div>
+            </div>
+            <div class="share-item">
+              <div class="share-item__icon share-item__icon--wa"></div>
+              <div class="share-item__text">Whatsapp</div>
+            </div>
+            <div class="share-item">
+              <div class="share-item__icon share-item__icon--twitter"></div>
+              <div class="share-item__text">Twitter</div>
+            </div>
+            <div class="share-item">
+              <div class="share-item__icon share-item__icon--sms"></div>
+              <div class="share-item__text">SMS</div>
+            </div>
+            <div class="share-item">
+              <div class="share-item__icon share-item__icon--link"></div>
+              <div class="share-item__text">Salin Link</div>
+            </div>
+          </div>
+      </div>
   </script>
 
 </body>
