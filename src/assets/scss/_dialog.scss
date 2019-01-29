@@ -1,257 +1,268 @@
-.overlay{
-  opacity: 0;
-  z-index: -1;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(6,6,6,.8);
-  transition: all ease .3s;
-  &--show{
-    opacity: 1;
-    z-index: 10;
-  }
-}
-
-.dialog{
-  $dialog:&;
-  opacity: 0;
-  z-index: -1;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &--show{
-    opacity: 1;
-    z-index: 10;
-    transition: opacity .1s ease-in;
-    #{$dialog}{
-      &__container{
-        transition: transform ease .35s;
-      }
-    }
-  }
-  &--custom{
-    #{$dialog}{
-      &__content{
-        &::before,
-        &::after{
-          content: '';
-          @include backgroundImg;
-          width: 100%;
-          position: absolute;
-          left: 0;
-          right: 0;
-          margin: 0 auto;
-          z-index: 2;
-        }
-        &::before{
-          background-size: contain;
-          height: 45px;
-          top: -32px;
-        }
-        &:after{
-          height: 66px;
-          bottom: -58px;
-        }
-      }
-    }
-  }
-  &--home{
-    #{$dialog}{
-      &__inner{
-        padding-top: 32px;
-        position: relative;
-        background-image: linear-gradient(to bottom, #012747, #02162C);
-        text-align: center;
-      }
-      &__desc{
-        max-width: 200px;
-        margin: 0 auto 8px;
-      }
-      &__content{
-        &::before{
-          background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-top.png);
-        }
-        &:after{
-          background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-bottom.png);
-        }
-      }
-    }
-  }
-  &--back{
-    #{$dialog}{
-      &__inner{
-        text-align: center;
-        background-image: linear-gradient(to bottom, #314962,#0B3F86,#0B3F86);
-      }
-      &__desc{
-        margin: 0 0 24px;
-      }
-      &__content{
-        &::before{
-          background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-top_back.svg);
-        }
-        &:after{
-          background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-bottom_back.svg);
-        }
-      }
-    }
-  }
-  &--reward{
-    #{$dialog}{
-      &__inner{
-        padding-top: 32px;
-        background-image: linear-gradient(to bottom, #2D455C,#0C2E5F,#0A367A);
-      }
-      &__desc{
-        margin: 0 0 16px;
-      }
-      &__content{
-        &::before{
-          background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-top_reward.svg);
-        }
-        &:after{
-          background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-bottom_reward.svg);
-          background-size: contain;
-        }
-      }
-    }
-  }
-  &__container{
-    position: relative;
-    max-width: 272px;
-    transition: transform ease .3s;
-  }
-  &__content{
-    padding: 0 2px;
-    background: linear-gradient(to right, #edb836,#fdf8ef,#F5E5D1);
-    position: relative;
-  }
-  &__inner{
-    padding: 24px 16px;
-  }
-  &__close{
-    width: 16px;
-    height: 16px;
-    position: absolute;
-    right: 6px;
-    top: -3px;
-    z-index: 3;
-    &::before,
-    &::after{
-      content: '';
-      width: 2px;
-      height: 16px;
-      position: absolute;
-      display: block;
-      border-radius: 4px;
-    }
-
-    &::before{
-      transform: rotate(45deg);
-      background: linear-gradient(to bottom, #eebb3f,#fcf2df);
-    }
-
-    &::after{
-      transform: rotate(135deg);
-      background: linear-gradient(to top, #eebb3f,#fcf2df);
-    }
-  }
-  &__shield{
-    &-top{
-      width: 100%;
-      display: block;
-      position: absolute;
-      z-index: 1;
-      top: -20px;
-    }
-    &-bottom{
-      width: 100%;
-      display: block;
-      position: absolute;
-      z-index: 2;
-      bottom: -60px;
-    }
-  }
-  &__title{
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    font-size: $f16;
-    font-weight: 900;
-    margin: 0 0 8px;
-  }
-  &__desc{
-    font-size: $f14;
-    font-weight: 900;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    line-height: 1.43;
-    margin: 0;
-    text-align: center;
-  }
-  &__star{
-    position: absolute;
-    top: -35px;
+.overlay {
+    opacity: 0;
+    z-index: -1;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
     left: 0;
     right: 0;
-    margin: 0 auto;
-    z-index: 3;
-    &-icon{
-      @include backgroundImg;
-      background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/star.png);
-      width: 64px;
-      height: 64px;
-      position: absolute;
-      left: 0;
-      right: 0;
-      margin: 0 auto;
-      z-index: 2;
+    background-color: rgba(6, 6, 6, .8);
+    transition: all ease .3s;
+    &--show {
+        opacity: 1;
+        z-index: 10;
     }
-    &::before,
-    &::after{
-      content: '';
-      display: block;
-      width: 99px;
-      height: 33px;
-      position: absolute;
-      z-index: 1;
-      top: 12px;
-      @include backgroundImg;
-      background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/star-line.svg);
-    }
+}
 
-    &::before{
-      left: 40px;
-      transform: rotateX(180deg);
-    }
-    
-    &::after{
-      right: 40px;
-    }
-  }
-
-  .coupon{
+.dialog {
+    $dialog: &;
+    opacity: 0;
+    z-index: -1;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
     justify-content: center;
-    margin-bottom: -30px;
-    position: relative;
-    z-index: 3;;
-    &__list{
-      max-width: 50%;
-      img{
-        max-width: 100%;
-        height: auto;
-        display: block;
-      }
+    .coupon {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: -30px;
+        position: relative;
+        z-index: 3;
+        ;
+        &__list {
+            max-width: 50%;
+            img {
+                max-width: 100%;
+                height: auto;
+                display: block;
+            }
+        }
     }
-  }
+    &--show {
+        opacity: 1;
+        z-index: 10;
+        transition: opacity .1s ease-in;
+        #{$dialog} {
+            &__container {
+                transition: transform ease .35s;
+            }
+        }
+    }
+    &--custom {
+        #{$dialog} {
+            &__content {
+                &::before,
+                &::after {
+                    content: '';
+                    @include backgroundImg;
+                    width: 100%;
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    margin: 0 auto;
+                    z-index: 2;
+                }
+                &::before {
+                    background-size: contain;
+                    height: 45px;
+                    top: -32px;
+                }
+                &:after {
+                    height: 66px;
+                    bottom: -58px;
+                }
+            }
+        }
+    }
+    &--home {
+        #{$dialog} {
+            &__inner {
+                padding-top: 32px;
+                position: relative;
+                background-image: linear-gradient(to bottom, #012747, #02162C);
+                text-align: center;
+            }
+            &__desc {
+                max-width: 200px;
+                margin: 0 auto 8px;
+            }
+            &__content {
+                &::before {
+                    background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-top.png);
+                }
+                &:after {
+                    background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-bottom.png);
+                }
+            }
+        }
+    }
+    &--back {
+        #{$dialog} {
+            &__inner {
+                text-align: center;
+                background-image: linear-gradient(to bottom, #314962, #0B3F86, #0B3F86);
+            }
+            &__desc {
+                margin: 0 0 24px;
+            }
+            &__content {
+                &::before {
+                    background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-top_back.svg);
+                    background-size: 276px auto;
+                    height: 24px;
+                    top: -24px;
+                    border-left: 2px solid #f5b800;
+                    border-right: 2px solid #f7e5cf;
+                }
+                &:after {
+                    background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-bottom_back.svg);
+                }
+            }
+        }
+    }
+    &--reward {
+        #{$dialog} {
+            &__inner {
+                padding-top: 32px;
+                background-image: linear-gradient(to bottom, #2D455C, #0C2E5F, #0A367A);
+            }
+            &__desc {
+                margin: 0 0 16px;
+            }
+            &__content {
+                &::before {
+                    background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-top_reward.svg);
+                    background-size: 276px auto;
+                    height: 22px;
+                    top: -22px;
+                    border-left: 2px solid #f5b800;
+                    border-right: 2px solid #f7e5cf;
+                }
+                &:after {
+                    background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-bottom_reward.svg);
+                    background-size: contain;
+                    width: calc(100% + 0.5px);
+                    bottom: -64px;
+                }
+                .coupon__list {
+                    max-width: 100%;
+                }
+            }
+        }
+    }
+    &__container {
+        position: relative;
+        max-width: 272px;
+        transition: transform ease .3s;
+    }
+    &__content {
+        padding: 0 2px;
+        background: linear-gradient(to right, #edb836, #fdf8ef, #F5E5D1);
+        position: relative;
+    }
+    &__inner {
+        padding: 24px 16px;
+    }
+    &__close {
+        width: 16px;
+        height: 16px;
+        position: absolute;
+        right: 6px;
+        top: -3px;
+        z-index: 3;
+        &::before,
+        &::after {
+            content: '';
+            width: 2px;
+            height: 16px;
+            position: absolute;
+            display: block;
+            border-radius: 4px;
+        }
+        &::before {
+            transform: rotate(45deg);
+            background: linear-gradient(to bottom, #eebb3f, #fcf2df);
+        }
+        &::after {
+            transform: rotate(135deg);
+            background: linear-gradient(to top, #eebb3f, #fcf2df);
+        }
+    }
+    &__shield {
+        &-top {
+            width: 100%;
+            display: block;
+            position: absolute;
+            z-index: 1;
+            top: -20px;
+        }
+        &-bottom {
+            width: 100%;
+            display: block;
+            position: absolute;
+            z-index: 2;
+            bottom: -60px;
+        }
+    }
+    &__title {
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        font-size: $f16;
+        font-weight: 900;
+        margin: 0 0 8px;
+    }
+    &__desc {
+        font-size: $f14;
+        font-weight: 900;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        line-height: 1.43;
+        margin: 0;
+        text-align: center;
+    }
+    &__star {
+        position: absolute;
+        top: -35px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        z-index: 3;
+        &-icon {
+            @include backgroundImg;
+            background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/star.png);
+            width: 64px;
+            height: 64px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            z-index: 2;
+        }
+        &::before,
+        &::after {
+            content: '';
+            display: block;
+            width: 99px;
+            height: 33px;
+            position: absolute;
+            z-index: 1;
+            top: 12px;
+            @include backgroundImg;
+            background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/star-line.svg);
+        }
+        &::before {
+            left: 40px;
+            transform: rotateX(180deg);
+        }
+        &::after {
+            right: 40px;
+        }
+    }
 }

@@ -3,11 +3,12 @@ import dataRanking from './ranking.json';
 
 const quizReady = ['satu', 'dua', 'tiga', 'empat', 'lima'];
 const totalQUiz = dataQuiz.questions.length;
+const quiz = "Captain Marvel Quiz"
 
 let quizCount = 1;
 let userScore = 0;
 let participant = 378653;
-let isLoad = true;
+let isLoad = false;
 let loadAmount = 0;
 
 let username = 'Peter';
@@ -37,13 +38,16 @@ var loaderListRankTemp = $('#loader-list-rank-template').text();
 var quizCountdownTemp = $('#quiz-countdown-template').text();
 var quizTimerTemp = $('#quiz-timer-template').text();
 var adsTemp = $('#ads-template').text();
-// var bottomSheetTemp = $('#bottom-sheet-template').text();
+var quizScoreTemp = $('#quiz-score-template').text();
+var bottomSheetTemp = $('#bottom-sheet-template').text();
 
 $(document).ready(function() {
-  // renderHome();
+  // checkDesktop()
+  renderHome();
   // renderGameOver()
-  renderLeaderboard()
+  // renderLeaderboard()
   // checkDesktop();
+  // renderStartQuiz()
 });
 
 // window.checkDesktop = checkDesktop
@@ -76,18 +80,14 @@ function checkDesktop() {
 }
 
 // Blocker Page
-
 function renderBlocker() {
-  var html = blockerPage;
+  var html = blockerPage.replace('$quiz', quiz);
   renderPage(html);
 }
 
 // Loading
-
 function loading(percent = false) {
   const loading = loadPage;
-
-  // console.log(!!percent);
 
   if (isLoad) {
     $('body').append(loading);
@@ -157,7 +157,6 @@ $(function globalCloseDialog() {
         $(event.target).hasClass('overlay--show')
       ) {
         handleCloseDialog();
-        handleCloseBottomSheet();
       }
     },
   });
@@ -177,15 +176,10 @@ function handleCloseDialog() {
   $('.dialog').removeClass('dialog--show');
 }
 
-function handleOpenBottomSheet() {
-  $('.bottom-sheet').addClass('bottom-sheet--show');
-  $('.overlay').addClass('overlay--show');
-}
-
 window.handleCloseBottomSheet = handleCloseBottomSheet;
 function handleCloseBottomSheet() {
-  $('.bottom-sheet').removeClass('bottom-sheet--show');
-  $('.overlay').removeClass('overlay--show');
+  $('.bottom-sheet').addClass('bottom-sheet--hide');
+  $('.overlay').removeClass('overlay--show').css('pointer-events','auto');
   setTimeout(() => {
     $('.bottom-sheet').remove();
   }, 300);
@@ -224,19 +218,13 @@ function renderPlayBtn() {
   if (isPlayBtn) {
     $(target)
       .attr('onclick', 'renderStartQuiz()')
-      .find('.btn__inner')
+      .find('span')
       .text('Mulai Main')
       .end()
       .prev()
-      .text('Kuis akan segera dimulai..');
+      .text('Kuis telah dimulai..');
   } else {
-    $(target)
-      .attr('onclick', 'handleBtnReminder(this)')
-      .find('.btn__inner')
-      .text('Ingatkan Saya')
-      .end()
-      .prev()
-      .text('Kuis akan dimulai pada 12.00 - 13.00');
+    renderBtnReminder(target, true);
   }
 }
 
@@ -284,10 +272,12 @@ function dummyHideInfo() {
 }
 
 function dummyParticipant() {
+  $('.landing-page__info>span').text(convertScore(participant));
   dummyParticipantInterval = setInterval(function() {
     randomAdd();
   }, 1000);
 }
+
 function randomAdd() {
   var numb = Math.ceil(Math.random() * 10);
   if (numb >= 6) {
@@ -299,20 +289,6 @@ function randomAdd() {
   }
   $('.landing-page__info>span').text(convertScore(participant));
 }
-
-// function renderMenuHome() {
-//   const menu = `
-//     <div class="landing-page__menu menu">
-//       <a href="" class="menu__action menu__action--back"></a>
-//       <div class="landing-page__menu-right">
-//         <span class="menu__action menu__action--leaderboard" onclick="renderLeaderboard('home')"></span>
-//         <span class="menu__action menu__action--share"></span>
-//       </div>
-//     </div>
-//   `;
-
-//   $('.landing-page__container').prepend(menu);
-// }
 
 // Leaderboard
 window.renderLeaderboard = renderLeaderboard;
@@ -329,8 +305,8 @@ function renderLeaderboard(prevPage) {
       back = 'renderHome()';
       break;
 
-    case 'complete':
-      back = 'renderComplete()';
+    case 'gameover':
+      back = 'renderGameOver()';
       break;
 
     default:
@@ -587,18 +563,15 @@ function renderStartQuiz() {
 
   renderPage(html);
   soundOpening('stop');
-  soundOnboardingQuiz('play');
   getReady(false, dataQuiz.config.onboarding_message);
 }
 
 function getReady(next, text) {
   const countDown = quizCountdownTemp.replace('$text', text);
   $('.quiz__wrapper-start').prepend(countDown);
+  soundOnboardingQuiz('play');
   soundCountdownGetReady('play');
   handleTimeStart(next, 3);
-  // if (next) {
-  //   $('.quiz__time').remove();
-  // }
 }
 
 let timeStart;
@@ -616,8 +589,7 @@ function handleTimeStart(next, time) {
     setTimeout(() => {
       $('.start .countdown').removeClass('countdown--animate');
     }, 500);
-    if (time <= 0) {
-      clearInterval(timeStart);
+    if (time === 0) {
       $('.quiz__wrapper-start').empty();
       if (!next) {
         renderMenuQuiz();
@@ -627,11 +599,15 @@ function handleTimeStart(next, time) {
         $('.quiz__time').removeClass('quiz__time--hide');
       }
     }
-  }, 1000);
+    if(time < 0){
+      clearInterval(timeStart);
+      soundCountdownGetReady('stop');
+    }
+  }, 1500);
 }
 
 function renderMenuQuiz() {
-  const menu = quizMenuContainer.replace('$score', userScore);
+  const menu = quizMenuContainer.replace('$score', convertScore(userScore));
   $('.quiz__wrapper-menu').html(menu);
 }
 
@@ -651,12 +627,12 @@ function initQuiz() {
 }
 
 function questionsAnswer(idx) {
-  soundQuiz();
+  soundQuiz('play');
   renderTimeQuiz();
 
   $('.quiz__wrapper-content').empty();
 
-  const data = dataQuiz.questions[idx];
+  const data = dataQuiz.questions[idx - 1];
   let typeAnswerQuiz = true;
 
   const questionsContainer = `
@@ -684,36 +660,10 @@ function questionsAnswer(idx) {
   }
 
   let numberQuiz = `
-    <h6 class="quiz__of">${idx + 1} dari ${totalQUiz} pertanyaan</h6>
+    <h6 class="quiz__of">${idx} dari ${totalQUiz} pertanyaan</h6>
   `;
 
   $('.quiz__content').append(numberQuiz);
-
-  // data.answers.map(key => {
-  //   var type, val;
-
-  //   if (key.config.img_url === '') {
-  //     type = 'text';
-  //     val = `<span>${key.answer_title}</span>`;
-  //     $('.quiz__content').addClass('quiz__content--text')
-  //   } else {
-  //     $('.quiz__content').addClass('quiz__content--img');
-  //     type = 'img';
-  //     val = `<img src="${key.config.img_url}" alt="${key.answer_title}"><span>${key.answer_title}</span>`;
-  //   }
-
-  //   let answer = `
-  //           <div class="quiz__answer-btn">
-  //               <div class="answer-btn" onclick="handleBtnAnswer(this, '${type}')">
-  //                   <div class="answer-btn__inner">
-  //                       <div class="answer-btn__val">
-  //                           ${val}
-  //                       </div>
-  //                   </div>
-  //               </div>
-  //           </div>`;
-  //   $('.quiz__answer').append(answer);
-  // });
 
   for (const key of data.answers) {
     let answer = `
@@ -746,94 +696,68 @@ function questionsAnswer(idx) {
   }
 }
 
-// function handleTimeQuiz(start) {
-//   var newStart = start;
-//   var bar = 82;
-
-//   $('.countdown__num').text(start);
-//   setTimeout(function() {
-//     $('.countdown__progress-bar').css({
-//       'stroke-dashoffset': ((newStart - 1) / start) * bar,
-//       transition: 'stroke-dashoffset 1s linear',
-//     });
-//   }, 1);
-
-//   var timeOut = setInterval(() => {
-//     newStart -= 1;
-//     var newBar =
-//       ((newStart - 1) / start) * bar > 0 ? ((newStart - 1) / start) * bar : 0;
-//     $('.countdown__num').text(Math.ceil(newStart));
-//     $('.countdown').addClass('countdown--animate');
-//     setTimeout(() => {
-//       $('.countdown').removeClass('countdown--animate');
-//     }, 500);
-//     $('.countdown__progress-bar').css({
-//       'stroke-dashoffset': newBar,
-//     });
-//     if (newStart < 3) {
-//       soundCountdownQuiz('play');
-//     }
-//     if (newStart <= 0) {
-//       clearInterval(timeOut);
-//       soundCountdownQuiz('stop');
-//       handleCheckAnswer();
-//     }
-//   }, 1000);
-// }
-
+let timeOut;
 function handleTimeQuiz(start) {
+  var newStart = start;
+  var bar = 151;
+
   $('.countdown__num').text(start);
-  var bar = 500;
-  var timeOut = setInterval(() => {
-    $('.countdown__num').text(start--);
-    $('.countdown').addClass('countdown--animate');
+  setTimeout(function() {
+    $('.countdown__progress-bar').css({
+      'stroke-dashoffset': ((newStart - 1) / start) * bar,
+    });
+  }, 100);
+
+  timeOut = setInterval(() => {
+    newStart -= 1;
+    var cdClass = (newStart > 3) ? 'countdown--animate' : 'countdown--animate-end'
+    var newBar =
+      ((newStart - 1) / start) * bar > 0 ? ((newStart - 1) / start) * bar : 0;
+    $('.countdown__num').text(newStart);
+    $('.quiz .countdown').addClass(cdClass);
     setTimeout(() => {
-      $('.countdown').removeClass('countdown--animate');
+      $('.quiz .countdown').removeClass(cdClass);
     }, 500);
-    if (start < 3) {
+
+    $('.countdown__progress-bar').css({
+      'stroke-dashoffset': newBar,
+    });
+    if (newStart <= 3) {
       soundCountdownQuiz('play');
     }
-    if (start < 0) {
-      clearInterval(timeOut);
-      soundCountdownQuiz('stop');
+    if (newStart <= 0) {
       handleCheckAnswer();
+      lockAnswer();
+      clearInterval(timeOut);
+      setTimeout(() => {
+        soundCountdownQuiz('stop');
+      }, 1500);
     }
   }, 1000);
-
-  var barCount = setInterval(() => {
-    $('.countdown__progress-bar');
-    $('.countdown__progress-bar').css({
-      'stroke-dashoffset': bar--,
-    });
-    if (start < 0) {
-      clearInterval(barCount);
-    }
-  }, 70);
 }
 
 function handleCheckAnswer() {
   let $answer = $('.answer-btn--active');
   if ($answer.length != 0) {
     // Check answer correct or wrong
-    if ($answer.length != 0) {
-      handleCorrectAnswer();
-      addScore(1000);
+    if (quizCount < 2) {
+      handleCorrectAnswer($answer);
     } else {
-      handleWrongAnswer();
+      handleWrongAnswer($answer);
     }
   } else {
     renderTimesup();
   }
 
   quizCount++;
-  if (quizCount <= totalQUiz - 1) {
+  if (quizCount <= totalQUiz) {
     setTimeout(() => {
       nextQuestions();
     }, 3000);
   } else {
     setTimeout(() => {
       gameOver();
-    }, 5000);
+    }, 3000);
   }
 }
 
@@ -843,53 +767,65 @@ function handleCorrectAnswer() {
     $('.answer-btn--active')
       .removeClass('answer-btn--active')
       .addClass('answer-btn--correct');
+      addScore(1000);
   }, 1000);
 }
 
 function handleWrongAnswer() {
+  soundWrongAnswer();
   $('.answer-btn--active')
     .removeClass('answer-btn--active')
     .addClass('answer-btn--wrong');
-  soundWrongAnswer();
+  setTimeout(() => {
+    $('.answer-btn--active')
+      .removeClass('answer-btn--active')
+      .addClass('answer-btn--correct');
+      addScore(250);
+  }, 1000);
+}
+
+function lockAnswer() {
+  $('.answer-btn').addClass('answer-btn--off answer-btn--disabled');
 }
 
 function renderScore(score) {
-  $('.quiz__score')
-    .removeClass('quiz__score--hide quiz__score--wrong')
-    .addClass('quiz__score--show')
-    .find('.quiz__score-inner')
-    .html(`<span>+${convertScore(score)}</span>Skor`);
+  var html = quizScoreTemp.replace('$content', `<span>+${convertScore(score)}</span>Skor`)
+  
+  $('#wrapper').append(html)
 
   setTimeout(() => {
     $('.quiz__score')
       .removeClass('quiz__score--show')
       .addClass('quiz__score--hide');
+      setTimeout(() => {
+        // $('.quiz__score').remove()
+      }, 400);
   }, 3000);
 }
 
 function renderTimesup() {
-  $('.quiz__score')
-    .removeClass('quiz__score--hide')
-    .addClass('quiz__score--wrong quiz__score--show')
-    .find('.quiz__score-inner')
-    .text('TIME IS UP')
-    .end();
+  var html = quizScoreTemp.replace('$content', `TIME IS UP`)
+  $('#wrapper').append(html)
+
+  $('.quiz__score').addClass('quiz__score--wrong')
 
   setTimeout(() => {
     $('.quiz__score')
       .removeClass('quiz__score--show')
       .addClass('quiz__score--hide');
+      setTimeout(() => {
+        $('.quiz__score').remove()
+      }, 400);
   }, 3000);
 }
 
 function nextQuestions() {
-  removeToasterScore();
   setTimeout(() => {
     $('.quiz__time').addClass('quiz__time--hide');
     $('.quiz__content').addClass('quiz__content--hide');
   }, 500);
   setTimeout(() => {
-    getReady(true, `Siap jawab pertanyaan ke${quizReady[quizCount]}`);
+    getReady(true, `Siap jawab pertanyaan ke${quizReady[quizCount - 1]}`);
   }, 1500);
 }
 
@@ -923,35 +859,19 @@ function focusAnswer(type) {
 // GameOver
 
 function gameOver() {
-  removeToasterScore();
   setTimeout(() => {
     $('.quiz__time').addClass('quiz__time--hide');
     $('.quiz__content').addClass('quiz__content--hide');
   }, 500);
   setTimeout(() => {
-    initGameOver();
+    soundQuiz('stop')
+    renderGameOver();
   }, 1000);
-}
-
-function initGameOver() {
-  const wrapper = `
-    <div id="wrapper"></div>
-  `;
-
-  const sound = `
-    <audio id="js_sound-opening" src="./assets/music/opening.mp3"></audio>
-    <audio id="js_sound-game-over" src="./assets/music/game-over.mp3"></audio>
-  `;
-  $('body').empty();
-  $('body').prepend(wrapper);
-  $('body').prepend(sound);
-  soundOpening('play');
-  soundGameOver();
-  renderGameOver();
 }
 
 window.renderGameOver = renderGameOver;
 function renderGameOver() {
+
   const html = overPage.replace('$score', convertScore(userScore));
 
   renderWrapper(html);
@@ -959,8 +879,9 @@ function renderGameOver() {
 
   if (!isLeaderboardOnAds) {
     isLeaderboardOnAds = true;
-    countUp('#js_result-score', userScore);
-    handleOpenDialog();
+    countUp('#js_result-score', 0, userScore);
+    soundOpening('play');
+    soundGameOver();
   }
 }
 
@@ -996,33 +917,33 @@ function renderGameOverBtn() {
   }
 }
 
-// function countUp(count) {
-//   var div_by = 100,
-//     speed = Math.round(count / div_by),
-//     $display = $('#js_result-score'),
-//     run_count = 1,
-//     int_speed = 24;
 
-//   var int = setInterval(function() {
-//     if (run_count < div_by) {
-//       $display.text(speed * run_count);
-//       run_count++;
-//     } else if (parseInt($display.text()) < count) {
-//       var curr_count = parseInt($display.text()) + 1;
-//       $display.text(curr_count);
-//     } else {
-//       clearInterval(int);
-//     }
-//   }, int_speed);
-// }
+function renderBtnReminder(target, reminder) {
+  if (reminder) {
+    $(target)
+      .attr('onclick', 'handleBtnReminder(this)')
+      .find('span')
+      .text('Ingatkan Saya')
+      .end()
+      .prev()
+      .text('Kuis akan dimulai pada 12.00 - 13.00');
+  } else {
+    $(target)
+      .attr('onclick', 'handleBtnReminder(this)')
+      .find('span')
+      .text('Hapus Pengingat')
+      .end()
+      .prev()
+      .text('Kuis akan dimulai pada 12.00 - 13.00');
+  }
+}
 
-function countUp(el, count, start) {
-  console.log(start, count);
+
+function countUp(el, start, count) {
   var $display = $(el),
     init = start === undefined ? 0 : start,
     add = 1,
     inc = 0;
-  console.log(init);
   $display.text(convertScore(init));
   var counting = setInterval(() => {
     init += add;
@@ -1033,6 +954,10 @@ function countUp(el, count, start) {
     } else {
       $display.text(convertScore(count));
       clearInterval(counting);
+      if (el === '#js_result-score' && getCoupon) {
+        handleOpenDialog();
+        getCoupon = false;
+      }
     }
   }, 25);
 }
@@ -1040,9 +965,9 @@ function countUp(el, count, start) {
 function addScore(score, results) {
   renderScore(score);
   if (results) {
-    countUp('#js_result-score', userScore + score, score);
+    countUp('#js_result-score', userScore, userScore + score);
   } else {
-    countUp('#js_quiz-score', userScore + score, score);
+    countUp('#js_quiz-score', userScore, userScore + score);
   }
 
   userScore += score;
@@ -1071,9 +996,11 @@ function renderAds() {
                       .replace('$img', 'https://cdn.tokopedia.net/play-groupchat/assets/img/dummy-ads.jpg');
 
   $('.game-over').append(ads);
+  isViewAds = true;
   handleTimeAds(5);
 }
 
+var adsTimeOut;
 function handleTimeAds(start) {
   var newStart = start;
   var bar = 82;
@@ -1084,9 +1011,9 @@ function handleTimeAds(start) {
       'stroke-dashoffset': ((newStart - 1) / start) * bar,
       'transition': 'stroke-dashoffset 1s linear',
     });
-  }, 1);
+  }, 100);
 
-  var timeOut = setInterval(() => {
+  adsTimeOut = setInterval(() => {
     newStart -= 1;
     var newBar =
       ((newStart - 1) / start) * bar > 0 ? ((newStart - 1) / start) * bar : 0;
@@ -1098,9 +1025,15 @@ function handleTimeAds(start) {
       $('.ads .countdown__num')
         .text('')
         .addClass('countdown__num--close');
-      clearInterval(timeOut);
+      clearInterval(adsTimeOut);
     }
   }, 1000);
+}
+
+window.gotoAdsPage = gotoAdsPage;
+function gotoAdsPage(link) {
+  window.open(link, '_blank');
+  closeAds();
 }
 
 window.closeAds = closeAds;
@@ -1114,6 +1047,7 @@ function closeAds() {
   soundGameOver();
   addScore(userScore, true);
   renderGameOverBtn(isViewAds);
+  clearInterval(adsTimeOut);
 }
 
 window.handleBtnReminder = handleBtnReminder;
@@ -1129,6 +1063,71 @@ function handleBtnReminder(e) {
     $this.find('span').text('Hapus Pengingat');
   }
 }
+
+window.handleExitGame = handleExitGame;
+function handleExitGame() {
+  isPlayBtn = false;
+  soundQuiz('stop');
+  soundCountdownQuiz('stop');
+  soundCountdownGetReady('stop');
+
+  soundOpening('stop');
+  renderHome();
+  clearInterval(timeOut);
+  clearInterval(timeStart);
+}
+
+const shareLang = {
+  home: {
+    title: 'Bagikan',
+    template: `Berani terima tantangan Captain Marvel?\nAyo ikut kuis & raih kesempatan terbang ke Hollywood bareng Captain Marvel & Tokopedia.`,
+  },
+  over: {
+    title: 'Pamerkan Skor',
+    template: `Aku mendapatkan $score skor di kuis Captain Marvel.\nIkut kuis & raih kesempatan terbang ke Hollywood bareng Captain Marvel & Tokopedia.`,
+  },
+};
+
+window.renderBottomShare = renderBottomShare;
+function renderBottomShare(home) {
+  var lang = home ? shareLang.home : shareLang.over;
+
+  var html = bottomSheetTemp.replace('$shareTitle', lang.title);
+
+  $('#wrapper>div:first-child').append(html);
+
+  setTimeout(() => {
+    $('.overlay').addClass('overlay--show').css('pointer-events','none');
+  }, 100);
+
+  var body = encodeURIComponent(
+    lang.template.replace('$score', convertScore(userScore)).trim()
+  );
+
+  $('.share-item__icon--fb').parent().click(function() {
+    window.open(
+      `https://www.facebook.com/sharer?u=https://tokopedia.com`,
+      'blank'
+    );
+  });
+  $('.share-item__icon--twitter').parent().click(function() {
+    window.open(`https://twitter.com/intent/tweet?text=${body}`, 'blank');
+  });
+  $('.share-item__icon--wa').parent().click(function() {
+    window.open(`https://wa.me/?text=${body}`, 'blank');
+  });
+  $('.share-item__icon--sms').parent().click(function() {
+    window.open(`sms:?body=${body}`, 'blank');
+  });
+  $('.share-item__icon--line').parent().click(function() {
+    window.open(`https://line.me/R/msg/text/?${body}`, 'blank');
+    SVGComponentTransferFunctionElement.lo;
+  });
+  $('.share-item__icon--link').parent().click(function() {
+    prompt('Copy to clipboard: ⌘+C, Enter', 'http://tokopedia.com');
+  });
+}
+
 
 // Audio
 

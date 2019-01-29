@@ -33,10 +33,10 @@
       fill: $secondaryColor;
       stroke: $secondaryColor;
       stroke-width: 9px;
-      stroke-dasharray: 500;
-      stroke-dashoffset: 500;
-      transition: stroke-dashoffset .4s;
-      // transition: stroke-dashoffset 1s linear;
+      stroke-dasharray: 151;
+      stroke-dashoffset: 151;
+      // transition: stroke-dashoffset .4s;
+      transition: stroke-dashoffset 1s linear;
     }
   }
   &--animate{
@@ -46,6 +46,13 @@
       }
       &__num{
         transform: scale(1.1)
+      }
+    }
+  }
+  &--animate-end{
+    #{$countdown}{
+      &__num{
+        transform: scale(1.4)
       }
     }
   }
