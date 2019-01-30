@@ -8,7 +8,7 @@ const quiz = "Captain Marvel Quiz"
 let quizCount = 1;
 let userScore = 0;
 let participant = 378653;
-let isLoad = false;
+let isLoad = true;
 let loadAmount = 0;
 
 let username = 'Peter';
@@ -266,7 +266,7 @@ function dummyHideInfo() {
       $('.landing-page__info').removeClass('landing-page__info--show');
       setTimeout(() => {
         dummyInfo();
-      }, 150);
+      }, 300);
     }
   }, 1000);
 }
