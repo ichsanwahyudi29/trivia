@@ -121,7 +121,8 @@
   }
   &__content{
     width: 100%;
-    position: absolute;
+    position: fixed;
+    // position: absolute;
     bottom: 3vh;
     left: 0;
     right: 0;
