@@ -6,7 +6,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+    background-color: #fff;
     &__container{
         width: 100%;
         text-align: center; 
@@ -35,11 +35,11 @@
             background-size: contain;
             &--ios{
                 margin-right: 14px;
-                background-image: url(../img/app-store-badge.png);
+                background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/app-store-badge.png);
             }
             &--android{
                 margin-left: 14px;
-                background-image: url(../img/google-play-badge.png);
+                background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/google-play-badge.png);
             }
         }
     }

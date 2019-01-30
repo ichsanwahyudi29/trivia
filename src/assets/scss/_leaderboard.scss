@@ -2,8 +2,11 @@
   height: 100vh;
   @include backgroundImg;
   background-position: top;
-  background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/bg-quiz.png);
+  background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/bg-quiz.jpg);
   position: relative;
+  @include breakpoint(sm){
+    background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/bg-quiz-ipad.jpg);
+  }
   &::before{
     content: '';
     position: absolute;
