@@ -98,18 +98,6 @@ const webpackConfig = {
       template: './src/index.html',
       filename: 'index.html',
     }),
-    new HtmlWebpackPlugin({
-      template: './src/quiz.html',
-      filename: 'quiz.html',
-    }),
-    new HtmlWebpackPlugin({
-      template: './src/complete.html',
-      filename: 'complete.html',
-    }),
-    new HtmlWebpackPlugin({
-      template: './src/leaderboard.html',
-      filename: 'leaderboard.html',
-    }),
     new MiniCssExtractPlugin({
       filename: isProduction ? '[name].[contenthash].min.css' : '[name].css',
       chunkFilename: '[id].css',
