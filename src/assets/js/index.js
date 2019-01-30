@@ -111,44 +111,6 @@ function loading(percent = false) {
   }
 }
 
-// function loading(percent = '') {
-//   const loading = `
-//   <div class="loading">
-//     <div class="loading__container">
-//       <div class="loading__loader">
-//         <div></div>
-//         <div></div>
-//         <div></div>
-//       </div>
-//     </div>
-//   </div>
-//   `;
-
-//   const loadingPercent = `
-//     <span id="js_loading-percent" class="loading__percent">0%</span>
-//   `;
-
-//   $('body').append(loading);
-//   $('.overlay').addClass('overlay--show');
-//   if (percent != '') {
-//     let num = 0;
-//     if (percent != '') {
-//       $('.loading__container').append(loadingPercent);
-//     }
-//     let numInterval = setInterval(() => {
-//       num++;
-//       $('#js_loading-percent').text(`${num}%`);
-//       if (num == 75) {
-//         clearInterval(numInterval);
-//         $('.overlay').removeClass('overlay--show');
-//         $('.loading').remove();
-//       }
-//     }, 150);
-//   }
-// }
-
-// General
-
 $(function globalCloseDialog() {
   $('body').on({
     click: function() {
@@ -204,8 +166,9 @@ function renderHome() {
     .replace('$participant', convertScore(participant));
 
   renderPage(html);
-  soundOpening('play');
   renderPlayBtn();
+
+  soundOpening('play');
 
   loading(loadAmount);
   // loading();
@@ -591,6 +554,8 @@ function handleTimeStart(next, time) {
     }, 500);
     if (time === 0) {
       $('.quiz__wrapper-start').empty();
+      clearInterval(timeStart);
+      soundCountdownGetReady('stop');
       if (!next) {
         renderMenuQuiz();
         initQuiz();
@@ -598,10 +563,6 @@ function handleTimeStart(next, time) {
         initQuiz();
         $('.quiz__time').removeClass('quiz__time--hide');
       }
-    }
-    if(time < 0){
-      clearInterval(timeStart);
-      soundCountdownGetReady('stop');
     }
   }, 1500);
 }
