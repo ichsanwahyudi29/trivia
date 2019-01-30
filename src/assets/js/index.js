@@ -76,6 +76,7 @@ function checkDesktop() {
     renderHome();
   } else {
     renderBlocker();
+    $('.marvel-logo').remove()
   }
 }
 
