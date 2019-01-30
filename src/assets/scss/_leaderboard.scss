@@ -2,9 +2,8 @@
   height: 100vh;
   @include backgroundImg;
   background-position: top;
-  background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/bg-over.png);
+  background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/bg-quiz.png);
   position: relative;
-  background-color: #000;
   &::before{
     content: '';
     position: absolute;
