@@ -16,6 +16,10 @@ let isViewAds = false;
 let isPlayBtn = true;
 let isLeaderboardOnAds = false;
 let getCoupon = true;
+let soundVolume = 0;
+let soundEnabled = false;
+
+let deviceH
 
 // page
 var loadPage = $('#load-page').text();
@@ -40,17 +44,28 @@ var quizTimerTemp = $('#quiz-timer-template').text();
 var adsTemp = $('#ads-template').text();
 var quizScoreTemp = $('#quiz-score-template').text();
 var bottomSheetTemp = $('#bottom-sheet-template').text();
+var toasterTemp = $('#toaster-template').text();
+
+//sound
+var audios = {}
 
 $(document).ready(function() {
+  getDeviceHeight()
+
   // checkDesktop()
   renderHome();
   // renderGameOver()
   // renderLeaderboard()
   // checkDesktop();
   // renderStartQuiz()
+  
 });
 
-// window.checkDesktop = checkDesktop
+
+function getDeviceHeight() {
+  deviceH = $(window).height()
+}
+
 function checkDesktop() {
   var userAgent = window.navigator.userAgent,
     platform = window.navigator.platform,
@@ -106,6 +121,7 @@ function loading(percent = false) {
         clearInterval(numInterval);
         $('.overlay').removeClass('overlay--show');
         $('.loading').remove();
+        handleOpenDialog('#js_dialog-sound')
       }
     }, 30);
     isLoad = false;
@@ -114,27 +130,33 @@ function loading(percent = false) {
 
 $(function globalCloseDialog() {
   $('body').on({
-    click: function() {
+    click: function(event) {
       if (
         $(event.target).hasClass('dialog--show') ||
         $(event.target).hasClass('overlay--show')
       ) {
         handleCloseDialog();
+        handleCloseBottomSheet();
       }
     },
   });
 });
 
 window.handleOpenDialog = handleOpenDialog;
-function handleOpenDialog() {
-  $('body').addClass('lock');
-  $('.overlay').addClass('overlay--show');
-  $('.dialog').addClass('dialog--show');
+function handleOpenDialog(target) {
+  // $('body').addClass('lock');
+    $('.overlay').addClass('overlay--show');
+  if(target){
+    $(target).addClass('dialog--show');
+  }
+  else{
+    $('.dialog').addClass('dialog--show');
+  }
 }
 
 window.handleCloseDialog = handleCloseDialog;
 function handleCloseDialog() {
-  $('body').removeClass('lock');
+  // $('body').removeClass('lock');
   $('.overlay').removeClass('overlay--show');
   $('.dialog').removeClass('dialog--show');
 }
@@ -142,10 +164,16 @@ function handleCloseDialog() {
 window.handleCloseBottomSheet = handleCloseBottomSheet;
 function handleCloseBottomSheet() {
   $('.bottom-sheet').addClass('bottom-sheet--hide');
-  $('.overlay').removeClass('overlay--show');
+  $('.overlay').removeClass('overlay--show overlay--share');
   setTimeout(() => {
     $('.bottom-sheet').remove();
   }, 300);
+}
+
+window.handleCloseSoundDialog = handleCloseSoundDialog;
+function handleCloseSoundDialog(sound){
+  handleActiveSound(sound)
+  handleCloseDialog()
 }
 
 function renderPage(html) {
@@ -154,8 +182,8 @@ function renderPage(html) {
 }
 
 function renderWrapper(html) {
-  $('#wrapper').empty();
-  $('#wrapper').append(html);
+  $('#outer').remove()
+  $('#wrapper').append(`<div id="outer">${html}</div>`)
 }
 
 // Home
@@ -166,15 +194,31 @@ function renderHome() {
     .replace('$otherPlayersInfo', '')
     .replace('$participant', convertScore(participant));
 
-  renderPage(html);
+  renderWrapper(html)
   renderPlayBtn();
 
-  soundOpening('play');
+  setupHomePosition()
 
-  loading(loadAmount);
-  // loading();
+  if($('#js_sound-opening').length === 0){
+    $('#wrapper').append(`
+      <audio preload="auto" id="js_sound-opening" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/opening.mp3"></audio>
+    `)
+  }
+
+  loading();
+  handleActiveSound(soundEnabled)
+
   dummyInfo();
   dummyParticipant();
+}
+
+function setupHomePosition(){
+  // action button
+  if(deviceH > 320) $('.landing-page__content').css('margin-bottom', '0px')
+
+  // captain marvel logo
+  var newMB = 24 + ((deviceH - 568)/12)
+  $('.landing-page__title').css('margin-bottom', newMB)
 }
 
 function renderPlayBtn() {
@@ -277,7 +321,8 @@ function renderLeaderboard(prevPage) {
       break;
   }
   var html = leaderPage.replace('$back', back);
-  renderPage(html);
+
+  renderWrapper(html)
 
   handleLoaderResult();
   handleLoaderOwnRank();
@@ -320,7 +365,7 @@ function topRanking(obj) {
       .replace('$image', key.image)
       .replace('$name', key.name)
       .replace('$phone', key.phone)
-      .replace('$skor', key.skor);
+      .replace('$skor', convertScore(key.skor));
 
     if (key.ranking != 2) {
       $('#js_top-ranking').append(topRank);
@@ -345,10 +390,10 @@ function resultsRanking(obj, search) {
       ranking = '999+';
     }
     var listRank = listRankTemp
-      .replace('$ranking', ranking)
+      .replace('$ranking', `${ranking}.`)
       .replace('$name', key.name)
       .replace('$phone', key.phone)
-      .replace('$skor', key.skor);
+      .replace('$skor', convertScore(key.skor));
     $('#js_ranking-list').append(listRank);
   }
   var checkOwnObj = !search ? obj.filter(value => value.ranking <= 10) : obj;
@@ -385,12 +430,12 @@ function handleLoaderResult(search) {
 function handleLoaderOwnRank() {
   const listLoader = loaderListRankTemp;
   var html = listRankTemp
-    .replace('$ranking', 35)
+    .replace('$ranking', `${35}.`)
     .replace('$name', username)
     .replace('$phone', '08743xxx872')
-    .replace('$skor', 8000);
+    .replace('$skor', convertScore(8000));
 
-  $('#js_own-rank').html(html);
+  $('#js_own-rank').html(listLoader);
   $('#js_leader-container').addClass('own-rank--hide');
   setTimeout(() => {
     $('#js_own-rank').html(html);
@@ -398,10 +443,13 @@ function handleLoaderOwnRank() {
 }
 
 function checkOwnRank(obj, search) {
+  var maxH = $(window).height() - 338 - 21
+  var minH = (maxH <= 132) ? 'unset' : '132px'
   for (var i in obj) {
     if (obj[i].name === username) {
       $('#js_ranking').css({
-        'max-height': $(window).height() - 338,
+        'max-height': maxH,
+        'min-height': minH
       });
       return;
 
@@ -409,13 +457,16 @@ function checkOwnRank(obj, search) {
       if(search){
         $('#js_leader-container').addClass('own-rank--hide');
         $('#js_ranking').css({
-          'max-height': $(window).height() - 338,
+          'max-height': maxH,
+          'min-height': minH
         });
-        console.log(i, search)
       }
       else{
         $('#js_leader-container').removeClass('own-rank--hide');
         $('#js_ranking').removeAttr('style');
+        $('#js_ranking').css({
+          'min-height': minH
+        });
       }
     }
   }
@@ -526,6 +577,19 @@ function renderStartQuiz() {
   const html = quizPage;
 
   renderPage(html);
+
+  if($('#js_sound-get-ready').length === 0){
+    $('#wrapper').append(`
+    <audio preload="auto" id="js_sound-get-ready" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/get-ready.mp3"></audio>
+    <audio preload="auto" id="js_sound-countdown-get-ready" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/countdown-get-ready.mp3"></audio>
+    <audio preload="auto" id="js_sound-quiz" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/quiz.mp3"></audio>
+    <audio preload="auto" id="js_sound-countdown-quiz" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/countdown-quiz_new.mp3"></audio>
+    <audio preload="auto" id="js_sound-choose" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-choose.mp3"></audio>
+    <audio preload="auto" id="js_sound-correct" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-correct.mp3"></audio>
+    <audio preload="auto" id="js_sound-wrong" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-wrong.mp3"></audio>
+    `)
+  }
+  
   soundOpening('stop');
   getReady(false, dataQuiz.config.onboarding_message);
 }
@@ -533,7 +597,10 @@ function renderStartQuiz() {
 function getReady(next, text) {
   const countDown = quizCountdownTemp.replace('$text', text);
   $('.quiz__wrapper-start').prepend(countDown);
-  soundOnboardingQuiz('play');
+
+  if(quizCount === 1){
+    soundOnboardingQuiz('play');
+  }
   soundCountdownGetReady('play');
   handleTimeStart(next, 3);
 }
@@ -589,6 +656,7 @@ function initQuiz() {
 }
 
 function questionsAnswer(idx) {
+
   soundQuiz('play');
   renderTimeQuiz();
 
@@ -599,8 +667,10 @@ function questionsAnswer(idx) {
 
   const questionsContainer = `
     <div class="quiz__content">
-      <div class="quiz__question"></div>
-      <div class="quiz__answer"></div>
+      <div class="quiz__main">
+        <div class="quiz__question"></div>
+        <div class="quiz__answer"></div>
+      </div>
     </div>
   `;
 
@@ -690,14 +760,13 @@ function handleTimeQuiz(start) {
     if (newStart <= 0) {
       handleCheckAnswer();
       lockAnswer();
+      soundCountdownQuiz('stop');
       clearInterval(timeOut);
-      setTimeout(() => {
-        soundCountdownQuiz('stop');
-      }, 1500);
     }
   }, 1000);
 }
 
+var nexTimeOut
 function handleCheckAnswer() {
   let $answer = $('.answer-btn--active');
   if ($answer.length != 0) {
@@ -713,11 +782,11 @@ function handleCheckAnswer() {
 
   quizCount++;
   if (quizCount <= totalQUiz) {
-    setTimeout(() => {
+    nexTimeOut = setTimeout(() => {
       nextQuestions();
     }, 3000);
   } else {
-    setTimeout(() => {
+    nexTimeOut = setTimeout(() => {
       gameOver();
     }, 3000);
   }
@@ -766,7 +835,7 @@ function renderScore(score) {
 }
 
 function renderTimesup() {
-  var html = quizScoreTemp.replace('$content', `TIME IS UP`)
+  var html = quizScoreTemp.replace('$content', `<span>TIME IS UP</span>`)
   $('#wrapper').append(html)
 
   $('.quiz__score').addClass('quiz__score--wrong')
@@ -827,6 +896,7 @@ function gameOver() {
   }, 500);
   setTimeout(() => {
     soundQuiz('stop')
+    $('#wrapper').empty()
     renderGameOver();
   }, 1000);
 }
@@ -835,9 +905,16 @@ window.renderGameOver = renderGameOver;
 function renderGameOver() {
 
   const html = overPage.replace('$score', convertScore(userScore));
-
-  renderWrapper(html);
+  
+  renderWrapper(html)
   renderGameOverBtn(isViewAds);
+
+  if($('#js_sound-game-over').length === 0){
+    $('#wrapper').append(`
+      <audio preload="auto" id="js_sound-opening" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/opening.mp3"></audio>
+      <audio preload="auto" id="js_sound-game-over" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/game-over.mp3"></audio>
+    `)
+  }
 
   if (!isLeaderboardOnAds) {
     isLeaderboardOnAds = true;
@@ -917,8 +994,10 @@ function countUp(el, start, count) {
       $display.text(convertScore(count));
       clearInterval(counting);
       if (el === '#js_result-score' && getCoupon) {
-        handleOpenDialog();
-        getCoupon = false;
+        setTimeout(() => {
+          handleOpenDialog();
+          getCoupon = false;
+        }, 2000);
       }
     }
   }, 25);
@@ -1032,11 +1111,13 @@ function handleExitGame() {
   soundQuiz('stop');
   soundCountdownQuiz('stop');
   soundCountdownGetReady('stop');
-
   soundOpening('stop');
+
+  $('#wrapper').empty()
   renderHome();
   clearInterval(timeOut);
   clearInterval(timeStart);
+  clearTimeout(nexTimeOut);
 }
 
 const shareLang = {
@@ -1056,10 +1137,10 @@ function renderBottomShare(home) {
 
   var html = bottomSheetTemp.replace('$shareTitle', lang.title);
 
-  $('#wrapper>div:first-child').append(html);
+  $('#outer>div:first-child').append(html);
 
   setTimeout(() => {
-    $('.overlay').addClass('overlay--show');
+    $('.overlay').addClass('overlay--show overlay--share');
   }, 100);
 
   var body = encodeURIComponent(
@@ -1090,97 +1171,193 @@ function renderBottomShare(home) {
   });
 }
 
+function handleConnection(connection){
+  if(!connection){
+    $('body').addClass('no-connection')
+    showToaster('Tidak ada koneksi internet', true, false)
+  }
+  else{
+    $('body').removeClass('no-connection')
+    showToaster('Koneksi internet tersedia', false, true)
+
+  }
+}
+
+// Toaster
+
+function showToaster(text = '', isError = false, autoClose = true) {
+  var html = toasterTemp.replace(`$text`, text)
+  $('body').append(html)
+  setTimeout(() => {
+
+    var toaster = $('.unf-toaster');
+    let toasterMessage = $('.unf-toaster__text');
+
+    toaster.click(function (e) {
+      toaster.removeClass('unf-toaster--show');
+      setTimeout(() => {
+        toaster.remove()
+      }, 1000);
+    });
+
+    if (isError) {
+      toaster.addClass('unf-toaster--error');
+    } else {
+      toaster.removeClass('unf-toaster--error');
+    }
+
+    toasterMessage.text(text);
+    toaster.addClass('unf-toaster--show');
+
+    if (autoClose) {
+      setTimeout(function () {
+        toaster.removeClass('unf-toaster--show');
+        setTimeout(() => {
+          toaster.remove()
+        }, 1000);
+      }, 3000);
+    }
+
+  }, 100);
+
+}
 
 // Audio
+//gohere
+window.handleActiveSound = handleActiveSound;
+function handleActiveSound(active){
+  soundEnabled = active
+  if(active){
+    $('#js_btn-sound').addClass('menu__action--sound-on')
+                      .removeClass('menu__action--sound-off')
+                      .attr('onclick', 'handleActiveSound(false)')
+    soundVolume = 1
+    soundOpening('play')
+  }
+  else{
+    $('#js_btn-sound').removeClass('menu__action--sound-on')
+                      .addClass('menu__action--sound-off')
+                      .attr('onclick', 'handleActiveSound(true)')
+    soundVolume = 0
+    soundOpening('stop')
+  }
+}
 
 function soundOpening(type) {
   let audioHome = document.getElementById('js_sound-opening');
-  if (type == 'play') {
-    audioHome.play();
-    audioHome.loop = true;
-  } else {
-    audioHome.pause();
-    setTimeout(() => {
-      audioHome.currentTime = 0;
-    }, 100);
+  if(audioHome){
+    audioHome.volume = soundVolume
+    if (type == 'play') {
+      audioHome.play();
+      audioHome.loop = true;
+    } else {
+      audioHome.pause();
+      setTimeout(() => {
+        audioHome.currentTime = 0;
+      }, 100);
+    }
   }
 }
 
 function soundGameOver() {
-  let audioHome = document.getElementById('js_sound-game-over');
-  audioHome.play();
+  let audioGameOver = document.getElementById('js_sound-game-over');
+  if(audioGameOver){
+    audioGameOver.volume = soundVolume
+    audioGameOver.play();
+  }
 }
 
 function soundOnboardingQuiz(type) {
   let audioStartQuiz = document.getElementById('js_sound-get-ready');
-  if (type == 'play') {
-    audioStartQuiz.play();
-  } else {
-    audioStartQuiz.pause();
+  if(audioStartQuiz){
+    audioStartQuiz.volume = soundVolume
+    if (type == 'play') {
+      audioStartQuiz.play();
+    } else {
+      audioStartQuiz.pause();
+    }
   }
 }
 
 function soundCountdownGetReady(type) {
-  let audioCountdownGetReady = document.getElementById(
-    'js_sound-countdown-get-ready'
-  );
-  if (type == 'play') {
-    setTimeout(() => {
-      audioCountdownGetReady.play();
-      audioCountdownGetReady.loop = true;
-    }, 1500);
-  } else {
-    audioCountdownGetReady.pause();
-    audioCountdownGetReady.currentTime = 0;
+  let audioCountdownGetReady = document.getElementById('js_sound-countdown-get-ready');
+  if(audioCountdownGetReady){
+    audioCountdownGetReady.volume = soundVolume
+    if (type == 'play') {
+      setTimeout(() => {
+        audioCountdownGetReady.play();
+        audioCountdownGetReady.loop = true;
+      }, 1500);
+    } else {
+      audioCountdownGetReady.pause();
+      audioCountdownGetReady.currentTime = 0;
+    }
   }
 }
 
 function soundQuiz(type) {
   let audioQuiz = document.getElementById('js_sound-quiz');
-  if (type == 'play') {
-    audioQuiz.play();
-    audioQuiz.loop = true;
-  } else {
-    audioQuiz.pause();
-    audioQuiz.currentTime = 0;
+  if(audioQuiz){
+    audioQuiz.volume = soundVolume
+    if (type == 'play') {
+      audioQuiz.play();
+      audioQuiz.loop = true;
+    } else {
+      audioQuiz.pause();
+      audioQuiz.currentTime = 0;
+    }
   }
 }
 
 function soundCountdownQuiz(type) {
   let audioCountdownQuiz = document.getElementById('js_sound-countdown-quiz');
-  audioCountdownQuiz.loop = true;
-  if (type == 'play') {
-    audioCountdownQuiz.play();
-  } else {
-    audioCountdownQuiz.pause();
-    setTimeout(() => {
-      audioCountdownQuiz.currentTime = 0;
-    }, 1105);
+  if(audioCountdownQuiz){
+    audioCountdownQuiz.volume = soundVolume
+    if (type == 'play') {
+      audioCountdownQuiz.loop = true;
+      audioCountdownQuiz.play();
+    } else {
+      audioCountdownQuiz.pause();
+      setTimeout(() => {
+        audioCountdownQuiz.currentTime = 0;
+      }, 1105);
+    }
   }
 }
 
 function soundChooseAnswer() {
   let audioChooseAnswer = document.getElementById('js_sound-choose');
-  audioChooseAnswer.play();
+  if(audioChooseAnswer){
+    audioChooseAnswer.volume = soundVolume
+    audioChooseAnswer.play();
+  }
 }
 
 function soundCorrectAnswer() {
   let audioCorrectAnswer = document.getElementById('js_sound-correct');
-  audioCorrectAnswer.play();
+  if(audioCorrectAnswer){
+    audioCorrectAnswer.volume = soundVolume
+    audioCorrectAnswer.play();
+  }
 }
 
 function soundWrongAnswer() {
   let audioWrongAnswer = document.getElementById('js_sound-wrong');
-  audioWrongAnswer.play();
-  audioWrongAnswer.volume = 0.6;
+  if(audioWrongAnswer){
+    audioWrongAnswer.volume = (soundVolume === 1) ? 0.6 : 0
+    audioWrongAnswer.play();
+  }
 }
 
 function soundScore(type) {
   let audioScore = document.getElementById('js_sound-score');
-  if (type == 'play') {
-    audioScore.play();
-    audioScore.loop = true;
-  } else {
-    audioScore.pause();
+  if(audioScore){
+    audioScore.volume = soundVolume
+    if (type == 'play') {
+      audioScore.play();
+      audioScore.loop = true;
+    } else {
+      audioScore.pause();
+    }
   }
 }

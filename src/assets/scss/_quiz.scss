@@ -38,6 +38,7 @@
     align-items: center;
     justify-content: center;
     animation: fadeIn .4s ease forwards;
+    box-shadow: 0 0 10px 0 #000000;
     &--hide{
       animation: fadeOut .4s ease forwards;
     }
@@ -103,6 +104,9 @@
               opacity: 1;
             }
           }
+          @include breakpoint(sm){
+            background-size: contain;
+          }
         }
         &-num{
           display: inline-block;
@@ -123,7 +127,7 @@
     width: 100%;
     position: fixed;
     // position: absolute;
-    bottom: 3vh;
+    bottom: 0;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -137,6 +141,10 @@
     @include breakpoint(sm){
       bottom: 120px;
     }
+  }
+  &__main{
+    max-height: calc(100vh - 155px);
+    overflow: auto;
   }
   &__question{
     text-align: center;
@@ -488,7 +496,9 @@
     left: 50%;
     top: 130px;
     height: 55px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    -webkit-backdrop-filter: blur(11px);
+    backdrop-filter: blur(11px);
     transform: translateX(-50%);
     animation: fadeIn .4s forwards;
     &--hide{
@@ -507,10 +517,8 @@
       min-width: 20px;
       padding: 0px 16px;
       border-radius: 27.5px;
-      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-      // background-color: rgba(255, 255, 255, 0.25);
-      // background-color: rgba(255, 255, 255, 0.6);
-      background-color: rgba(0, 0, 0, 0.6);
+      background-color: rgba($color: #ffffff, $alpha: .7);
+      color: rgba($color: #000000, $alpha: .7);
       letter-spacing: 0.4px;
       font-size: 16px;
 
@@ -527,6 +535,7 @@
     &--wrong{
       .quiz__score{
         &-inner {
+            color: #fff;
             background-color: rgba(178, 28, 38, 0.6);
             font-size: 30px;
             white-space: nowrap;

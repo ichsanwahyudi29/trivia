@@ -8,11 +8,14 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(6, 6, 6, .8);
+    background-color: rgba(0, 0, 0, .8);
     transition: all ease .3s;
     &--show {
         opacity: 1;
         z-index: 10;
+    }
+    &--share {
+        background-color: rgba($color: #000000, $alpha: 0);
     }
 }
 
@@ -77,8 +80,8 @@
                     top: -32px;
                 }
                 &:after {
-                    height: 66px;
-                    bottom: -58px;
+                    height: 68px;
+                    bottom: -60px;
                 }
             }
         }
@@ -105,8 +108,52 @@
             }
         }
     }
+    &--sound {
+        #{$dialog} {
+            &__close{
+                top: -8px;
+            }
+            &__title{
+                font-family: 'Avenir';
+                margin: 8px 0 24px;
+            }
+            &__star{
+                &::before, &::after{
+                    content: none;
+                }
+                &-icon{
+                    width: 74px;
+                    height: 74px;
+                    top: -10px;
+                }
+            }
+            &__inner {
+                text-align: center;
+                background-image: linear-gradient(to bottom, #314962, #0B3F86, #0B3F86);
+            }
+            &__desc {
+                margin: 0 0 24px;
+            }
+            &__content {
+                &::before {
+                    background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-top_back.svg);
+                    background-size: 276px auto;
+                    height: 24px;
+                    top: -24px;
+                    border-left: 2px solid #f5b800;
+                    border-right: 2px solid #f7e5cf;
+                }
+                &:after {
+                    background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-bottom_back.svg);
+                }
+            }
+        }
+    }
     &--back {
         #{$dialog} {
+            &__close{
+                top: -8px;
+            }
             &__inner {
                 text-align: center;
                 background-image: linear-gradient(to bottom, #314962, #0B3F86, #0B3F86);
@@ -143,7 +190,7 @@
                     background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/shield-top_reward.svg);
                     background-size: 276px auto;
                     height: 22px;
-                    top: -22px;
+                    top: -20px;
                     border-left: 2px solid #f5b800;
                     border-right: 2px solid #f7e5cf;
                 }
@@ -162,6 +209,7 @@
     &__container {
         position: relative;
         max-width: 272px;
+        width: 272px;
         transition: transform ease .3s;
     }
     &__content {
@@ -173,28 +221,31 @@
         padding: 24px 16px;
     }
     &__close {
-        width: 16px;
-        height: 16px;
+        width: 22.6px;
+        height: 22.6px;
         position: absolute;
-        right: 6px;
-        top: -3px;
+        right: 13px;
+        top: 0px;
         z-index: 3;
+        display: block;
         &::before,
         &::after {
             content: '';
-            width: 2px;
-            height: 16px;
+            width: 3px;
+            height: 100%;
+            top: 50%;
+            left: 50%;
             position: absolute;
             display: block;
-            border-radius: 4px;
+            border-radius: 1.5px;
         }
         &::before {
-            transform: rotate(45deg);
+            transform: translate(-50%, -50%) rotate(45deg);
             background: linear-gradient(to bottom, #eebb3f, #fcf2df);
         }
         &::after {
-            transform: rotate(135deg);
             background: linear-gradient(to top, #eebb3f, #fcf2df);
+            transform: translate(-50%, -50%) rotate(-45deg);
         }
     }
     &__shield {
@@ -210,7 +261,7 @@
             display: block;
             position: absolute;
             z-index: 2;
-            bottom: -60px;
+            bottom: -65px;
         }
     }
     &__title {

@@ -70,21 +70,14 @@
     "skor": "9904"
   },
   {
+    "ranking": 35,
+    "name": "Peter",
+    "image": "https://cdn.tokopedia.net/play-groupchat/assets/img/dummy-prof_pic_leaderboard.jpg",
+    "phone": "08743xxx872",
+    "skor": "8000"
+  },
+  {
     "ranking": 994,
-    "name": "Erazzzz Erazzzz Erazzzz Erazzzz",
-    "image": "https://cdn.tokopedia.net/play-groupchat/assets/img/dummy-prof_pic_leaderboard.jpg",
-    "phone": "08743xxx872",
-    "skor": "9904"
-  },
-  {
-    "ranking": 10000,
-    "name": "Erazzzz Erazzzz Erazzzz Erazzzz",
-    "image": "https://cdn.tokopedia.net/play-groupchat/assets/img/dummy-prof_pic_leaderboard.jpg",
-    "phone": "08743xxx872",
-    "skor": "9904"
-  },
-  {
-    "ranking": 10000,
     "name": "Erazzzz Erazzzz Erazzzz Erazzzz",
     "image": "https://cdn.tokopedia.net/play-groupchat/assets/img/dummy-prof_pic_leaderboard.jpg",
     "phone": "08743xxx872",
@@ -98,10 +91,17 @@
     "skor": "9904"
   },
   {
-    "ranking": 35,
-    "name": "Peter",
+    "ranking": 10000,
+    "name": "Erazzzz Erazzzz Erazzzz Erazzzz",
     "image": "https://cdn.tokopedia.net/play-groupchat/assets/img/dummy-prof_pic_leaderboard.jpg",
     "phone": "08743xxx872",
-    "skor": "8000"
+    "skor": "9904"
+  },
+  {
+    "ranking": 10000,
+    "name": "Erazzzz Erazzzz Erazzzz Erazzzz",
+    "image": "https://cdn.tokopedia.net/play-groupchat/assets/img/dummy-prof_pic_leaderboard.jpg",
+    "phone": "08743xxx872",
+    "skor": "9904"
   }
 ]

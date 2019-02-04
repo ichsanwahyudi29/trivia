@@ -16,4 +16,15 @@
       top: -1px;
     }
   }
+  &--leaderboard{
+    &::before{
+      background-size: unset;
+      background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/leaderboard-icon2.svg);
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+      position: relative;
+      top: -1px;
+    }
+  }
 }

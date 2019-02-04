@@ -7,8 +7,10 @@
     &::before{
       content: '';
       display: block;
-      width: 29px;
-      height: 29px;
+      /* width: 29px;
+      height: 29px; */
+      width: 32px;
+      height: 32px;
       @include backgroundImg;
     }
 
@@ -18,8 +20,10 @@
       }
     }
     &--leaderboard{
+      scale: 1;
       &::before{
-        background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/leaderboard-icon.svg);
+        // background-image: url(../img/leaderboard.svg);
+        background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/leaderboard.svg);
       }
     }
     &--share{
@@ -27,20 +31,32 @@
         background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/share-icon.svg);
       }
     }
+    &--sound{
+      &-on{
+        &::before{
+        background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/sound.svg);
+        }
+      }
+      &-off{
+        &::before{
+        background-image: url(https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/sound-disabled.svg);
+        }
+      }
+    }
   }
   &__score{
-    border-radius: 14.5px;
+    border-radius: 16px;
+    height: 32px;
+    min-width: 32px;
     background-color: #011b32;
     position: absolute;
     right: 0;
     display: flex;
     align-items: center;
+    justify-content: center;
     span{
       display: block;
       padding: 0 8px;
-      min-width: 29px;
-      height: 29px;
-      line-height: 32px;
       font-size: 20px;
       -webkit-background-clip: text;
       background-clip: text;
@@ -48,6 +64,7 @@
       background-image: linear-gradient(to bottom, #eebb3f 10%, #fcf2df 90%);
       font-weight: 900;
       letter-spacing: 1px;
+      margin-top: 3px;
     }
   } 
 }

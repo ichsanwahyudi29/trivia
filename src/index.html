@@ -3,26 +3,20 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>Marvel Trivia</title>
 </head>
 
-<body>
+<body class="lock">
   <div id="wrapper"></div>
+
   <div class="marvel-logo">
     <img src="https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/marvel-sign.png"/>
   </div>
 
-  <audio preload="auto" id="js_sound-opening" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/opening.mp3"></audio>
-  <audio preload="auto" id="js_sound-quiz" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/quiz.mp3"></audio>
-  <audio preload="auto" id="js_sound-get-ready" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/get-ready.mp3"></audio>
-  <audio preload="auto" id="js_sound-choose" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-choose.mp3"></audio>
-  <audio preload="auto" id="js_sound-correct" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-correct.mp3"></audio>
-  <audio preload="auto" id="js_sound-wrong" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-wrong.mp3"></audio>
-  <audio preload="auto" id="js_sound-countdown-quiz" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/countdown-quiz.mp3"></audio>
-  <audio preload="auto" id="js_sound-countdown-get-ready" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/countdown-get-ready.mp3"></audio>
-  <audio preload="auto" id="js_sound-game-over" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/game-over.mp3"></audio>
+  <!-- <iframe src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/opening.mp3" allow="autoplay" id="js_sound-home"></iframe> -->
+  <!-- <iframe src="./sound.html" allow="autoplay; fullscreen" id="aifuramu"></iframe> -->
 
   <script type="html" id="home-page">
       <div class="landing-page">
@@ -31,17 +25,16 @@
             <div class="landing-page__info-text">Ichsan Indra mendapatkan skor 999.999</div>
             <span class="landing-page__info-num"></span>
           </div>
-
           <div class="landing-page__container content">
             <div class="landing-page__menu menu">
               <a href="https://www.tokopedia.com/" class="menu__action menu__action--back"></a>
               <div class="landing-page__menu-right">
-                <a class="menu__action menu__action--leaderboard" onclick="renderLeaderboard('home')"></a>
+                <a class="menu__action menu__action--sound-off" id="js_btn-sound" onclick="handleActiveSound(true)"></a>
                 <a class="menu__action menu__action--share" onclick="renderBottomShare(true)"></a>
               </div>
             </div>
             <div class="landing-page__action">
-              <img class="landing-page__logo" src="https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/logo_marvel.png" alt="" srcset="">
+              <img class="landing-page__logo" src="https://cdn.tokopedia.net/play-groupchat/assets/img/marvel/logo_marvel_new.png" alt="" srcset="">
               <div class="landing-page__title">
                 <span>Quiz</span>
                 <div class="landing-page__title-spark"></div>
@@ -57,18 +50,27 @@
                     </div>
                   </button>
                 </div>
-                <button onclick="handleOpenDialog()" class="btn btn--small btn--price">
+                <div class="btn btn-group btn--small">
                   <div class="btn__inner">
-                    <span class="icon icon--price">Info Hadiah</span>
+                      <button onclick="handleOpenDialog('#js_dialog-info')" class="btn btn--price">
+                        <div class="btn__inner">
+                          <span class="icon icon--price">Info Hadiah</span>
+                        </div>
+                      </button>
+                      <button onclick="renderLeaderboard('home')" class="btn btn--leaderboard">
+                        <div class="btn__inner">
+                          <span class="icon icon--leaderboard">Leaderboard</span>
+                        </div>
+                      </button>
                   </div>
-                </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         <div class="overlay"></div>
-        <div class="dialog dialog--custom dialog--home">
+        <div class="dialog dialog--custom dialog--home" id="js_dialog-info">
           <div class="dialog__container">
             <div onclick="handleCloseDialog()" class="dialog__close"></div>
             <div class="dialog__star">
@@ -107,6 +109,26 @@
             </div>
           </div>
         </div>
+
+        <div class="dialog dialog--custom dialog--sound" id="js_dialog-sound">
+          <div class="dialog__container">
+            <div class="dialog__close" onclick="handleCloseSoundDialog(false)"></div>
+            <div class="dialog__star">
+              <div class="dialog__star-icon"></div>
+            </div>
+            <div class="dialog__content">
+              <div class="dialog__inner">
+                <h3 class="dialog__title">Aktifkan suara untuk lebih menikmati keseruan Captain Marvel Quiz</h3>
+                <button class="btn btn--exit" onclick="handleCloseSoundDialog(true)">
+                  <div class="btn__inner">
+                    <span>Ya, aktifkan suara</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </script>
 
@@ -449,6 +471,11 @@
             </div>
           </div>
       </div>
+  </script>
+  <script type="html" id="toaster-template">
+    <div class="unf-toaster">
+        <span class="unf-toaster__text"></span>
+    </div>
   </script>
 
 </body>

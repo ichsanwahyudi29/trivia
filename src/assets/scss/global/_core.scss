@@ -5,8 +5,13 @@ body {
   user-select: none;
   font-size: 14px;
   font-family: 'AvenirHeavy';
+  filter: grayscale(0);
+  transition: filter .5s ease-in-out;
   &.lock {
     overflow: hidden;
+  }
+  &.no-connection{
+    filter: grayscale(1);
   }
 }
 
@@ -38,6 +43,10 @@ ol{
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+.hide{
+  display: none;
 }
 
 .container {
