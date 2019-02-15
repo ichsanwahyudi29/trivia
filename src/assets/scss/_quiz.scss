@@ -176,6 +176,7 @@
         font-weight: 900;
         font-size: 16px;
         user-select: none;
+        -webkit-user-select: none;
       }
     }
   }
@@ -303,6 +304,7 @@
             position: relative;
             top: 1px;
             user-select: none;
+            -webkit-user-select: none;
           }
         }
       }

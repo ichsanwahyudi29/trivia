@@ -565,7 +565,7 @@ function handleLeaderBoardAction() {
       setTimeout(() => {
         shadowRankList($('#js_ranking'));
         resizeRankHeight($('#js_ranking'));
-      }, 100);
+      }, 500);
     },
   });
 }
