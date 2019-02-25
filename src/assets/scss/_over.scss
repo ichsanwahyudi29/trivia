@@ -35,6 +35,14 @@
     background-image: linear-gradient(to bottom, #dbaa62, #ffffff, #dbaa62);
     opacity: .5;
   }
+  &__sub-title{
+    text-transform: uppercase;
+    text-shadow: 0 2px 8px #000000;
+    font-size: 14px;
+    font-weight: 900;
+    font-family: 'AvenirBook';
+    margin: 10px 0;
+  }
   &__title{
     text-shadow: 0 2px 8px #000000;
     font-size: 50px;

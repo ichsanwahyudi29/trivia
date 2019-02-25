@@ -53,8 +53,8 @@ $(document).ready(function() {
   getDeviceHeight()
 
   // checkDesktop()
-  renderHome();
-  // renderGameOver()
+  // renderHome();
+  renderGameOver()
   // renderLeaderboard()
   // checkDesktop();
   // renderStartQuiz()
