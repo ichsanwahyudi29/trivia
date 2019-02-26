@@ -1,12 +1,28 @@
-.marvel-logo{
+.bottom-logo{
   position: fixed;
-  bottom: 8px;
-  right: 8px;
-  height: 9px;
-  width: 48px;
+  height: 10px;
+  width: 100%;
+  bottom: 0;
+  padding: 0 8px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   z-index: 0;
-  img{
+  // bottom: 8px;
+  // right: 8px;
+  // height: 9px;
+  // width: 48px;
+  /* img{
     width: 100%;
+  } */
+  .logo{
+    &--marvel{
+      height: 9px;
+    }
+    &--tokopedia{
+      height: 10px;
+    }
   }
 }
 .countdown{
