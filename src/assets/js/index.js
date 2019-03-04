@@ -53,8 +53,8 @@ $(document).ready(function() {
   getDeviceHeight()
 
   // checkDesktop()
-  // renderHome();
-  renderGameOver()
+  renderHome();
+  // renderGameOver()
   // renderLeaderboard()
   // checkDesktop();
   // renderStartQuiz()
@@ -1134,8 +1134,10 @@ const shareLang = {
 window.renderBottomShare = renderBottomShare;
 function renderBottomShare(home) {
   var lang = home ? shareLang.home : shareLang.over;
+  var link_to_share = "http://tokopedia.com";
 
-  var html = bottomSheetTemp.replace('$shareTitle', lang.title);
+  var html = bottomSheetTemp.replace('$shareTitle', lang.title)
+                            .replace('$link', link_to_share);
 
   $('#outer>div:first-child').append(html);
 
@@ -1167,7 +1169,10 @@ function renderBottomShare(home) {
     SVGComponentTransferFunctionElement.lo;
   });
   $('.share-item__icon--link').parent().click(function() {
-    prompt('Copy to clipboard: ⌘+C, Enter', 'http://tokopedia.com');
+    // prompt('Copy to clipboard: ⌘+C, Enter', 'http://tokopedia.com');
+    $('.hidden-input').select()
+    document.execCommand("copy")
+    showToaster('Link tersalin', false, true)
   });
 }
 
