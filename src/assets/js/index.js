@@ -3,23 +3,69 @@ import dataRanking from './ranking.json';
 
 const quizReady = ['satu', 'dua', 'tiga', 'empat', 'lima'];
 const totalQUiz = dataQuiz.questions.length;
+const quiz = "Captain Marvel Quiz"
 
-let quizCount = 0;
+let quizCount = 1;
 let userScore = 0;
-let participant = 1000;
+let participant = 378653;
+let isLoad = true;
+let loadAmount = 0;
 
+let username = 'Peter';
 let isViewAds = false;
 let isPlayBtn = true;
 let isLeaderboardOnAds = false;
+let getCoupon = true;
+let soundVolume = 0;
+let soundEnabled = false;
+
+let deviceH
+
+// page
+var loadPage = $('#load-page').text();
+var blockerPage = $('#blocker-page').text();
+var homePage = $('#home-page').text();
+var leaderPage = $('#leader-page').text();
+var quizPage = $('#quiz-page').text();
+var overPage = $('#over-page').text();
+
+//container
+var listRankContainer = $('#list-rank-container').text();
+var loaderContainer = $('#loader-container').text();
+var quizMenuContainer = $('#quiz-menu-container').text();
+
+//templater
+var topRankTemp = $('#top-rank-template').text();
+var listRankTemp = $('#list-rank-template').text();
+var loaderTopRankTemp = $('#loader-top-rank-template').text();
+var loaderListRankTemp = $('#loader-list-rank-template').text();
+var quizCountdownTemp = $('#quiz-countdown-template').text();
+var quizTimerTemp = $('#quiz-timer-template').text();
+var adsTemp = $('#ads-template').text();
+var quizScoreTemp = $('#quiz-score-template').text();
+var bottomSheetTemp = $('#bottom-sheet-template').text();
+var toasterTemp = $('#toaster-template').text();
+
+//sound
+var audios = {}
 
 $(document).ready(function() {
-  // initGameOver();
-  initHome();
+  getDeviceHeight()
+
+  // checkDesktop()
+  renderHome();
+  // renderGameOver()
+  // renderLeaderboard()
   // checkDesktop();
-  // loading('%');
+  // renderStartQuiz()
+  
 });
 
-// window.checkDesktop = checkDesktop
+
+function getDeviceHeight() {
+  deviceH = $(window).height()
+}
+
 function checkDesktop() {
   var userAgent = window.navigator.userAgent,
     platform = window.navigator.platform,
@@ -45,241 +91,197 @@ function checkDesktop() {
     renderHome();
   } else {
     renderBlocker();
+    $('.marvel-logo').remove()
   }
 }
 
-window.renderBlocker = renderBlocker;
+// Blocker Page
 function renderBlocker() {
-  var html = `
-    <div class="blocker">
-      <div class="blocker__container">
-      <img src="https://lh3.googleusercontent.com/oqyY6hp_34ToIUKzxPEDSJ4Htk35VqoFwxvwoafWm31ujE0wzKpsESofGzOec85Dq3VXfrHxORHI0TxyBr0mZPISB2NozvIMnn0E8YYr8vdvaytGqxidcuJMOIxdIKK_DzRRVB1I5kn2_gpyrye0alTTpUWsj-LP6yb4Uf_uI_ZW4eMQx21jQwc_vD6EUpIBZGWF3PQQkKDGJZHmEv6L107Qys7Jx10tbHv9xiSCsAEmofS0teqz6Uq6N3mmIdlqX0pDyO9q9xtWcr2-HyYzlo5PD9kaUQw6I1uEz9CjScnR7eHejxZSAqqPP6GHzuC86MfnDily_kIx1YXUCntv1yjIHzhaksv9d_Iknw0TWR81_nNfowYCE1N49h2ZeJJ0-fAvzp-tJ1Pm__gRKbXo4G_CeYOinUiax0uGb9uraBVeN3ErEbyrj4NpkK6G9jijyEADvqLQyD5fEwGbo9ZE-GcPZNtTKDSOSxrH5bbaY0RkYgV6nQFTC4EtUYTCoowBL_NC39ORQcF7Kt2aSJwAjsxQIViiENzhyKJdd1tZtTE-1LVDyg3T9ZDf-NV7dujYmZELR3RuVuHMa5l_kumRfe3cSr1Zim-m=w2880-h1424"/>
-      <div class="blocker__desc">
-          NET Play Hanya dapat diakses melalui aplikasi.
-          <br/>
-          Download aplikasi Tokopedia di sini
-      </div>
-      <div class="blocker__download">
-          <a href="https://itunes.apple.com/us/app/tokopedia-jual-beli-online/id1001394201#?platform=iphone" class="btn__download btn__download--ios"></a>
-          <a href="https://play.google.com/store/apps/details?id=com.tokopedia.tkpd" class="btn__download btn__download--android"></a>
-      </div>
-      </div>
-  </div>
-  `;
+  var html = blockerPage.replace('$quiz', quiz);
   renderPage(html);
 }
 
 // Loading
+function loading(percent = false) {
+  const loading = loadPage;
 
-function loading(percent = '') {
-  const loading = `
-  <div class="loading">
-    <div class="loading__container">
-      <div class="loading__loader">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    </div>
-  </div>
-  `;
+  if (isLoad) {
+    $('body').append(loading);
+    $('.overlay').addClass('overlay--show');
 
-  const loadingPercent = `
-    <span id="js_loading-percent" class="loading__percent">0%</span>
-  `;
-
-  $('body').append(loading);
-  $('.overlay').addClass('overlay--show');
-  if (percent != '') {
     let num = 0;
-    if (percent != '') {
-      $('.loading__container').append(loadingPercent);
-    }
     let numInterval = setInterval(() => {
       num++;
       $('#js_loading-percent').text(`${num}%`);
       if (num == 75) {
+        num = 100;
+      }
+
+      if (num >= 100) {
         clearInterval(numInterval);
         $('.overlay').removeClass('overlay--show');
         $('.loading').remove();
+        handleOpenDialog('#js_dialog-sound')
       }
-    }, 150);
+    }, 30);
+    isLoad = false;
   }
 }
 
-// General
-
 $(function globalCloseDialog() {
   $('body').on({
-    click: function(e) {
-      if ($(event.target).hasClass('dialog--show')) {
+    click: function(event) {
+      if (
+        $(event.target).hasClass('dialog--show') ||
+        $(event.target).hasClass('overlay--show')
+      ) {
         handleCloseDialog();
+        handleCloseBottomSheet();
       }
     },
   });
 });
 
 window.handleOpenDialog = handleOpenDialog;
-function handleOpenDialog() {
-  $('body').addClass('lock');
-  $('.overlay').addClass('overlay--show');
-  $('.dialog').addClass('dialog--show');
+function handleOpenDialog(target) {
+  // $('body').addClass('lock');
+    $('.overlay').addClass('overlay--show');
+  if(target){
+    $(target).addClass('dialog--show');
+  }
+  else{
+    $('.dialog').addClass('dialog--show');
+  }
 }
 
 window.handleCloseDialog = handleCloseDialog;
 function handleCloseDialog() {
-  $('body').removeClass('lock');
+  // $('body').removeClass('lock');
   $('.overlay').removeClass('overlay--show');
   $('.dialog').removeClass('dialog--show');
 }
 
-function renderPage(html) {
-  $('body').empty();
-  $('body').append(html);
+window.handleCloseBottomSheet = handleCloseBottomSheet;
+function handleCloseBottomSheet() {
+  $('.bottom-sheet').addClass('bottom-sheet--hide');
+  $('.overlay').removeClass('overlay--show overlay--share');
+  setTimeout(() => {
+    $('.bottom-sheet').remove();
+  }, 300);
 }
 
-function renderWrapper(html) {
+window.handleCloseSoundDialog = handleCloseSoundDialog;
+function handleCloseSoundDialog(sound){
+  handleActiveSound(sound)
+  handleCloseDialog()
+}
+
+function renderPage(html) {
   $('#wrapper').empty();
   $('#wrapper').append(html);
 }
 
-// Home
-
-window.initHome = initHome;
-function initHome() {
-  const wrapper = `
-    <div id="wrapper"></div>
-  `;
-
-  const sound = `
-    <audio id="js_sound-opening" src="./assets/music/opening.mp3"></audio>
-  `;
-
-  $('body').empty();
-  $('body').prepend(wrapper);
-  $('body').prepend(sound);
-  soundOpening('play');
-  renderHome();
+function renderWrapper(html) {
+  $('#outer').remove()
+  $('#wrapper').append(`<div id="outer">${html}</div>`)
 }
+
+// Home
 
 window.renderHome = renderHome;
 function renderHome() {
-  const html = `
-    <div class="landing-page">
-      <div class="landing-page__wrapper">
-        <div class="landing-page__info">
-          <div class="landing-page__info-text">Ichsan Indra mendapatkan skor 999.999</div>
-          <span class="landing-page__info-num"></span>
-        </div>
-        
-        <div class="landing-page__container content">
-          <div class="landing-page__menu menu">
-            <a href="" class="menu__action menu__action--back"></a>
-            <div class="landing-page__menu-right">
-              <span class="menu__action menu__action--leaderboard" onclick="renderLeaderboard('home')"></span>
-              <span class="menu__action menu__action--share"></span>
-            </div>
-          </div>
-          <div class="landing-page__action">
-            <img class="landing-page__logo" src="./assets/img/logo_marvel.png" alt="" srcset="">
-            <div class="landing-page__title">
-              <span>Quiz</span>
-              <div class="landing-page__title-spark"></div>
-            </div>
-            <div class="landing-page__content">
-              <div class="landing-page__content-btn"></div>
-              <button onclick="handleOpenDialog()" class="btn btn--small btn--price">
-                <div class="btn__inner">
-                  <span class="icon icon--price">Info Hadiah</span>
-                </div>
-              </button>
-            </div>
-          </div>
-        </div> 
-      </div>
+  let html = homePage
+    .replace('$otherPlayersInfo', '')
+    .replace('$participant', convertScore(participant));
 
-      <div class="overlay"></div>
-      <div class="dialog dialog--custom dialog--home">
-        <div class="dialog__container">
-          <div onclick="handleCloseDialog()" class="dialog__close"></div>
-          <div class="dialog__star">
-            <div class="dialog__star-line dialog__star-line--left">
-              <div class="dialog__star-line__inner"></div>
-            </div>
-            <div class="dialog__star-icon"></div>
-            <div class="dialog__star-line dialog__star-line--right">
-              <div class="dialog__star-line__inner"></div>
-            </div>
-          </div>
-          <div class="dialog__content">
-            <div class="dialog__inner">       
-              <p class="dialog__desc">Dapatkan kesempatan menangkan kupon cashback sampai 60%!</p>
-              <div class="coupon">
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  `;
-
-  renderWrapper(html);
+  renderWrapper(html)
   renderPlayBtn();
+
+  setupHomePosition()
+
+  if($('#js_sound-opening').length === 0){
+    $('#wrapper').append(`
+      <audio preload="auto" id="js_sound-opening" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/opening.mp3"></audio>
+    `)
+  }
+
+  loading();
+  handleActiveSound(soundEnabled)
+
   dummyInfo();
   dummyParticipant();
 }
 
-var dummyInfoInterval;
+function setupHomePosition(){
+  // action button
+  if(deviceH > 320) $('.landing-page__content').css('margin-bottom', '0px')
 
-function dummyInfo() {
-  dummyInfoInterval = setInterval(function() {
-    randomDummy();
-  }, 1000);
+  // captain marvel logo
+  var newMB = 24 + ((deviceH - 568)/12)
+  $('.landing-page__title').css('margin-bottom', newMB)
 }
 
-function randomDummy() {
-  let numb = Math.ceil(Math.random() * 10);
-  if (numb >= 7) {
-    otherPlayerInfo();
-    clearInterval(dummyInfoInterval);
+function renderPlayBtn() {
+  var target = '#js_main-btn';
+  if (isPlayBtn) {
+    $(target)
+      .attr('onclick', 'renderStartQuiz()')
+      .find('span')
+      .text('Mulai Main')
+      .end()
+      .prev()
+      .text('Kuis telah dimulai..');
+  } else {
+    renderBtnReminder(target, true);
   }
 }
 
-function otherPlayerInfo() {
-  let data = dataRanking[Math.floor(Math.random() * dataRanking.length)];
+window.handleRemindMe = handleRemindMe;
+function handleRemindMe(e) {
+  let $this = $(e);
+  if ($this.hasClass('btn--transparent')) {
+    $this.removeClass('btn--transparent');
+    $this.addClass('btn--primary');
+    $this.find('span').text('Ingatkan Saya');
+  } else {
+    $this.removeClass('btn--primary');
+    $this.addClass('btn--transparent');
+    $this.find('span').text('Hapus Pengingat');
+  }
+}
+
+var dummyInfoInterval, dummyParticipantInterval;
+
+function dummyInfo() {
+  var data = dataRanking[Math.floor(Math.random() * dataRanking.length)];
   $('.landing-page__info')
     .find('div:first-child')
     .html(
-      `<div>${data.name}</div><div>mendapatkan skor ${convertScore(
-        data.skor
-      )}</div>`
+      `<div>${data.name}</div>
+            <div>mendapatkan skor ${convertScore(data.skor)}</div>`
     )
     .end()
     .addClass('landing-page__info--show');
 
-  setTimeout(() => {
-    $('.landing-page__info').removeClass('landing-page__info--show');
-    dummyInfoInterval = setInterval(function() {
-      randomDummy();
-    }, 1000);
-  }, 3000);
+  dummyHideInfo();
+}
+
+function dummyHideInfo() {
+  dummyInfoInterval = setInterval(function() {
+    var num = Math.ceil(Math.random() * 20);
+    if (num > 17) {
+      clearInterval(dummyInfoInterval);
+      $('.landing-page__info').removeClass('landing-page__info--show');
+      setTimeout(() => {
+        dummyInfo();
+      }, 300);
+    }
+  }, 1000);
 }
 
 function dummyParticipant() {
-  let dummyParticipantInterval = setInterval(function() {
+  $('.landing-page__info>span').text(convertScore(participant));
+  dummyParticipantInterval = setInterval(function() {
     randomAdd();
   }, 1000);
 }
@@ -296,135 +298,40 @@ function randomAdd() {
   $('.landing-page__info>span').text(convertScore(participant));
 }
 
-function renderPlayBtn() {
-  const playBtn = `
-    <p class="landing-page__desc">Kuis telah dimulai</p>
-    <button class="btn btn--primary" onclick="renderStartQuiz()">
-      <div class="btn__inner">
-        <div class="btn__inner-shine">
-          <span>Mulai Main</span>
-        </div>
-      </div>
-    </button>
-  `;
-
-  const remindBtn = `
-    <p class="game-over__desc">Kuis akan dimulai pada 12.00 - 13.00</p>
-    <button class="btn btn--primary" onclick="handleBtnReminder(this)">
-      <div class="btn__inner">
-        <div class="btn__inner-shine">
-          <span>Ingatkan Saya</span>
-        </div>
-      </div>
-    </button>
-  `;
-
-  if (isPlayBtn) {
-    $('.landing-page__content-btn').append(playBtn);
-  } else {
-    $('.landing-page__content-btn').append(remindBtn);
-  }
-}
-
-// function renderStatePlay() {
-//   $('#js_btn-landing')
-//     .prev()
-//     .text('Kuis akan segera dimulai.');
-//   $('#js_btn-landing').removeAttr('onclick');
-//   $('#js_btn-landing').attr('onclick', 'renderStartQuiz()');
-//   $('#js_btn-landing')
-//     .find('span')
-//     .text('Mulai Main');
-// }
-
-window.handleRemindMe = handleRemindMe;
-function handleRemindMe(e) {
-  let $this = $(e);
-  if ($this.hasClass('btn--transparent')) {
-    $this.removeClass('btn--transparent');
-    $this.addClass('btn--primary');
-    $this.find('span').text('Ingatkan Saya');
-  } else {
-    $this.removeClass('btn--primary');
-    $this.addClass('btn--transparent');
-    $this.find('span').text('Hapus Pengingat');
-  }
-}
-
-// function renderMenuHome() {
-//   const menu = `
-//     <div class="landing-page__menu menu">
-//       <a href="" class="menu__action menu__action--back"></a>
-//       <div class="landing-page__menu-right">
-//         <span class="menu__action menu__action--leaderboard" onclick="renderLeaderboard('home')"></span>
-//         <span class="menu__action menu__action--share"></span>
-//       </div>
-//     </div>
-//   `;
-
-//   $('.landing-page__container').prepend(menu);
-// }
-
 // Leaderboard
-
 window.renderLeaderboard = renderLeaderboard;
 function renderLeaderboard(prevPage) {
+  //clear dummy interval
   if (prevPage == 'home') {
     clearInterval(dummyInfoInterval);
     clearInterval(dummyParticipantInterval);
   }
 
-  const html = `
-    <div class="leaderboard">
-      <div class="leaderboard__menu menu">
-        <span class="menu__action menu__action--back"></span>
-        <h1 class="menu__title">Leaderboard</h1>
-      </div>
-
-      <div class="leaderboard__container container">
-        <div class="leaderboard__top">
-          <div id="js_top-ranking" class="row"></div>
-        </div>
-
-        <div class="leaderboard__content">
-          <div id="js_search" class="search">
-            <div class="unf-searchbar">
-              <input id="js_search-ranking" type="text" class="unf-searchbar__input" placeholder="Cari Namamu">
-              <button id="js_reset-search-ranking" class="unf-searchbar__close"></button>
-            </div>
-          </div> 
-          <div id="js_ranking" class="ranking" onscroll="handleScrollRanking(this)"></div>
-        </div>
-
-      </div>
-    </div>
-  `;
-
-  renderWrapper(html);
-
-  let backTo;
-
+  var back;
   switch (prevPage) {
     case 'home':
-      backTo = 'renderHome()';
+      back = 'renderHome()';
       break;
 
     case 'gameover':
-      backTo = 'renderGameOver()';
+      back = 'renderGameOver()';
       break;
 
     default:
       break;
   }
+  var html = leaderPage.replace('$back', back);
 
-  $('.menu__action--back').attr('onclick', backTo);
+  renderWrapper(html)
 
   handleLoaderResult();
+  handleLoaderOwnRank();
   handleLeaderBoardAction();
+
   setTimeout(() => {
-    topRanking(dataRanking);
     initDataRanking();
-  }, 3000);
+    topRanking(dataRanking);
+  }, 1000);
 }
 
 function appendRankingElem(el) {
@@ -448,33 +355,17 @@ function handleScrollRanking(e) {
 
 function topRanking(obj) {
   $('#js_top-ranking').empty();
-
   obj = obj.filter(function(value, index, arr) {
     return value.ranking <= 3;
   });
 
   for (const key of obj) {
-    const topRank = `
-      <div class="col-4">
-        <div class="top top--${key.ranking}">
-          <div class="top__img">   
-            <div class="top__img-border">
-              <div class="top__img-val" style="background-image: url(${
-                key.image
-              })">
-                <div class="top__star"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="top__info">
-            <h4 class="top__info-name">${key.name}</h4>
-            <h6 class="top__info-phone">${key.phone}</h6>
-            <h5 class="top__info-score">${key.skor}</h5>
-          </div>
-        </div>
-      </div>
-    `;
+    var topRank = topRankTemp
+      .replace('$ranking', key.ranking)
+      .replace('$image', key.image)
+      .replace('$name', key.name)
+      .replace('$phone', key.phone)
+      .replace('$skor', convertScore(key.skor));
 
     if (key.ranking != 2) {
       $('#js_top-ranking').append(topRank);
@@ -484,145 +375,177 @@ function topRanking(obj) {
   }
 }
 
-function resultsRanking(obj) {
-  const listContainer = `
-    <div id="js_ranking-list" class="ranking__list"></div> 
-  `;
-
+function resultsRanking(obj, search) {
+  var listContainer = listRankContainer;
   appendRankingElem(listContainer);
 
-  obj = obj.filter(function(value, index, arr) {
-    return value.ranking > 3;
+  var filteredObj = obj.filter(function(value, index, arr) {
+    return (value.ranking > 3) & (value.ranking <= 10);
   });
 
-  for (const key of obj) {
+  var changeObj = !search ? filteredObj : obj;
+  for (var key of changeObj) {
     var ranking = key.ranking;
-
     if (ranking > 999) {
       ranking = '999+';
     }
-
-    const listRank = `
-      <div class="row">
-        <div class="ranking__list-left">
-          <div class="ranking__info">
-            <div class="info-num">
-              <span>${ranking}</span>
-            </div>
-            <div class="info-profile">
-              <div class="profile-text">
-                <span class="profile-name">${key.name}</span>
-                <span class="profile-phone">${key.phone}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="ranking__list-right">
-          <span class="ranking__score">${key.skor}</span>
-        </div>
-      </div>
-    `;
-
+    var listRank = listRankTemp
+      .replace('$ranking', `${ranking}.`)
+      .replace('$name', key.name)
+      .replace('$phone', key.phone)
+      .replace('$skor', convertScore(key.skor));
     $('#js_ranking-list').append(listRank);
+  }
+  var checkOwnObj = !search ? obj.filter(value => value.ranking <= 10) : obj;
+  checkOwnRank(checkOwnObj, search);
+  shadowRankList($('#js_ranking'));
+  resizeRankHeight($('#js_ranking'));
+}
+
+function handleLoaderResult(search) {
+  const loader = loaderContainer;
+
+  appendRankingElem(loader);
+  if (!search) {
+    for (var i = 1; i <= 3; i++) {
+      var loadRank = loaderTopRankTemp.replace('$id', i);
+
+      if (i != 2) {
+        $('#js_top-ranking').append(loadRank);
+      } else {
+        $('#js_top-ranking').prepend(loadRank);
+      }
+    }
+  }
+  const listLoader = loaderListRankTemp;
+
+  for (let i = 0; i < 3; i++) {
+    $('#js_ranking-loader').append(listLoader);
+  }
+
+  resizeRankHeight($('#js_ranking'));
+  $('#js_leader-container').addClass('border-radius-12');
+}
+
+function handleLoaderOwnRank() {
+  const listLoader = loaderListRankTemp;
+  var html = listRankTemp
+    .replace('$ranking', `${35}.`)
+    .replace('$name', username)
+    .replace('$phone', '08743xxx872')
+    .replace('$skor', convertScore(8000));
+
+  $('#js_own-rank').html(listLoader);
+  $('#js_leader-container').addClass('own-rank--hide');
+  setTimeout(() => {
+    $('#js_own-rank').html(html);
+  }, 1000);
+}
+
+function checkOwnRank(obj, search) {
+  var maxH = $(window).height() - 338 - 21
+  var minH = (maxH <= 132) ? 'unset' : '132px'
+  for (var i in obj) {
+    if (obj[i].name === username) {
+      $('#js_ranking').css({
+        'max-height': maxH,
+        'min-height': minH
+      });
+      return;
+
+    } else {
+      if(search){
+        $('#js_leader-container').addClass('own-rank--hide');
+        $('#js_ranking').css({
+          'max-height': maxH,
+          'min-height': minH
+        });
+      }
+      else{
+        $('#js_leader-container').removeClass('own-rank--hide');
+        $('#js_ranking').removeAttr('style');
+        $('#js_ranking').css({
+          'min-height': minH
+        });
+      }
+    }
   }
 }
 
-function handleLoaderResult() {
-  for (let i = 1; i <= 3; i++) {
-    const loaderTopRank = `
-      <div class="col-4">
-        <div class="top top--${i}">
-          <div class="top__img top__img--loader">
-            <span class="unf-loader-circle"></span>
-          </div>
-          <div class="top__info--loader-name">
-            <span class="unf-loader-line"></span>
-          </div>
-          <div class="top__info--loader-phone">
-            <span class="unf-loader-line"></span>
-          </div>
-          <div class="top__info--loader-score">
-            <span class="unf-loader-line"></span>
-          </div>
-        </div>
-      </div>
-    `;
+function resizeRankHeight(e) {
+  let scroll = e.scrollTop();
+  if (scroll + e.height() < e[0].scrollHeight) {
+    $('#js_leader-container').removeClass('border-radius-12');
+  } else {
+    $('#js_leader-container').addClass('border-radius-12');
+  }
+}
 
-    if (i != 2) {
-      $('#js_top-ranking').append(loaderTopRank);
-    } else {
-      $('#js_top-ranking').prepend(loaderTopRank);
-    }
+function shadowRankList(e) {
+  let scroll = e.scrollTop();
+
+  if (scroll > 0) {
+    $('#js_search').addClass('search--shadow');
+  } else {
+    $('#js_search').removeClass('search--shadow');
   }
 
-  const loader = `<div id="js_ranking-loader" class="ranking__loader"></div>`;
-
-  appendRankingElem(loader);
-
-  const listLoader = `
-    <div class="row">
-      <div class="col-1">
-        <span class="unf-loader-line"></span>
-      </div>
-      <div class="col-9">
-        <div class="loader__name">
-          <span class="unf-loader-line"></span>
-        </div>
-        <div class="loader__phone">
-          <span class="unf-loader-line"></span>
-        </div> 
-      </div>
-      <div class="col-2">
-        <span class="unf-loader-line"></span>
-      </div>
-    </div>
-  `;
-
-  for (let i = 0; i < 5; i++) {
-    $('#js_ranking-loader').append(listLoader);
+  if (scroll + e.height() < e[0].scrollHeight) {
+    $('#js_own-rank').addClass('search-down--shadow');
+  } else {
+    $('#js_own-rank').removeClass('search-down--shadow');
   }
 }
 
 function handleLeaderBoardAction() {
+  //rank scroll effect
+  $('#js_ranking').on({
+    scroll: function() {
+      shadowRankList($(this));
+    },
+  });
+
+  //ranking
   $('#js_search-ranking').on({
     input: function(e) {
-      let $this = $(this);
+      let _self = $(this);
 
-      if ($this.val()) {
-        $this.siblings().addClass('unf-searchbar__close--show');
+      if (_self.val()) {
+        _self.siblings().addClass('unf-searchbar__close--show');
       } else {
-        $this.siblings().removeClass('unf-searchbar__close--show');
+        _self.siblings().removeClass('unf-searchbar__close--show');
       }
     },
     keypress: function(e) {
-      const results = [];
+      var data = dataRanking;
+      var results = [];
       let val = $(this).val();
       if (val) {
         if (e.which == 13) {
+          $('#js_ranking').removeClass('ranking--not-found');
           $(this).blur();
-          for (let i = 0; i < dataRanking.length; i++) {
-            for (key in dataRanking[i]) {
-              if (
-                dataRanking[i][key].toLowerCase().indexOf(val.toLowerCase()) !=
-                -1
-              ) {
-                results.push(dataRanking[i]);
-              }
-            }
-          }
-          handleLoaderResult();
+          results = data.filter(item =>
+            item.name.toLowerCase().includes(val.toLowerCase())
+          );
+
+          handleLoaderResult(true);
+          $('#js_leader-container').addClass('own-rank--hide');
           setTimeout(() => {
             if (results != 0) {
-              resultsRanking(results);
+              resultsRanking(results, true);
             } else {
-              handleEmptyResult();
+              resultsRanking(results, true);
+              $('#js_ranking')
+                .addClass('ranking--not-found')
+                .text('Nama tidak ditemukan');
             }
           }, 3000);
         }
       } else {
         if (e.which == 13) {
+          $('#js_ranking').removeClass('ranking--not-found');
           $(this).blur();
-          handleLoaderResult();
+          handleLoaderResult(true);
           setTimeout(() => {
             initDataRanking();
           }, 3000);
@@ -631,176 +554,101 @@ function handleLeaderBoardAction() {
     },
   });
 
-  // reset
+  //reset
   $('#js_reset-search-ranking').on({
     click: function() {
       let input = $('#js_search-ranking');
       input.val('');
       input.siblings().removeClass('unf-searchbar__close--show');
       initDataRanking();
+      $('#js_ranking').removeClass('ranking--not-found');
+      setTimeout(() => {
+        shadowRankList($('#js_ranking'));
+        resizeRankHeight($('#js_ranking'));
+      }, 500);
     },
   });
-}
-
-function handleEmptyResult() {
-  console.log('masuk');
 }
 
 // Quiz
 
 window.renderStartQuiz = renderStartQuiz;
 function renderStartQuiz() {
-  const html = `
-    <div class="quiz">
-      <div class="quiz__wrapper">
-        <div class="quiz__wrapper-start"></div>
-        <div class="quiz__wrapper-menu"></div>
-        <div class="quiz__wrapper-content"></div>
-      </div>
-      <div class="overlay"></div>
-      <div class="dialog dialog--custom dialog--back">
-        <div class="dialog__container">
-          <div class="dialog__close" onclick="handleCloseDialog()"></div>
-          <div class="dialog__content">
-            <div class="dialog__inner">
-              <h3 class="dialog__title">Kembali ke Home Captain Marvel Quiz?</h3>
-              <p class="dialog__desc">Skor akan hangus dan Anda tidak dapat melanjutkan kuis hari ini apabila telah keluar.</p>
-              <button class="btn btn--exit" onclick="initHome()">
-                <div class="btn__inner">
-                  <span>Ya, Keluar</span>
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <audio id="js_sound-quiz" src="./assets/music/quiz.mp3"></audio>
-      <audio id="js_sound-onboarding-quiz" src="./assets/music/start-quiz.mp3"></audio>
-      <audio id="js_sound-choose" src="./assets/music/choose-answer.mp3"></audio>
-      <audio id="js_sound-correct" src="./assets/music/right-answer.mp3"></audio>
-      <audio id="js_sound-wrong" src="./assets/music/wrong-answer.mp3"></audio>
-      <audio id="js_sound-countdown-quiz" src="./assets/music/countdown-quiz.mp3"></audio>
-    </div>
-  `;
+  const html = quizPage;
 
   renderPage(html);
-  soundOnboardingQuiz();
+
+  if($('#js_sound-get-ready').length === 0){
+    $('#wrapper').append(`
+    <audio preload="auto" id="js_sound-get-ready" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/get-ready.mp3"></audio>
+    <audio preload="auto" id="js_sound-countdown-get-ready" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/countdown-get-ready.mp3"></audio>
+    <audio preload="auto" id="js_sound-quiz" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/quiz.mp3"></audio>
+    <audio preload="auto" id="js_sound-countdown-quiz" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/countdown-quiz_new.mp3"></audio>
+    <audio preload="auto" id="js_sound-choose" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-choose.mp3"></audio>
+    <audio preload="auto" id="js_sound-correct" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-correct.mp3"></audio>
+    <audio preload="auto" id="js_sound-wrong" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/answer-wrong.mp3"></audio>
+    `)
+  }
+  
+  soundOpening('stop');
   getReady(false, dataQuiz.config.onboarding_message);
 }
 
 function getReady(next, text) {
-  const countDown = `
-    <div class="quiz__start start">
-      <div class="start__txt">${text}</div>
-      <div class="start__timer countdown">
-        <div class="start__timer-moon countdown__illus"></div>
-        <div class="start__timer-spark"></div>
-        <h1 class="start__timer-num countdown__num"></h1>
-      </div>
-      <audio id="js_sound-countdown" src="./assets/music/countdowns.mp3"></audio>
-    </div>
-  `;
-
+  const countDown = quizCountdownTemp.replace('$text', text);
   $('.quiz__wrapper-start').prepend(countDown);
-  soundCountdown();
-  handleTimeStart(next, 3);
-  if (next) {
-    $('.quiz__time').remove();
+
+  if(quizCount === 1){
+    soundOnboardingQuiz('play');
   }
+  soundCountdownGetReady('play');
+  handleTimeStart(next, 3);
 }
 
+let timeStart;
 function handleTimeStart(next, time) {
-  $('.countdown__num').text(time);
-  let timeStart = setInterval(() => {
-    $('.countdown__num').text(time--);
-    $('.countdown').addClass('countdown--animate');
+  $('.start .countdown__num').text(time);
+  $('.start .countdown').addClass('countdown--animate');
+  setTimeout(() => {
+    $('.start .countdown').removeClass('countdown--animate');
+  }, 500);
+
+  timeStart = setInterval(() => {
+    time -= 1;
+    $('.start .countdown__num').text(time);
+    $('.start .countdown').addClass('countdown--animate');
     setTimeout(() => {
-      $('.countdown').removeClass('countdown--animate');
+      $('.start .countdown').removeClass('countdown--animate');
     }, 500);
-    if (time < 0) {
-      clearInterval(timeStart);
+    if (time === 0) {
       $('.quiz__wrapper-start').empty();
+      clearInterval(timeStart);
+      soundCountdownGetReady('stop');
       if (!next) {
         renderMenuQuiz();
         initQuiz();
       } else {
         initQuiz();
+        $('.quiz__time').removeClass('quiz__time--hide');
       }
     }
   }, 1500);
 }
 
 function renderMenuQuiz() {
-  const menu = `
-    <div class="quiz__menu menu">
-      <span class="menu__action menu__action--back" onclick="handleOpenDialog()"></span>
-      <div class="menu__score">
-        <span id="js_quiz-score">0</span>
-      </div>
-    </div>
-  `;
-
-  $('.quiz__wrapper-menu').append(menu);
+  const menu = quizMenuContainer.replace('$score', convertScore(userScore));
+  $('.quiz__wrapper-menu').html(menu);
 }
 
 function renderTimeQuiz() {
-  const time = `
-    <div class="countdown quiz__time">
-      <span class="countdown__num"></span>
-      <svg class="countdown__progress">
-        <defs>
-          <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:#b21c26" />
-            <stop offset="100%" style="stop-color:#ffdb84" />
-          </linearGradient>
-        </defs>
-        <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
-        <circle class="countdown__progress-bar" />
-      </svg>
-    </div>
-  `;
+  const time = quizTimerTemp;
 
-  $('.quiz__menu').append(time);
+  $('.quiz__menu')
+    .find('.quiz__time')
+    .remove()
+    .end()
+    .append(time);
   handleTimeQuiz(10);
-}
-
-function renderScore(score) {
-  let isScore = $('.quiz__score');
-
-  if (isScore.length != 0) {
-    isScore.remove();
-  }
-
-  const quizScore = `
-    <div class="quiz__score">
-      <div class="quiz__score-inner"><span>+${score}</span>Skor</div>
-      <div class="quiz__score-background"><div style="background-image: url(../img/bg-quiz.jpg)"></div></div>
-    </div>
-  `;
-
-  $('body').append(quizScore);
-
-  setTimeout(() => {
-    $('.quiz__score').addClass('quiz__score--hide');
-  }, 3000);
-}
-
-function renderTimesup() {
-  const quizTimesup = `
-    <div class="quiz__score quiz__score--wrong">
-      <div class="quiz__score-inner">TIME IS UP</div>
-      <div class="quiz__score-background"><div></div></div>
-    </div>
-  `;
-
-  $('body').append(quizTimesup);
-}
-
-function removeToasterScore() {
-  $('.quiz__score').addClass('quiz__score--hide');
-  setTimeout(() => {
-    $('.quiz__score').remove();
-  }, 300);
 }
 
 function initQuiz() {
@@ -808,18 +656,21 @@ function initQuiz() {
 }
 
 function questionsAnswer(idx) {
-  soundQuiz();
+
+  soundQuiz('play');
   renderTimeQuiz();
 
   $('.quiz__wrapper-content').empty();
 
-  const data = dataQuiz.questions[idx];
+  const data = dataQuiz.questions[idx - 1];
   let typeAnswerQuiz = true;
 
   const questionsContainer = `
     <div class="quiz__content">
-      <div class="quiz__question"></div>
-      <div class="quiz__answer"></div>
+      <div class="quiz__main">
+        <div class="quiz__question"></div>
+        <div class="quiz__answer"></div>
+      </div>
     </div>
   `;
 
@@ -841,7 +692,7 @@ function questionsAnswer(idx) {
   }
 
   let numberQuiz = `
-    <h6 class="quiz__of">${idx + 1} dari ${totalQUiz} pertanyaan</h6>
+    <h6 class="quiz__of">${idx} dari ${totalQUiz} pertanyaan</h6>
   `;
 
   $('.quiz__content').append(numberQuiz);
@@ -877,94 +728,67 @@ function questionsAnswer(idx) {
   }
 }
 
-// function handleTimeQuiz(start) {
-//   var newStart = start;
-//   var bar = 82;
-
-//   $('.countdown__num').text(start);
-//   setTimeout(function() {
-//     $('.countdown__progress-bar').css({
-//       'stroke-dashoffset': ((newStart - 1) / start) * bar,
-//       transition: 'stroke-dashoffset 1s linear',
-//     });
-//   }, 1);
-
-//   var timeOut = setInterval(() => {
-//     newStart -= 1;
-//     var newBar =
-//       ((newStart - 1) / start) * bar > 0 ? ((newStart - 1) / start) * bar : 0;
-//     $('.countdown__num').text(Math.ceil(newStart));
-//     $('.countdown').addClass('countdown--animate');
-//     setTimeout(() => {
-//       $('.countdown').removeClass('countdown--animate');
-//     }, 500);
-//     $('.countdown__progress-bar').css({
-//       'stroke-dashoffset': newBar,
-//     });
-//     if (newStart < 3) {
-//       soundCountdownQuiz('play');
-//     }
-//     if (newStart <= 0) {
-//       clearInterval(timeOut);
-//       soundCountdownQuiz('stop');
-//       handleCheckAnswer();
-//     }
-//   }, 1000);
-// }
-
+let timeOut;
 function handleTimeQuiz(start) {
+  var newStart = start;
+  var bar = 151;
+
   $('.countdown__num').text(start);
-  var bar = 500;
-  var timeOut = setInterval(() => {
-    $('.countdown__num').text(start--);
-    $('.countdown').addClass('countdown--animate');
+  setTimeout(function() {
+    $('.countdown__progress-bar').css({
+      'stroke-dashoffset': ((newStart - 1) / start) * bar,
+    });
+  }, 100);
+
+  timeOut = setInterval(() => {
+    newStart -= 1;
+    var cdClass = (newStart > 3) ? 'countdown--animate' : 'countdown--animate-end'
+    var newBar =
+      ((newStart - 1) / start) * bar > 0 ? ((newStart - 1) / start) * bar : 0;
+    $('.countdown__num').text(newStart);
+    $('.quiz .countdown').addClass(cdClass);
     setTimeout(() => {
-      $('.countdown').removeClass('countdown--animate');
+      $('.quiz .countdown').removeClass(cdClass);
     }, 500);
-    if (start < 3) {
+
+    $('.countdown__progress-bar').css({
+      'stroke-dashoffset': newBar,
+    });
+    if (newStart <= 3) {
       soundCountdownQuiz('play');
     }
-    if (start < 0) {
-      clearInterval(timeOut);
-      soundCountdownQuiz('stop');
+    if (newStart <= 0) {
       handleCheckAnswer();
+      lockAnswer();
+      soundCountdownQuiz('stop');
+      clearInterval(timeOut);
     }
   }, 1000);
-
-  var barCount = setInterval(() => {
-    $('.countdown__progress-bar');
-    $('.countdown__progress-bar').css({
-      'stroke-dashoffset': bar--,
-    });
-    if (start < 0) {
-      clearInterval(barCount);
-    }
-  }, 70);
 }
 
+var nexTimeOut
 function handleCheckAnswer() {
   let $answer = $('.answer-btn--active');
   if ($answer.length != 0) {
     // Check answer correct or wrong
-    if ($answer.length != 0) {
-      handleCorrectAnswer();
-      addScore(1000);
+    if (quizCount < 2) {
+      handleCorrectAnswer($answer);
     } else {
-      handleWrongAnswer();
+      handleWrongAnswer($answer);
     }
   } else {
     renderTimesup();
   }
 
   quizCount++;
-  if (quizCount <= totalQUiz - 1) {
-    setTimeout(() => {
+  if (quizCount <= totalQUiz) {
+    nexTimeOut = setTimeout(() => {
       nextQuestions();
     }, 3000);
   } else {
-    setTimeout(() => {
+    nexTimeOut = setTimeout(() => {
       gameOver();
-    }, 5000);
+    }, 3000);
   }
 }
 
@@ -974,24 +798,65 @@ function handleCorrectAnswer() {
     $('.answer-btn--active')
       .removeClass('answer-btn--active')
       .addClass('answer-btn--correct');
+      addScore(1000);
   }, 1000);
 }
 
 function handleWrongAnswer() {
+  soundWrongAnswer();
   $('.answer-btn--active')
     .removeClass('answer-btn--active')
     .addClass('answer-btn--wrong');
-  soundWrongAnswer();
+  setTimeout(() => {
+    $('.answer-btn--active')
+      .removeClass('answer-btn--active')
+      .addClass('answer-btn--correct');
+      addScore(250);
+  }, 1000);
+}
+
+function lockAnswer() {
+  $('.answer-btn').addClass('answer-btn--off answer-btn--disabled');
+}
+
+function renderScore(score) {
+  var html = quizScoreTemp.replace('$content', `<span>+${convertScore(score)}</span>Skor`)
+  
+  $('#wrapper').append(html)
+
+  setTimeout(() => {
+    $('.quiz__score')
+      .removeClass('quiz__score--show')
+      .addClass('quiz__score--hide');
+      setTimeout(() => {
+        // $('.quiz__score').remove()
+      }, 400);
+  }, 3000);
+}
+
+function renderTimesup() {
+  var html = quizScoreTemp.replace('$content', `<span>TIME IS UP</span>`)
+  $('#wrapper').append(html)
+
+  $('.quiz__score').addClass('quiz__score--wrong')
+
+  setTimeout(() => {
+    $('.quiz__score')
+      .removeClass('quiz__score--show')
+      .addClass('quiz__score--hide');
+      setTimeout(() => {
+        $('.quiz__score').remove()
+      }, 400);
+  }, 3000);
 }
 
 function nextQuestions() {
-  removeToasterScore();
   setTimeout(() => {
     $('.quiz__time').addClass('quiz__time--hide');
     $('.quiz__content').addClass('quiz__content--hide');
   }, 500);
   setTimeout(() => {
-    getReady(true, `Siap jawab pertanyaan ke${quizReady[quizCount]}`);
+    getReady(true, `Siap jawab pertanyaan ke${quizReady[quizCount - 1]}`);
   }, 1500);
 }
 
@@ -1025,106 +890,37 @@ function focusAnswer(type) {
 // GameOver
 
 function gameOver() {
-  removeToasterScore();
   setTimeout(() => {
     $('.quiz__time').addClass('quiz__time--hide');
     $('.quiz__content').addClass('quiz__content--hide');
   }, 500);
   setTimeout(() => {
-    initGameOver();
+    soundQuiz('stop')
+    $('#wrapper').empty()
+    renderGameOver();
   }, 1000);
-}
-
-function initGameOver() {
-  const wrapper = `
-    <div id="wrapper"></div>
-  `;
-
-  const sound = `
-    <audio id="js_sound-opening" src="./assets/music/opening.mp3"></audio>
-    <audio id="js_sound-game-over" src="./assets/music/game-over.mp3"></audio>
-  `;
-  $('body').empty();
-  $('body').prepend(wrapper);
-  $('body').prepend(sound);
-  soundOpening('play');
-  soundGameOver();
-  renderGameOver();
 }
 
 window.renderGameOver = renderGameOver;
 function renderGameOver() {
-  const html = `
-    <div class="game-over">
-      <div class="game-over__menu menu">
-        <span class="menu__action menu__action--back"></span>
-        <span onclick="renderLeaderboard('gameover')" class="menu__action menu__action--leaderboard"></span>
-      </div>
 
-      <div class="game-over__container">
-        <div class="game-over__content">
-          <h1 class="game-over__title">MISSION COMPLETE</h1>
-          <h3 class="game-over__score">Total Skor : <span id="js_result-score">${convertScore(
-            userScore
-          )}</span></h3>
-          <button class="btn btn--score">
-            <div class="btn__inner">
-              <span>Pamerkan Skor</span>
-            </div>
-          </button>
-          <div class="game-over__separator">
-            <div class="game-over__separator-inner"></div>
-          </div>
-        </div>
-        <div class="game-over__footer"></div>
-      </div>
-
-      <div class="overlay"></div>
-      <div class="dialog dialog--custom dialog--reward">
-        <div class="dialog__container">
-          <div class="dialog__close" onclick="handleCloseDialog()"></div>
-          <div class="dialog__star">
-            <div class="dialog__star-line dialog__star-line--left">
-              <div class="dialog__star-line__inner"></div>
-            </div>
-            <div class="dialog__star-icon"></div>
-            <div class="dialog__star-line dialog__star-line--right">
-              <div class="dialog__star-line__inner"></div>
-            </div>
-          </div>
-          <div class="dialog__content">
-            <div class="dialog__inner dialog__inner--star">
-              <p class="dialog__desc">Selamat!<br>
-              Anda mendapatkan kupon cashback hingga Rp 200.000</p>
-              <div class="coupon">
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-                <div class="coupon__list">
-                  <img src="./assets/img/coupon.png" alt="" srcset="">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  `;
-
-  renderWrapper(html);
+  const html = overPage.replace('$score', convertScore(userScore));
+  
+  renderWrapper(html)
   renderGameOverBtn(isViewAds);
+
+  if($('#js_sound-game-over').length === 0){
+    $('#wrapper').append(`
+      <audio preload="auto" id="js_sound-opening" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/opening.mp3"></audio>
+      <audio preload="auto" id="js_sound-game-over" src="https://cdn.tokopedia.net/play-groupchat/assets/music/marvel/game-over.mp3"></audio>
+    `)
+  }
 
   if (!isLeaderboardOnAds) {
     isLeaderboardOnAds = true;
-    countUp('#js_result-score', userScore);
-    handleOpenDialog();
+    countUp('#js_result-score', 0, userScore);
+    soundOpening('play');
+    soundGameOver();
   }
 }
 
@@ -1160,33 +956,33 @@ function renderGameOverBtn() {
   }
 }
 
-// function countUp(count) {
-//   var div_by = 100,
-//     speed = Math.round(count / div_by),
-//     $display = $('#js_result-score'),
-//     run_count = 1,
-//     int_speed = 24;
 
-//   var int = setInterval(function() {
-//     if (run_count < div_by) {
-//       $display.text(speed * run_count);
-//       run_count++;
-//     } else if (parseInt($display.text()) < count) {
-//       var curr_count = parseInt($display.text()) + 1;
-//       $display.text(curr_count);
-//     } else {
-//       clearInterval(int);
-//     }
-//   }, int_speed);
-// }
+function renderBtnReminder(target, reminder) {
+  if (reminder) {
+    $(target)
+      .attr('onclick', 'handleBtnReminder(this)')
+      .find('span')
+      .text('Ingatkan Saya')
+      .end()
+      .prev()
+      .text('Kuis akan dimulai pada 12.00 - 13.00');
+  } else {
+    $(target)
+      .attr('onclick', 'handleBtnReminder(this)')
+      .find('span')
+      .text('Hapus Pengingat')
+      .end()
+      .prev()
+      .text('Kuis akan dimulai pada 12.00 - 13.00');
+  }
+}
 
-function countUp(el, count, start) {
-  console.log(start, count);
+
+function countUp(el, start, count) {
   var $display = $(el),
     init = start === undefined ? 0 : start,
     add = 1,
     inc = 0;
-  console.log(init);
   $display.text(convertScore(init));
   var counting = setInterval(() => {
     init += add;
@@ -1197,6 +993,12 @@ function countUp(el, count, start) {
     } else {
       $display.text(convertScore(count));
       clearInterval(counting);
+      if (el === '#js_result-score' && getCoupon) {
+        setTimeout(() => {
+          handleOpenDialog();
+          getCoupon = false;
+        }, 2000);
+      }
     }
   }, 25);
 }
@@ -1204,9 +1006,9 @@ function countUp(el, count, start) {
 function addScore(score, results) {
   renderScore(score);
   if (results) {
-    countUp('#js_result-score', userScore + score, score);
+    countUp('#js_result-score', userScore, userScore + score);
   } else {
-    countUp('#js_quiz-score', userScore + score, score);
+    countUp('#js_quiz-score', userScore, userScore + score);
   }
 
   userScore += score;
@@ -1231,29 +1033,15 @@ function renderAds() {
   soundOpening('stop');
   isViewAds = true;
 
-  const ads = `
-    <div class="ads">
-      <div class="ads__countdown">
-          <span class="countdown__num" onclick="closeAds()"></span>
-          <svg class="countdown__progress">
-              <linearGradient id="cdgradient" x1="100%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" style="stop-color:#EEBA3F" />
-                  <stop offset="100%" style="stop-color:#FAEAC9" />
-              </linearGradient>
-              <circle class="countdown__progress-gradient" fill="url(#cdgradient)"/>
-              <circle class="countdown__progress-bar" />
-          </svg>
-      </div>
-      <a href="https://www.tokopedia.com/" target="_blank">
-        <img class="ads__image" src="https://lh3.googleusercontent.com/WfRh1tG1HGwtToqPc75BR_CA5eRBx-NbL3JZ0cS8ZxdbVw8eiSwWsqnQzUBh4UX7Hv7zISEH3wsgJ9dAqoc9HPFHavRDCgZaLL8XsOhWJ1xwjM53xzaqgV9zycwm_TLn8vLRWXNIjrh2_r9Uv5nSq1uB-CIv9WkakkEO_IHPtKAuTSG0YIan-qrPmCImbpIfUnoUsCiXcvt4HI_rbG0110WqRO9bGOUvp16KhJpzhD-zuYM3J-43ExUx2_STOf1W_Cm5s7aUYpuaWp9ECzXqDWloijtRjzIuG_Qmmf6Fn6wHxdONfFUkTdcjO_fpRxpAjnEjEzRU4JLNeJXUpT0sAUtR49igIQATYRVLP1FNRqVsTsnBm6z8CmFePI4pkh4ysGMfSVY3UVJzzqpuEi4LM4pOXmpNpOXEs9L9oIo8UERjbDHanNfY-RFMXj0CXBQeQunyff95ahsFdU9vTes2ZEbwJrRrSsiQLxWyOF3iazQN5YtbEUKj16s7bGyTOppCkMklOPR6CrV0z6mQAdqyJooq2xF-ArjFb-rPIPpojtWS9F1DN00UCtY5VlJvR-m67-nbaOvAQKLDynIjyWJ1x7thmmtLcs0Y=w2880-h1424" alt=""/>
-      </a>
-    </div>
-  `;
+  const ads = adsTemp.replace('$url', 'https://www.tokopedia.com/')
+                      .replace('$img', 'https://cdn.tokopedia.net/play-groupchat/assets/img/dummy-ads.jpg');
 
   $('.game-over').append(ads);
-  handleTimeAds(10);
+  isViewAds = true;
+  handleTimeAds(5);
 }
 
+var adsTimeOut;
 function handleTimeAds(start) {
   var newStart = start;
   var bar = 82;
@@ -1262,11 +1050,11 @@ function handleTimeAds(start) {
   setTimeout(function() {
     $('.ads .countdown__progress-bar').css({
       'stroke-dashoffset': ((newStart - 1) / start) * bar,
-      transition: 'stroke-dashoffset 1s linear',
+      'transition': 'stroke-dashoffset 1s linear',
     });
-  }, 1);
+  }, 100);
 
-  var timeOut = setInterval(() => {
+  adsTimeOut = setInterval(() => {
     newStart -= 1;
     var newBar =
       ((newStart - 1) / start) * bar > 0 ? ((newStart - 1) / start) * bar : 0;
@@ -1278,9 +1066,15 @@ function handleTimeAds(start) {
       $('.ads .countdown__num')
         .text('')
         .addClass('countdown__num--close');
-      clearInterval(timeOut);
+      clearInterval(adsTimeOut);
     }
   }, 1000);
+}
+
+window.gotoAdsPage = gotoAdsPage;
+function gotoAdsPage(link) {
+  window.open(link, '_blank');
+  closeAds();
 }
 
 window.closeAds = closeAds;
@@ -1294,6 +1088,7 @@ function closeAds() {
   soundGameOver();
   addScore(userScore, true);
   renderGameOverBtn(isViewAds);
+  clearInterval(adsTimeOut);
 }
 
 window.handleBtnReminder = handleBtnReminder;
@@ -1310,80 +1105,259 @@ function handleBtnReminder(e) {
   }
 }
 
+window.handleExitGame = handleExitGame;
+function handleExitGame() {
+  isPlayBtn = false;
+  soundQuiz('stop');
+  soundCountdownQuiz('stop');
+  soundCountdownGetReady('stop');
+  soundOpening('stop');
+
+  $('#wrapper').empty()
+  renderHome();
+  clearInterval(timeOut);
+  clearInterval(timeStart);
+  clearTimeout(nexTimeOut);
+}
+
+const shareLang = {
+  home: {
+    title: 'Bagikan',
+    template: `Berani terima tantangan Captain Marvel?\nAyo ikut kuis & raih kesempatan terbang ke Hollywood bareng Captain Marvel & Tokopedia.`,
+  },
+  over: {
+    title: 'Pamerkan Skor',
+    template: `Aku mendapatkan $score skor di kuis Captain Marvel.\nIkut kuis & raih kesempatan terbang ke Hollywood bareng Captain Marvel & Tokopedia.`,
+  },
+};
+
+window.renderBottomShare = renderBottomShare;
+function renderBottomShare(home) {
+  var lang = home ? shareLang.home : shareLang.over;
+
+  var html = bottomSheetTemp.replace('$shareTitle', lang.title);
+
+  $('#outer>div:first-child').append(html);
+
+  setTimeout(() => {
+    $('.overlay').addClass('overlay--show overlay--share');
+  }, 100);
+
+  var body = encodeURIComponent(
+    lang.template.replace('$score', convertScore(userScore)).trim()
+  );
+
+  $('.share-item__icon--fb').parent().click(function() {
+    window.open(
+      `https://www.facebook.com/sharer?u=https://tokopedia.com`,
+      'blank'
+    );
+  });
+  $('.share-item__icon--twitter').parent().click(function() {
+    window.open(`https://twitter.com/intent/tweet?text=${body}`, 'blank');
+  });
+  $('.share-item__icon--wa').parent().click(function() {
+    window.open(`https://wa.me/?text=${body}`, 'blank');
+  });
+  $('.share-item__icon--sms').parent().click(function() {
+    window.open(`sms:?body=${body}`, 'blank');
+  });
+  $('.share-item__icon--line').parent().click(function() {
+    window.open(`https://line.me/R/msg/text/?${body}`, 'blank');
+    SVGComponentTransferFunctionElement.lo;
+  });
+  $('.share-item__icon--link').parent().click(function() {
+    prompt('Copy to clipboard: ⌘+C, Enter', 'http://tokopedia.com');
+  });
+}
+
+function handleConnection(connection){
+  if(!connection){
+    $('body').addClass('no-connection')
+    showToaster('Tidak ada koneksi internet', true, false)
+  }
+  else{
+    $('body').removeClass('no-connection')
+    showToaster('Koneksi internet tersedia', false, true)
+
+  }
+}
+
+// Toaster
+
+function showToaster(text = '', isError = false, autoClose = true) {
+  var html = toasterTemp.replace(`$text`, text)
+  $('body').append(html)
+  setTimeout(() => {
+
+    var toaster = $('.unf-toaster');
+    let toasterMessage = $('.unf-toaster__text');
+
+    toaster.click(function (e) {
+      toaster.removeClass('unf-toaster--show');
+      setTimeout(() => {
+        toaster.remove()
+      }, 1000);
+    });
+
+    if (isError) {
+      toaster.addClass('unf-toaster--error');
+    } else {
+      toaster.removeClass('unf-toaster--error');
+    }
+
+    toasterMessage.text(text);
+    toaster.addClass('unf-toaster--show');
+
+    if (autoClose) {
+      setTimeout(function () {
+        toaster.removeClass('unf-toaster--show');
+        setTimeout(() => {
+          toaster.remove()
+        }, 1000);
+      }, 3000);
+    }
+
+  }, 100);
+
+}
+
 // Audio
+//gohere
+window.handleActiveSound = handleActiveSound;
+function handleActiveSound(active){
+  soundEnabled = active
+  if(active){
+    $('#js_btn-sound').addClass('menu__action--sound-on')
+                      .removeClass('menu__action--sound-off')
+                      .attr('onclick', 'handleActiveSound(false)')
+    soundVolume = 1
+    soundOpening('play')
+  }
+  else{
+    $('#js_btn-sound').removeClass('menu__action--sound-on')
+                      .addClass('menu__action--sound-off')
+                      .attr('onclick', 'handleActiveSound(true)')
+    soundVolume = 0
+    soundOpening('stop')
+  }
+}
 
 function soundOpening(type) {
   let audioHome = document.getElementById('js_sound-opening');
-  if (type == 'play') {
-    audioHome.play();
-    audioHome.loop = true;
-  } else {
-    audioHome.pause();
-    setTimeout(() => {
-      audioHome.currentTime = 0;
-    }, 100);
+  if(audioHome){
+    audioHome.volume = soundVolume
+    if (type == 'play') {
+      audioHome.play();
+      audioHome.loop = true;
+    } else {
+      audioHome.pause();
+      setTimeout(() => {
+        audioHome.currentTime = 0;
+      }, 100);
+    }
   }
 }
 
 function soundGameOver() {
-  let audioHome = document.getElementById('js_sound-game-over');
-  audioHome.play();
+  let audioGameOver = document.getElementById('js_sound-game-over');
+  if(audioGameOver){
+    audioGameOver.volume = soundVolume
+    audioGameOver.play();
+  }
 }
 
-function soundOnboardingQuiz() {
-  let audioStartQuiz = document.getElementById('js_sound-onboarding-quiz');
-  audioStartQuiz.play();
+function soundOnboardingQuiz(type) {
+  let audioStartQuiz = document.getElementById('js_sound-get-ready');
+  if(audioStartQuiz){
+    audioStartQuiz.volume = soundVolume
+    if (type == 'play') {
+      audioStartQuiz.play();
+    } else {
+      audioStartQuiz.pause();
+    }
+  }
 }
 
-function soundCountdown() {
-  let audioCountdown = document.getElementById('js_sound-countdown');
-  setTimeout(() => {
-    audioCountdown.play();
-    audioCountdown.loop = true;
-  }, 1500);
+function soundCountdownGetReady(type) {
+  let audioCountdownGetReady = document.getElementById('js_sound-countdown-get-ready');
+  if(audioCountdownGetReady){
+    audioCountdownGetReady.volume = soundVolume
+    if (type == 'play') {
+      setTimeout(() => {
+        audioCountdownGetReady.play();
+        audioCountdownGetReady.loop = true;
+      }, 1500);
+    } else {
+      audioCountdownGetReady.pause();
+      audioCountdownGetReady.currentTime = 0;
+    }
+  }
 }
 
-function soundQuiz() {
+function soundQuiz(type) {
   let audioQuiz = document.getElementById('js_sound-quiz');
-  audioQuiz.play();
-  audioQuiz.loop = true;
+  if(audioQuiz){
+    audioQuiz.volume = soundVolume
+    if (type == 'play') {
+      audioQuiz.play();
+      audioQuiz.loop = true;
+    } else {
+      audioQuiz.pause();
+      audioQuiz.currentTime = 0;
+    }
+  }
 }
 
 function soundCountdownQuiz(type) {
-  let audioCountdown = document.getElementById('js_sound-countdown-quiz');
-  audioCountdown.loop = true;
-  if (type == 'play') {
-    audioCountdown.play();
-  } else {
-    audioCountdown.pause();
-    setTimeout(() => {
-      audioCountdown.currentTime = 0;
-    }, 1105);
+  let audioCountdownQuiz = document.getElementById('js_sound-countdown-quiz');
+  if(audioCountdownQuiz){
+    audioCountdownQuiz.volume = soundVolume
+    if (type == 'play') {
+      audioCountdownQuiz.loop = true;
+      audioCountdownQuiz.play();
+    } else {
+      audioCountdownQuiz.pause();
+      setTimeout(() => {
+        audioCountdownQuiz.currentTime = 0;
+      }, 1105);
+    }
   }
 }
 
 function soundChooseAnswer() {
   let audioChooseAnswer = document.getElementById('js_sound-choose');
-  audioChooseAnswer.play();
+  if(audioChooseAnswer){
+    audioChooseAnswer.volume = soundVolume
+    audioChooseAnswer.play();
+  }
 }
 
 function soundCorrectAnswer() {
   let audioCorrectAnswer = document.getElementById('js_sound-correct');
-  audioCorrectAnswer.play();
+  if(audioCorrectAnswer){
+    audioCorrectAnswer.volume = soundVolume
+    audioCorrectAnswer.play();
+  }
 }
 
 function soundWrongAnswer() {
   let audioWrongAnswer = document.getElementById('js_sound-wrong');
-  audioWrongAnswer.play();
-  audioWrongAnswer.volume = 0.6;
+  if(audioWrongAnswer){
+    audioWrongAnswer.volume = (soundVolume === 1) ? 0.6 : 0
+    audioWrongAnswer.play();
+  }
 }
 
 function soundScore(type) {
   let audioScore = document.getElementById('js_sound-score');
-  if (type == 'play') {
-    audioScore.play();
-    audioScore.loop = true;
-  } else {
-    audioScore.pause();
+  if(audioScore){
+    audioScore.volume = soundVolume
+    if (type == 'play') {
+      audioScore.play();
+      audioScore.loop = true;
+    } else {
+      audioScore.pause();
+    }
   }
 }

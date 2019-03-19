@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="136" height="68" viewBox="0 0 136 68">
-    <defs>
-        <linearGradient id="a" x1="50%" x2="50%" y1="50%" y2="100%">
-            <stop offset="0%" stop-color="#012" stop-opacity="0"/>
-            <stop offset="100%" stop-color="#E6C15E"/>
-        </linearGradient>
-    </defs>
-    <circle cx="180" cy="161" r="66" fill="none" fill-rule="evenodd" stroke="url(#a)" stroke-width="3" transform="rotate(-180 124 114.5)"/>
-</svg>
