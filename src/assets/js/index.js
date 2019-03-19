@@ -14,8 +14,8 @@ let isLeaderboardOnAds = false;
 
 $(document).ready(function() {
   // initGameOver();
-  // initHome();
-  checkDesktop();
+  initHome();
+  // checkDesktop();
   // loading('%');
 });
 
